@@ -62,24 +62,24 @@ namespace ACTool
                     GUILayout.Space(5f); EditorGUILayout.LabelField("获取属性或变量(二选一):", EditorStyles.largeLabel);
                     if (GUILayout.Button("获取属性", EditorStyles.miniButtonMid))
                     {
-                        GetComonpentProperty(new ACFindConfig() { isGetSet = true, KeyValue = TransformPrefix, });
+                        GetComonpentProperty(new ACToolFindConfig() { isGetSet = true, KeyValue = TransformPrefix, });
                     }
                     if (GUILayout.Button("获取变量", EditorStyles.miniButtonMid))
                     {
-                        GetComonpentProperty(new ACFindConfig() { isGetSet = false, KeyValue = TransformPrefix, });
+                        GetComonpentProperty(new ACToolFindConfig() { isGetSet = false, KeyValue = TransformPrefix, });
                     }
                     //******************************获取组件******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("获取组件:", EditorStyles.largeLabel);
                     if (GUILayout.Button("获取组件(赋值版)", EditorStyles.miniButtonMid))
                     {
-                        GetComonpentFind(new ACFindConfig()
+                        GetComonpentFind(new ACToolFindConfig()
                         {
                             isAssign = true,
                         });
                     }
                     if (GUILayout.Button("获取组件(不赋值版)", EditorStyles.miniButtonMid))
                     {
-                        GetComonpentFind(new ACFindConfig()
+                        GetComonpentFind(new ACToolFindConfig()
                         {
                             isAssign = false,
                         });
@@ -94,7 +94,7 @@ namespace ACTool
                     GUILayout.Space(5f); EditorGUILayout.LabelField("一键获取:", EditorStyles.largeLabel);
                     if (GUILayout.Button("一键获取(GetSet版本)", EditorStyles.miniButtonMid))
                     {
-                        GetAll(new ACFindConfig()
+                        GetAll(new ACToolFindConfig()
                         {
                             isAssign = true,
                             isGetSet = true,
@@ -102,7 +102,7 @@ namespace ACTool
                     }
                     if (GUILayout.Button("一键获取(变量版本)", EditorStyles.miniButtonMid))
                     {
-                        GetAll(new ACFindConfig()
+                        GetAll(new ACToolFindConfig()
                         {
                             isAssign = true,
                             isGetSet = false,
@@ -124,7 +124,7 @@ namespace ACTool
         /// <summary>
         /// 获取属性代码
         /// </summary>
-        private static void GetComonpentProperty(ACFindConfig findtConfig)
+        private static void GetComonpentProperty(ACToolFindConfig findtConfig)
         {
             //获取到当前选择的物体
             GameObject obj = Selection.objects.First() as GameObject;
@@ -158,7 +158,7 @@ namespace ACTool
         /// <summary>
         /// 一键获取
         /// </summary>
-        private static void GetAll(ACFindConfig findtConfig)
+        private static void GetAll(ACToolFindConfig findtConfig)
         {
             //获取到当前选择的物体
             GameObject obj = Selection.objects.First() as GameObject;
@@ -182,7 +182,7 @@ namespace ACTool
         /// <summary>
         /// 直接获取组件--生成组件获取代码
         /// </summary>
-        private static void GetComonpentFind(ACFindConfig findtConfig)
+        private static void GetComonpentFind(ACToolFindConfig findtConfig)
         {
             StringBuilder sb = new StringBuilder();
             GameObject obj = Selection.objects.First() as GameObject;
@@ -288,7 +288,7 @@ namespace ACTool
         /// </summary>
         /// <param name="controlDic">物体的字典</param>
         /// <returns></returns>
-        private static string ComonpentProperty(ACFindConfig findtConfig)
+        private static string ComonpentProperty(ACToolFindConfig findtConfig)
         {
             if (findtConfig.controlDic.Count == 0) return null;
             //生成组件属性
@@ -317,7 +317,7 @@ namespace ACTool
         /// <param name="controlDic">物体的字典</param>
         /// <param name="selectGoName">选中的物体的名称</param>
         /// <returns></returns>
-        private static string ComonpentFind(ACFindConfig findtConfig)
+        private static string ComonpentFind(ACToolFindConfig findtConfig)
         {
             if (findtConfig.controlDic.Count == 0) return null;
             StringBuilder sb = new StringBuilder();

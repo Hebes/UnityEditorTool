@@ -40,8 +40,8 @@ namespace ACTool
                     GUILayout.Space(5f); EditorGUILayout.LabelField("ReferenceCollector获取组件代码:", EditorStyles.largeLabel);
                     EditorGUILayout.BeginHorizontal();//开始水平布局
                     {
-                        if (GUILayout.Button("RC获取代码", EditorStyles.miniButtonMid)) { GetUIALlGoName(new ACFindConfig() { KeyValue = ETUITool_Prefix, isGetSet = false, }); }
-                        if (GUILayout.Button("RC获取代码Get.Set", EditorStyles.miniButtonMid)) { GetUIALlGoName(new ACFindConfig() { KeyValue = ETUITool_Prefix, isGetSet = true, }); }
+                        if (GUILayout.Button("RC获取代码", EditorStyles.miniButtonMid)) { GetUIALlGoName(new ACToolFindConfig() { KeyValue = ETUITool_Prefix, isGetSet = false, }); }
+                        if (GUILayout.Button("RC获取代码Get.Set", EditorStyles.miniButtonMid)) { GetUIALlGoName(new ACToolFindConfig() { KeyValue = ETUITool_Prefix, isGetSet = true, }); }
                     }
                     EditorGUILayout.EndHorizontal();
                     //******************************获取组件专用******************************
@@ -49,7 +49,7 @@ namespace ACTool
                     if (GUILayout.Button("必须的添加", EditorStyles.miniButtonMid)) { GUIUtility.systemCopyBuffer = "ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();"; }
                     EditorGUILayout.BeginHorizontal();//开始水平布局
                     {
-                        if (GUILayout.Button("获取组件专用System", EditorStyles.miniButtonMid)) { GetALlComponent(new ACFindConfig() { KeyValue = ETUITool_Prefix, }); }
+                        if (GUILayout.Button("获取组件专用System", EditorStyles.miniButtonMid)) { GetALlComponent(new ACToolFindConfig() { KeyValue = ETUITool_Prefix, }); }
                         if (GUILayout.Button("获取组件专用System的方法", EditorStyles.miniButtonMid)) { GetALlComponentGetSet(); }
                     }
                     EditorGUILayout.EndHorizontal();
@@ -76,30 +76,30 @@ namespace ACTool
         /// </summary>
         public static void ETReferenceCollectorTool()
         {
-            List<GameObject> gameObjects = new List<GameObject>();
-            GameObject obj = Selection.objects.First() as GameObject;
-            obj.transform.ACLoopGetKeyValueGO(ETUITool_Prefix, ref gameObjects);
+            //List<GameObject> gameObjects = new List<GameObject>();
+            //GameObject obj = Selection.objects.First() as GameObject;
+            //obj.transform.ACLoopGetKeyValueGO(ETUITool_Prefix, ref gameObjects);
 
-            gameObjects?.ForEach((go) =>
-            {
-                obj.GetComponent<ReferenceCollector>().data.Add(new ReferenceCollectorData()
-                {
-                    key = go.name,
-                    gameObject = go.gameObject,
-                });
-            });
+            //gameObjects?.ForEach((go) =>
+            //{
+            //    obj.GetComponent<ReferenceCollector>().data.Add(new ReferenceCollectorData()
+            //    {
+            //        key = go.name,
+            //        gameObject = go.gameObject,
+            //    });
+            //});
         }
 
         /// <summary>
         /// 获取组件专用
         /// </summary>
-        public static void GetALlComponent(ACFindConfig findtConfig)
+        public static void GetALlComponent(ACToolFindConfig findtConfig)
         {
             //获取到当前选择的物体
             GameObject obj = Selection.objects.First() as GameObject;
             findtConfig.controlDic = UIFindComponent.FindComponents1(obj, findtConfig.KeyValue);
             List<GameObject> gameObjects = new List<GameObject>();
-            ACToolExpansion.ACLoopGetKeyValueGO(obj.transform, ETUITool_Prefix, ref gameObjects);
+            obj.transform.ACLoopGetKeywordGO(ETUITool_Prefix, ref gameObjects);
             //打印
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("#region ");
@@ -121,11 +121,11 @@ namespace ACTool
         {
             //查找自定义的需要的组件
             List<GameObject> gameObjects = new List<GameObject>();
-            List<GameObject> obj = ACToolExpansion.ACGetSelectionGos();
+            List<GameObject> obj = ACToolExpansionFind.ACGetSelection().ACGetSelectionGos();
             for (int i = 0; i < obj?.Count; i++)
-                ACToolExpansion.ACLoopGetAllGO(obj[i].transform, ref gameObjects);
+                obj[i].transform.ACLoopGetAllGameObject(ref gameObjects);
             //拼接
-            Type type = ACToolExpansion.ACReflectClass("Button", "UnityEngine.UI");
+            Type type = ("Button").ACReflectClass("UnityEngine.UI");
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < gameObjects?.Count; i++)
             {
@@ -141,20 +141,20 @@ namespace ACTool
                     }
                 }
             }
-            ACToolExpansion.UnityCopyWord(sb.ToString());
+            sb.UnityCopyWord();
             Debug.Log(sb.ToString());
         }
 
         /// <summary>
         /// 生成GameObject专用
         /// </summary>
-        public static void GetUIALlGoName(ACFindConfig findtConfig)
+        public static void GetUIALlGoName(ACToolFindConfig findtConfig)
         {
             string isGetSet = findtConfig.isGetSet ? "{ get; set; }" : ";";
             //获取到当前选择的物体
             GameObject obj = Selection.objects.First() as GameObject;
             List<GameObject> gameObjects = new List<GameObject>();
-            ACToolExpansion.ACLoopGetKeyValueGO(obj.transform, ETUITool_Prefix, ref gameObjects);
+            obj.transform.ACLoopGetKeywordGO(ETUITool_Prefix, ref gameObjects);
             //打印
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("#region 请自行填写注释");
@@ -172,8 +172,8 @@ namespace ACTool
         [MenuItem("Tools/Build/BuildCodeDebug-ac _F5 ")]
         public static void BuildCode()
         {
-            ET.BuildAssemblieEditor.BuildCodeDebug();
-            ET.BuildAssemblieEditor.BuildCodeRelease();
+            //ET.BuildAssemblieEditor.BuildCodeDebug();
+            //ET.BuildAssemblieEditor.BuildCodeRelease();
         }
     }
 }

@@ -35,17 +35,17 @@ namespace ACTool
                 {
                     //******************************移除丢失脚本******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("移除丢失脚本:", EditorStyles.largeLabel);
-                    if (GUILayout.Button("移除丢失脚本", EditorStyles.miniButtonMid)) { RemoveMissScript(); }
+                    if (GUILayout.Button("移除丢失脚本", EditorStyles.miniButtonMid)) { Selection.objects.ACRemoveMissScriptAll(); }
                     InputCustom = EditorGUILayout.TextField("自定义脚本的名称", InputCustom);
                     if (GUILayout.Button("移除自定义脚本", EditorStyles.miniButtonMid))
                     {
                         GameObject obj = Selection.objects.First() as GameObject;
                         List<GameObject> gameObjects = new List<GameObject>();
                         //获取所有的组件
-                        ACToolExpansion.ACLoopGetAllGO(obj.transform, ref gameObjects);
+                        obj.transform.ACLoopGetAllGameObject(ref gameObjects);
                         //移除自定义脚本
                         for (int i = 0; i < gameObjects?.Count; i++)
-                            gameObjects[i].RemoveScript(InputCustom);
+                            gameObjects[i].ACRemoveScript(InputCustom);
                     }
 
                     //******************************一键替换场景中的物体******************************
@@ -111,9 +111,9 @@ namespace ACTool
                     GUILayout.Space(5f); EditorGUILayout.LabelField($"前缀添加{ACEditorConfig.HierarchyPanel_Inputprefix}:", EditorStyles.largeLabel);
                     EditorGUILayout.BeginHorizontal();//开始水平布局
                     {
-                        if (GUILayout.Button($"前缀添加{ACEditorConfig.HierarchyPanel_Inputprefix}", EditorStyles.miniButtonMid)) { ACToolExpansion.AddPrefix(Selection.objects, ACEditorConfig.HierarchyPanel_Inputprefix); }
-                        if (GUILayout.Button($"去除前缀{ACEditorConfig.HierarchyPanel_Inputprefix}", EditorStyles.miniButtonMid)) { ACToolExpansion.RemovePrefix(Selection.objects, ACEditorConfig.HierarchyPanel_Inputprefix); }
-                        if (GUILayout.Button($"保存修改", EditorStyles.miniButtonMid)) { ACToolExpansion.SaveModification(Selection.objects); }
+                        if (GUILayout.Button($"前缀添加{ACEditorConfig.HierarchyPanel_Inputprefix}", EditorStyles.miniButtonMid)) { Selection.objects.ACAddPrefixLoop(ACEditorConfig.HierarchyPanel_Inputprefix); }
+                        if (GUILayout.Button($"去除前缀{ACEditorConfig.HierarchyPanel_Inputprefix}", EditorStyles.miniButtonMid)) { Selection.objects.ACRemovePrefix(ACEditorConfig.HierarchyPanel_Inputprefix); }
+                        if (GUILayout.Button($"保存修改", EditorStyles.miniButtonMid)) { Selection.objects.ACSaveModification(); }
                     }
                     EditorGUILayout.EndHorizontal();
                 }
@@ -153,11 +153,11 @@ namespace ACTool
                     {
                         //查找自定义的需要的组件
                         List<GameObject> gameObjects = new List<GameObject>();
-                        List<GameObject> obj = ACToolExpansion.ACGetSelectionGos();
+                        List<GameObject> obj = ACToolExpansionFind.ACGetSelection().ACGetSelectionGos();
                         for (int i = 0; i < obj?.Count; i++)
-                            ACToolExpansion.ACLoopGetAllGO(obj[i].transform, ref gameObjects);
+                            obj[i].transform.ACLoopGetAllGameObject(ref gameObjects);
                         //拼接
-                        Type type = ACToolExpansion.ACReflectClass(ACHierarchyPanelCode_ClassName, "UnityEngine.UI");
+                        Type type = ACHierarchyPanelCode_ClassName.ACReflectClass("UnityEngine.UI");
                         StringBuilder sb = new StringBuilder();
                         for (int i = 0; i < gameObjects?.Count; i++)
                         {
@@ -179,7 +179,7 @@ namespace ACTool
                                 }
                             }
                         }
-                        ACToolExpansion.UnityCopyWord(sb.ToString());
+                        sb.ToString().UnityCopyWord();
                         Debug.Log(sb.ToString());
                     }
                 }
@@ -187,20 +187,6 @@ namespace ACTool
             }
             EditorGUILayout.EndScrollView(); //结束滚动视图
         }
-
-
-        #region 移除丢失的脚本
-        /// <summary>
-        /// 移除丢失的脚本
-        /// </summary>
-        private static void RemoveMissScript()
-        {
-            for (int i = 0; i < Selection.objects?.Length; i++)
-            {
-                ACToolExpansion.RemoveMissScript((GameObject)Selection.objects[i]);
-            }
-        }
-        #endregion
 
         #region Unity 一键替换场景中的物体
         /// <summary>
@@ -250,7 +236,7 @@ namespace ACTool
             {
                 GameObject go = (GameObject)item;
                 Transform transform = go.GetComponent<Transform>();
-                transform.LoopGetAllGO(ref all);
+                transform.LoopGetAllTransform(ref all);
             }
 
             foreach (var item in all)

@@ -6,12 +6,12 @@ namespace ACTool
     /// <summary>
     /// Find类型查找配置文件
     /// </summary>
-    public class ACFindConfig
+    public class ACToolFindConfig
     {
         /// <summary>
         /// 构造函数
         /// </summary>
-        public ACFindConfig() => controlDic = new Dictionary<string, List<Component>>();
+        public ACToolFindConfig() => controlDic = new Dictionary<string, List<Component>>();
 
         /// <summary>
         /// 关键词 例如V_
