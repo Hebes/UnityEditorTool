@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -54,7 +50,7 @@ namespace ACTool
         public static List<GameObject> ACGetSelectionGos(this UnityEngine.Object[] objects)
         {
             List<GameObject> gos = new List<GameObject>();
-            gos.AddRange(objects);
+            gos.AddRange((IEnumerable<GameObject>)objects);
             return gos;
         }
 
