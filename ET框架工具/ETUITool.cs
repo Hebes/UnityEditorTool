@@ -9,7 +9,7 @@ namespace ACTool
 {
     public class ETUITool : EditorWindow
     {
-        private static string ETUITool_Prefix { get; set; } = String.Empty;//关键的前缀
+        private static string ETUITool_Prefix { get; set; } = "T_";//关键的前缀
         public static string ETUITool_InputPrefix { get; set; }//输入物体的Transform，就是前缀
         private static Vector2 ETUITool_ScrollRoot { get; set; }
 
@@ -17,8 +17,8 @@ namespace ACTool
         public static void GeneratorFindComponentTool() => GetWindow(typeof(ETUITool), false, "ET工具-暗沉").Show();
         private void OnGUI()
         {
-            ACHierarchyPanelCommonEditorTool.ACHierarchyPanelPrefix();
-            ACHierarchyPanelCommonEditorTool.ACHierarchyPanelCode();
+            ACHierarchyTool.ACHierarchyPrefix();
+            ACHierarchyTool.ACHierarchyPanelCode((sb, go, type) => { ACETUIToolShowCode(sb, go, type); });
             OnETUITool();
         }
 
@@ -35,7 +35,6 @@ namespace ACTool
                     //******************************ReferenceCollector自动化组件专用******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("ReferenceCollector自动设置:", EditorStyles.largeLabel);
                     if (GUILayout.Button("ReferenceCollector自动化组件专用", EditorStyles.miniButtonMid)) { ETReferenceCollectorTool(); }
-                    EditorGUILayout.EndHorizontal();
                     //******************************生成GameObject专用******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("ReferenceCollector获取组件代码:", EditorStyles.largeLabel);
                     EditorGUILayout.BeginHorizontal();//开始水平布局
@@ -55,7 +54,7 @@ namespace ACTool
                     EditorGUILayout.EndHorizontal();
                     //******************************去除组件RayCastTarget*****************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("去除组件RayCastTarget:", EditorStyles.largeLabel);
-                    if (GUILayout.Button("去除组件RayCastTarget", EditorStyles.miniButtonMid)) { UIAutoForTransformNoPath.ClearRayCastTarget(); }
+                    if (GUILayout.Button("去除组件RayCastTarget", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetSelection().ClearRayCastTarget(); }
                     //******************************资源包快速获取名称******************************
                     //GUILayout.Space(5f); EditorGUILayout.LabelField("资源包快速获取名称:", EditorStyles.largeLabel);
                     //EditorGUILayout.BeginHorizontal();//开始水平布局
@@ -66,7 +65,7 @@ namespace ACTool
                     //}
                     //EditorGUILayout.EndHorizontal();
                 }
-                GUILayout.EndVertical(); GUILayout.Space(5f);
+                EditorGUILayout.EndVertical();
             }
             EditorGUILayout.EndScrollView(); //结束滚动视图
         }
@@ -76,18 +75,20 @@ namespace ACTool
         /// </summary>
         public static void ETReferenceCollectorTool()
         {
-            //List<GameObject> gameObjects = new List<GameObject>();
-            //GameObject obj = Selection.objects.First() as GameObject;
-            //obj.transform.ACLoopGetKeyValueGO(ETUITool_Prefix, ref gameObjects);
+            List<GameObject> gameObjects = new List<GameObject>();
+            GameObject obj = Selection.objects.First() as GameObject;
+            obj.transform.ACLoopGetKeywordGO(ETUITool_Prefix, ref gameObjects);
 
-            //gameObjects?.ForEach((go) =>
-            //{
-            //    obj.GetComponent<ReferenceCollector>().data.Add(new ReferenceCollectorData()
-            //    {
-            //        key = go.name,
-            //        gameObject = go.gameObject,
-            //    });
-            //});
+            obj.GetComponent<ReferenceCollector>().data.Clear();//清空原来的数据
+
+            gameObjects?.ForEach((go) =>
+            {
+                obj.GetComponent<ReferenceCollector>().data.Add(new ReferenceCollectorData()
+                {
+                    key = go.name,
+                    gameObject = go.gameObject,
+                });
+            });
         }
 
         /// <summary>
@@ -107,7 +108,6 @@ namespace ACTool
             {
                 sb.AppendLine($"\tself.{gameObjects[i].name} = rc.Get<GameObject>(\"{gameObjects[i].name}\");");
             }
-            //sb.AppendLine("#endregion");
             sb.AppendLine();//空行
             sb.AppendLine("#endregion");
             //复制
@@ -141,7 +141,7 @@ namespace ACTool
                     }
                 }
             }
-            sb.UnityCopyWord();
+            sb.ToString().UnityCopyWord();
             Debug.Log(sb.ToString());
         }
 
@@ -172,8 +172,30 @@ namespace ACTool
         [MenuItem("Tools/Build/BuildCodeDebug-ac _F5 ")]
         public static void BuildCode()
         {
-            //ET.BuildAssemblieEditor.BuildCodeDebug();
-            //ET.BuildAssemblieEditor.BuildCodeRelease();
+            ET.BuildAssemblieEditor.BuildCodeDebug();
+            ET.BuildAssemblieEditor.BuildCodeRelease();
+        }
+
+        /// <summary>
+        /// ET的代码
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="gameObject"></param>
+        /// <param name="type"></param>
+        private static void ACETUIToolShowCode(StringBuilder sb, GameObject gameObject, Type type)
+        {
+            switch (type.Name)
+            {
+                case "Text":
+                    sb.AppendLine($"self.{gameObject.name}.GetComponent<Text>().text = String.Empty;");
+                    break;
+                case "InputField":
+                    sb.AppendLine($"self.{gameObject.name}.GetComponent<InputField>().text = String.Empty;");
+                    break;
+                case "Button":
+                    sb.AppendLine($"self.{gameObject.name}.GetComponent<Button>().onClick.AddListener(self.On{gameObject.name});");
+                    break;
+            }
         }
     }
 }

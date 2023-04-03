@@ -52,7 +52,7 @@ namespace ACTool
         /// <param name="gameObject">需要移除丢失脚本的物体</param>
         public static void ACRemoveMissScriptAll(this UnityEngine.Object[] objs)
         {
-            Array.ForEach(objs, (obj) => 
+            Array.ForEach(objs, (obj) =>
             {
                 //获取所有的物体
                 List<GameObject> gameObjects = new List<GameObject>();
@@ -65,7 +65,7 @@ namespace ACTool
                 objs.ACAssetDatabaseRefresh();
                 Debug.Log("清理完成!");
             });
-            
+
         }
 
         /// <summary>
@@ -94,6 +94,35 @@ namespace ACTool
         public static void ACRemoveMissScriptOne(this GameObject gameObject)
         {
             GameObjectUtility.RemoveMonoBehavioursWithMissingScript(gameObject);
+        }
+
+
+        /// <summary>
+        /// 添加脚本(PS:自定义版本,一个物体里面)
+        /// </summary>
+        public static void ACAddScript(this GameObject gameObject, String InputCustom)
+        {
+            Component[] components = gameObject.GetComponents<Component>();
+            bool isExist = false;//是否存在
+            foreach (Component comp in components)//正常来说肯定有一个
+            {
+                Type type = comp.GetType();
+                if (type.Name == InputCustom)
+                {
+                    isExist = true;
+                    break;
+                }
+            }
+
+            if (!isExist)
+            {
+                //Animator
+                Type type = null;
+                if (type == null) type = InputCustom.ACReflectClass("UnityEngine.UI");
+                if (type == null) type = InputCustom.ACReflectClass("UnityEngine");
+                gameObject.AddComponent(type);
+                Debug.Log($"{gameObject.name}添加{type.Name}完成");
+            }
         }
     }
 }

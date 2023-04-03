@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Data;
 using System.Diagnostics;
-using Excel;
+//using Excel;
 
 /// <summary>
 /// 将表Excel表转成csv表 https://blog.csdn.net/bigpaolee/article/details/47626743
@@ -41,44 +41,44 @@ public class ExcelConvertor
     //需要转换的excle
     private bool NeedConvertExcels()
     {
-        _needConvertExcelFiles.Clear();
-        foreach (string file in Directory.GetFileSystemEntries(_excelPath, "*." + _excelExtension))
-        {
-            var filename = Path.GetFileNameWithoutExtension(file);
-            using (FileStream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                string extension = Path.GetExtension(file);
+        //_needConvertExcelFiles.Clear();
+        //foreach (string file in Directory.GetFileSystemEntries(_excelPath, "*." + _excelExtension))
+        //{
+        //    var filename = Path.GetFileNameWithoutExtension(file);
+        //    using (FileStream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        //    {
+        //        string extension = Path.GetExtension(file);
 
-                if (String.CompareOrdinal(extension, ".xls") == 0)
-                {
-                    using (IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream))
-                    {
-                        var result = excelReader.AsDataSet();
+        //        if (String.CompareOrdinal(extension, ".xls") == 0)
+        //        {
+        //            using (IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream))
+        //            {
+        //                var result = excelReader.AsDataSet();
 
-                        excelReader.IsFirstRowAsColumnNames = true;
-                        _needConvertExcelFiles.Add(filename, result);
-                        excelReader.Close();
-                    }
-                }
-                else if (String.CompareOrdinal(extension, ".xlsx") == 0)
-                {
-                    using (IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream))
-                    {
-                        var result = excelReader.AsDataSet();
+        //                excelReader.IsFirstRowAsColumnNames = true;
+        //                _needConvertExcelFiles.Add(filename, result);
+        //                excelReader.Close();
+        //            }
+        //        }
+        //        else if (String.CompareOrdinal(extension, ".xlsx") == 0)
+        //        {
+        //            using (IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream))
+        //            {
+        //                var result = excelReader.AsDataSet();
 
-                        //excelReader.IsFirstRowAsColumnNames = true;
-                        _needConvertExcelFiles.Add(filename, result);
-                        excelReader.Close();
-                    }
-                }
-                else
-                {
-                    UnityEngine.Debug.Log("extension is not xls or xlsx");
+        //                //excelReader.IsFirstRowAsColumnNames = true;
+        //                _needConvertExcelFiles.Add(filename, result);
+        //                excelReader.Close();
+        //            }
+        //        }
+        //        else
+        //        {
+        //            UnityEngine.Debug.Log("extension is not xls or xlsx");
 
-                    return false;
-                }
-            }
-        }
+        //            return false;
+        //        }
+        //    }
+        //}
 
         return true;
     }

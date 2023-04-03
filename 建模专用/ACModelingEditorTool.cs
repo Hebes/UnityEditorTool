@@ -50,7 +50,7 @@ namespace AC
                             string strMoveInfo = AssetDatabase.MoveAsset(path_g, $"{newPath}/{strName}");
                             Debug.Log(strMoveInfo);
                             //刷新
-                            tempObj.ACReAssets();
+                            this.ACReAssets();
                         }
                     }
                 }

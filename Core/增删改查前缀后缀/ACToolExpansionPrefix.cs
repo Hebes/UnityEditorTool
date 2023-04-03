@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 namespace ACTool
@@ -48,5 +49,14 @@ namespace ACTool
         {
             gameObject.name = gameObject.name.StartsWith(prefix) ? gameObject.name.Replace(prefix, "") : gameObject.name;
         }
+
+        /// <summary>
+        /// 获取选择的物品的前缀
+        /// </summary>
+        public static string ACGetPrefix(this UnityEngine.Object obj)
+        {
+            return $"{obj.name}_";
+        }
+
     }
 }

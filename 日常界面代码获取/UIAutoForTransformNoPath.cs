@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -13,58 +15,55 @@ namespace ACTool
     /// <summary>
     /// Ui组件自动化获取
     /// </summary>
-    public class UIAutoForTransformNoPath : EditorWindow
+    public class ACUIGetCodeNoPath : EditorWindow
     {
-        private static string UIAutoForTransformNoPath_Prefix { get; set; } = string.Empty;//关键的前缀
-        private static string UIAutoForTransformNoPath_Inputprefix { get; set; }//输入物体的Transform，就是前缀
-        private static Vector2 UIAutoForTransformNoPath_scrollRoot { get; set; }
+        private static string ACUIGetCodeNoPath_Prefix { get; set; } = string.Empty;//关键的前缀
+        private static string ACUIGetCodeNoPath_InputPrefix { get; set; }//输入物体的Transform，就是前缀
+        private static Vector2 ACUIGetCodeNoPath_scrollRoot { get; set; }
+
+        public static string[] options = new string[] { "Transform", "Button", "InputField", "Text" };
+        public static int index = 0;
 
         //[MenuItem("GameObject/组件查找和重命名(Shift+A) #A", false, 0)]
         //[MenuItem("Assets/组件查找和重命名(Shift+A) #A")]
         //[MenuItem("Tool/组件查找和重命名(Shift+A) #A", false, 0)]
         [MenuItem("Assets/UI组件获取工具/Transform组件查找-Transform没路径(Shift+A) ")]//#A
-        public static void GeneratorFindComponentTool() => GetWindow(typeof(UIAutoForTransformNoPath), false, "Transform组件查找(没路径)").Show();
-        private void OnGUI() => OnUIAutoForTransformNoPath();
+        public static void GeneratorFindComponentTool() => GetWindow(typeof(ACUIGetCodeNoPath), false, "Transform组件查找(没路径)").Show();
+        private void OnGUI()
+        {
+            ACHierarchyTool.ACHierarchyPrefix();
+            ACHierarchyTool.ACHierarchyPanelCode();
+            OnUIAutoForTransformNoPath();
+        }
 
         public static void OnUIAutoForTransformNoPath()
         {
-            UIAutoForTransformNoPath_scrollRoot = EditorGUILayout.BeginScrollView(UIAutoForTransformNoPath_scrollRoot); //开启滚动视图
+            ACUIGetCodeNoPath_scrollRoot = EditorGUILayout.BeginScrollView(ACUIGetCodeNoPath_scrollRoot); //开启滚动视图
             {
                 //******************************Transform组件查找打印 * *****************************配合Transform拓展
                 GUILayout.BeginVertical("box");
                 {
-                    EditorGUILayout.LabelField("Transform组件查找打印", EditorStyles.boldLabel);
-                    //******************************请输入Transform组件查找前缀******************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField("请输入组件查找前缀:", EditorStyles.largeLabel);
-                    UIAutoForTransformNoPath_Inputprefix = EditorGUILayout.TextField("请输入组件查找前缀", UIAutoForTransformNoPath_Inputprefix);
-                    if (GUILayout.Button("清空前缀", EditorStyles.miniButtonMid)) { UIAutoForTransformNoPath_Inputprefix = string.Empty; }
-                    if (GUILayout.Button("常用前缀:transform", EditorStyles.miniButtonMid)) { UIAutoForTransformNoPath_Inputprefix = "transform"; }
-                    //******************************组件重命名******************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField($"组件重命名:", EditorStyles.largeLabel);
-                    if (GUILayout.Button($"前缀添加{UIAutoForTransformNoPath_Prefix}", EditorStyles.miniButtonMid)) { Selection.objects.ACAddPrefixLoop(UIAutoForTransformNoPath_Prefix); }
-                    if (GUILayout.Button($"去除前缀{UIAutoForTransformNoPath_Prefix}", EditorStyles.miniButtonMid)) { Selection.objects.ACRemovePrefix(UIAutoForTransformNoPath_Prefix); }
-                    if (GUILayout.Button($"去除空白和特殊字符", EditorStyles.miniButtonMid)) { Selection.objects.ClearTrim(); }
-                    if (GUILayout.Button($"保存修改", EditorStyles.miniButtonMid)) { ACToolExpansionDateSave.ACSave(); }
+                    //index = EditorGUILayout.Popup("选择组件:", index, options);
                     //******************************Transform组件查找打印******************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField("获取属性或变量(二选一):", EditorStyles.largeLabel);
+                    EditorGUILayout.Space(5f); EditorGUILayout.LabelField("获取属性或变量(二选一):", EditorStyles.largeLabel);
                     if (GUILayout.Button("获取属性", EditorStyles.miniButtonMid))
                     {
-                        GetComonpentProperty(new ACToolFindConfig() { KeyValue = UIAutoForTransformNoPath_Prefix, isGetSet = true, });
+                        GetComonpentProperty(new ACToolFindConfig() { KeyValue = ACUIGetCodeNoPath_Prefix, isGetSet = true, });
                     }
                     if (GUILayout.Button("获取变量", EditorStyles.miniButtonMid))
                     {
-                        GetComonpentProperty(new ACToolFindConfig() { KeyValue = UIAutoForTransformNoPath_Prefix, isGetSet = false, });
+                        GetComonpentProperty(new ACToolFindConfig() { KeyValue = ACUIGetCodeNoPath_Prefix, isGetSet = false, });
                     }
                     //******************************获取组件******************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField("获取组件:", EditorStyles.largeLabel);
+                    EditorGUILayout.Space(5f); EditorGUILayout.LabelField("获取组件:", EditorStyles.largeLabel);
                     if (GUILayout.Button("获取组件(赋值版)", EditorStyles.miniButtonMid))
                     {
                         GetComponentFind(new ACToolFindConfig()
                         {
                             isAssign = true,
                             isAddPrefix = true,
-                            KeyValue = UIAutoForTransformNoPath_Prefix,
-                            beginStr = UIAutoForTransformNoPath_Inputprefix,
+                            KeyValue = ACUIGetCodeNoPath_Prefix,
+                            beginStr = ACUIGetCodeNoPath_InputPrefix,
                         });
                     }
                     if (GUILayout.Button("获取组件(不赋值版)", EditorStyles.miniButtonMid))
@@ -73,31 +72,31 @@ namespace ACTool
                         {
                             isAssign = false,
                             isAddPrefix = true,
-                            KeyValue = UIAutoForTransformNoPath_Prefix,
-                            beginStr = UIAutoForTransformNoPath_Inputprefix,
+                            KeyValue = ACUIGetCodeNoPath_Prefix,
+                            beginStr = ACUIGetCodeNoPath_InputPrefix,
                         });
                     }
                     //******************************获取监听******************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField("按钮监听代码:", EditorStyles.largeLabel);
+                    EditorGUILayout.Space(5f); EditorGUILayout.LabelField("按钮监听代码:", EditorStyles.largeLabel);
                     if (GUILayout.Button("获取监听", EditorStyles.miniButtonMid))
                     {
                         GetComonpentListener(new ACToolFindConfig()
                         {
-                            KeyValue = UIAutoForTransformNoPath_Prefix,
-                            beginStr = UIAutoForTransformNoPath_Inputprefix,
+                            KeyValue = ACUIGetCodeNoPath_Prefix,
+                            beginStr = ACUIGetCodeNoPath_InputPrefix,
                         });
                     }
                     //******************************一键生成******************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField($"一键生成:", EditorStyles.largeLabel);
+                    EditorGUILayout.Space(5f); EditorGUILayout.LabelField($"一键生成:", EditorStyles.largeLabel);
                     if (GUILayout.Button($"一键获取(GetSet版本)", EditorStyles.miniButtonMid))
                     {
                         OneKeyGeneration(new ACToolFindConfig()
                         {
                             isAssign = true,
-                            beginStr = UIAutoForTransformNoPath_Inputprefix,
+                            beginStr = ACUIGetCodeNoPath_InputPrefix,
                             isAddPrefix = true,
                             isGetSet = true,
-                            KeyValue = UIAutoForTransformNoPath_Prefix,
+                            KeyValue = ACUIGetCodeNoPath_Prefix,
                         });
                     }
                     if (GUILayout.Button($"一键获取(变量版本)", EditorStyles.miniButtonMid))
@@ -105,28 +104,28 @@ namespace ACTool
                         OneKeyGeneration(new ACToolFindConfig()
                         {
                             isAssign = true,
-                            beginStr = UIAutoForTransformNoPath_Inputprefix,
+                            beginStr = ACUIGetCodeNoPath_InputPrefix,
                             isAddPrefix = true,
                             isGetSet = false,
-                            KeyValue = UIAutoForTransformNoPath_Prefix,
+                            KeyValue = ACUIGetCodeNoPath_Prefix,
                         });
                     }
                     //******************************获取选中的物体组件获取******************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField($"获取选中的物体组件获取:", EditorStyles.largeLabel);
+                    EditorGUILayout.Space(5f); EditorGUILayout.LabelField($"获取选中的物体组件获取:", EditorStyles.largeLabel);
                     if (GUILayout.Button($"获取选中的物体组件获取", EditorStyles.miniButtonMid))
                     {
                         GetSelectGoCompent(new ACToolFindConfig());
                     }
                     //******************************一键去除组件RayCast Target******************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField("一键去除组件RayCast Target:", EditorStyles.largeLabel);
-                    if (GUILayout.Button("一键去除组件RayCast Target", EditorStyles.miniButtonMid)) { ClearRayCastTarget(); }
+                    EditorGUILayout.Space(5f); EditorGUILayout.LabelField("一键去除组件RayCast Target:", EditorStyles.largeLabel);
+                    if (GUILayout.Button("一键去除组件RayCast Target", EditorStyles.miniButtonMid)) { Selection.objects.ClearRayCastTarget(); }
                     //******************************获取所有的T_开头的******************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField("获取所有T_开头的物体的名称:", EditorStyles.largeLabel);
+                    EditorGUILayout.Space(5f); EditorGUILayout.LabelField("获取所有T_开头的物体的名称:", EditorStyles.largeLabel);
                     if (GUILayout.Button("获取所有T_开头的物体的名称", EditorStyles.miniButtonMid))
                     {
                         GetALlGoName(new ACToolFindConfig()
                         {
-                            KeyValue = UIAutoForTransformNoPath_Prefix,
+                            KeyValue = ACUIGetCodeNoPath_Prefix,
                         });
                     }
                 }
@@ -137,7 +136,6 @@ namespace ACTool
 
         //******************************组合功能******************************
         #region 组件属性
-
         /// <summary>
         /// 生成组件属性代码
         /// </summary>
@@ -245,7 +243,7 @@ namespace ACTool
             //属性代码
             foreach (var item in components)
             {
-                string temp = item.GetType().Name.ACTypeChange();
+                string temp = TypeChange(item.GetType().Name);
                 sb.AppendLine($"public {temp} {item.gameObject.name}{temp} {{ set; get; }}");
             }
             sb.AppendLine();
@@ -257,44 +255,13 @@ namespace ACTool
             sb.AppendLine("{");
             foreach (var item in components)
             {
-                string temp = item.GetType().Name.ACTypeChange();
+                string temp = TypeChange(item.GetType().Name);
                 sb.AppendLine($"\t{item.gameObject.name}{temp} = GetComponent<{temp}>();");
             }
             sb.AppendLine("}");
             sb.AppendLine("#endregion");
             Debug.Log(sb);
             GUIUtility.systemCopyBuffer = sb.ToString();
-        }
-        #endregion
-
-        #region 去除组件RayCast Target
-
-        /// <summary>
-        /// 去除组件RayCast Target
-        /// </summary>
-        public static void ClearRayCastTarget()
-        {
-            Object[] obj = Selection.objects;//获取到当前选择的物体
-            foreach (var item in obj)
-            {
-                GameObject go = item as GameObject;
-                if (go.GetComponent<Text>() != null)
-                {
-                    go.GetComponent<Text>().raycastTarget = false;
-                    continue;
-                }
-                else if (go.GetComponent<Image>())
-                {
-                    go.GetComponent<Image>().raycastTarget = false;
-                    continue;
-                }
-                else if (go.GetComponent<RawImage>())
-                {
-                    go.GetComponent<RawImage>().raycastTarget = false;
-                    continue;
-                }
-                if (EditorUtility.DisplayDialog("消息提示", go.name + "没有找到需要去除的RayCast Target选项", "确定")) { }
-            }
         }
         #endregion
 
@@ -341,7 +308,7 @@ namespace ACTool
             sb.AppendLine("#region 组件模块 不要的代码请自行删除");
             foreach (string Key in findtConfig.controlDic?.Keys)
             {
-                string type = Key.ACTypeChange();//类型
+                string type = TypeChange(Key);//类型
                 findtConfig.controlDic[Key]?.ForEach((component) =>
                 {
                     string componentName = UIFindComponent.ClearSpecificSymbol(component.name);//组件名称,順便出去空白
@@ -375,7 +342,7 @@ namespace ACTool
             sb.AppendLine("{");
             foreach (string Key in findtConfig.controlDic?.Keys)
             {
-                string type = Key.ACTypeChange();//类型
+                string type = TypeChange(Key);//类型
                 findtConfig.controlDic[Key]?.ForEach((component) =>
                 {
                     string componentName = UIFindComponent.ClearSpecificSymbol(component.name);//组件名称,順便出去空白
@@ -443,6 +410,19 @@ namespace ACTool
         //******************************其他******************************
         #region 其他
 
+        /// <summary>
+        /// 类型转换
+        /// </summary>
+        /// <param name="typeStr"></param>
+        /// <returns></returns>
+        private static string TypeChange(string typeStr)
+        {
+            switch (typeStr)
+            {
+                case "RectTransform": return "Transform";
+                default: return typeStr;
+            }
+        }
         /// <summary>
         /// 添加前缀
         /// </summary>

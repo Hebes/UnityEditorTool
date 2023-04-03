@@ -23,7 +23,7 @@ namespace ACTool
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string ClearSpecificSymbol(string str)
+        public static string ClearSpecificSymbol(this string str)
         {
             return str.Replace(" ", "").Replace("(", "").Replace(")", "").Trim();//组件名称,順便出去空白
         }
@@ -34,7 +34,7 @@ namespace ACTool
         /// <param name="str"></param>
         /// <param name="keyWord1"></param>
         /// <returns></returns>
-        public static string ClearSpecificSymbol(string str, string keyWord1)
+        public static string ClearSpecificSymbol(this string str, string keyWord1)
         {
             return str.Replace(" ", "").Replace(keyWord1, "").Trim();//组件名称,順便出去空白
         }
@@ -46,7 +46,7 @@ namespace ACTool
         /// <param name="keyWord1"></param>
         /// <param name="keyWord2"></param>
         /// <returns></returns>
-        public static string ClearSpecificSymbol(string str,string keyWord1, string keyWord2)
+        public static string ClearSpecificSymbol(this string str,string keyWord1, string keyWord2)
         {
             return str.Replace(" ", "").Replace(keyWord1, "").Replace(keyWord2, "").Trim();//组件名称,順便出去空白
         }

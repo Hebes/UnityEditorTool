@@ -38,6 +38,15 @@ namespace ACTool
         /// 获取一个
         /// </summary>
         /// <returns></returns>
+        public static GameObject ACGetSelectionOneGo()
+        {
+            return Selection.objects.First() as GameObject;
+        }
+
+        /// <summary>
+        /// 获取一个
+        /// </summary>
+        /// <returns></returns>
         public static UnityEngine.Object ACGetSelectionOne(this UnityEngine.Object obj)
         {
             return Selection.objects.First();
@@ -102,11 +111,11 @@ namespace ACTool
         /// <param name="transform"></param>
         /// <param name="transformPrefix"></param>
         /// <param name="gameObjects"></param>
-        public static void LoopGetAllTransform(this Transform transform, ref List<Transform> transforms)
+        public static void ACLoopGetAllTransform(this Transform transform, ref List<Transform> transforms)
         {
             transforms.Add(transform);
             for (int i = 0; i < transform?.childCount; i++)
-                transform.GetChild(i).LoopGetAllTransform(ref transforms);
+                transform.GetChild(i).ACLoopGetAllTransform(ref transforms);
         }
 
         /// <summary>
