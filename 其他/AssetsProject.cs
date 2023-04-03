@@ -74,39 +74,4 @@ public class AssetsProject : MonoBehaviour
         //刷新编辑器
         AssetDatabase.Refresh();
     }
-
-    [MenuItem("Assets/生成场景配置文件")]//C#获取文件夹下的所有文件的文件名 https://www.cnblogs.com/technology/archive/2011/07/12/2104786.html
-    public static void ScenesPrefab()
-    {
-        //输出内容
-        StringBuilder sb = new StringBuilder();
-        sb.AppendLine($"public static class ConfigScenes");
-        sb.AppendLine("{");
-        sb.AppendLine("\t#region 场景名称");
-        //获取场景名称
-        string[] files = Directory.GetFiles($"{Application.dataPath}/Scenes", "*.unity");
-        Dictionary<string, string> censeName = new Dictionary<string, string>();
-        foreach (var fileName in files)
-        {
-            string[] tempfileName = fileName.Split('\\');
-            string temp = tempfileName[tempfileName.Length - 1].Replace(".unity", "");
-            string[] scene = temp.Split('.');
-            censeName.Add(scene[1], temp);
-        }
-        if (censeName.Count == 0) { Debug.Log("路径错误"); }
-        foreach (var item in censeName)
-        {
-            string itemNameTemp = Regex.Replace(item.Key, @"\s", "");//正则表达中，"\s" 是指空白，包括空格、换行、tab缩进等所有的空白。
-            sb.AppendLine($"\tpublic static string {itemNameTemp} => \"{item.Value}\";");
-        }
-        sb.AppendLine("\t#endregion");
-        sb.AppendLine("}");
-
-        //生成文件的路径
-        string filePath = $"{Application.dataPath}/Core/Config/ConfigScenes.cs";//Assets/Scripts/Config
-        if (File.Exists(filePath)) { File.Delete(filePath); }
-        using (StreamWriter writer = File.CreateText(filePath)) { writer.Write(sb); Debug.Log("内容写入成功!"); }
-        //刷新编辑器
-        AssetDatabase.Refresh();
-    }
 }
