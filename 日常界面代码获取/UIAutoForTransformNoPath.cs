@@ -32,7 +32,7 @@ namespace ACTool
         private void OnGUI()
         {
             ACHierarchyTool.ACHierarchyPrefix();
-            ACHierarchyTool.ACHierarchyPanelCode();
+            ACHierarchyTool.ACHierarchyPanelGetCode();
             OnUIAutoForTransformNoPath();
         }
 
@@ -48,17 +48,17 @@ namespace ACTool
                     EditorGUILayout.Space(5f); EditorGUILayout.LabelField("获取属性或变量(二选一):", EditorStyles.largeLabel);
                     if (GUILayout.Button("获取属性", EditorStyles.miniButtonMid))
                     {
-                        GetComonpentProperty(new ACToolFindConfig() { KeyValue = ACUIGetCodeNoPath_Prefix, isGetSet = true, });
+                        GetComonpentProperty(new ACToolConfig() { KeyValue = ACUIGetCodeNoPath_Prefix, isGetSet = true, });
                     }
                     if (GUILayout.Button("获取变量", EditorStyles.miniButtonMid))
                     {
-                        GetComonpentProperty(new ACToolFindConfig() { KeyValue = ACUIGetCodeNoPath_Prefix, isGetSet = false, });
+                        GetComonpentProperty(new ACToolConfig() { KeyValue = ACUIGetCodeNoPath_Prefix, isGetSet = false, });
                     }
                     //******************************获取组件******************************
                     EditorGUILayout.Space(5f); EditorGUILayout.LabelField("获取组件:", EditorStyles.largeLabel);
                     if (GUILayout.Button("获取组件(赋值版)", EditorStyles.miniButtonMid))
                     {
-                        GetComponentFind(new ACToolFindConfig()
+                        GetComponentFind(new ACToolConfig()
                         {
                             isAssign = true,
                             isAddPrefix = true,
@@ -68,7 +68,7 @@ namespace ACTool
                     }
                     if (GUILayout.Button("获取组件(不赋值版)", EditorStyles.miniButtonMid))
                     {
-                        GetComponentFind(new ACToolFindConfig()
+                        GetComponentFind(new ACToolConfig()
                         {
                             isAssign = false,
                             isAddPrefix = true,
@@ -80,7 +80,7 @@ namespace ACTool
                     EditorGUILayout.Space(5f); EditorGUILayout.LabelField("按钮监听代码:", EditorStyles.largeLabel);
                     if (GUILayout.Button("获取监听", EditorStyles.miniButtonMid))
                     {
-                        GetComonpentListener(new ACToolFindConfig()
+                        GetComonpentListener(new ACToolConfig()
                         {
                             KeyValue = ACUIGetCodeNoPath_Prefix,
                             beginStr = ACUIGetCodeNoPath_InputPrefix,
@@ -90,7 +90,7 @@ namespace ACTool
                     EditorGUILayout.Space(5f); EditorGUILayout.LabelField($"一键生成:", EditorStyles.largeLabel);
                     if (GUILayout.Button($"一键获取(GetSet版本)", EditorStyles.miniButtonMid))
                     {
-                        OneKeyGeneration(new ACToolFindConfig()
+                        OneKeyGeneration(new ACToolConfig()
                         {
                             isAssign = true,
                             beginStr = ACUIGetCodeNoPath_InputPrefix,
@@ -101,7 +101,7 @@ namespace ACTool
                     }
                     if (GUILayout.Button($"一键获取(变量版本)", EditorStyles.miniButtonMid))
                     {
-                        OneKeyGeneration(new ACToolFindConfig()
+                        OneKeyGeneration(new ACToolConfig()
                         {
                             isAssign = true,
                             beginStr = ACUIGetCodeNoPath_InputPrefix,
@@ -114,7 +114,7 @@ namespace ACTool
                     EditorGUILayout.Space(5f); EditorGUILayout.LabelField($"获取选中的物体组件获取:", EditorStyles.largeLabel);
                     if (GUILayout.Button($"获取选中的物体组件获取", EditorStyles.miniButtonMid))
                     {
-                        GetSelectGoCompent(new ACToolFindConfig());
+                        GetSelectGoCompent(new ACToolConfig());
                     }
                     //******************************一键去除组件RayCast Target******************************
                     EditorGUILayout.Space(5f); EditorGUILayout.LabelField("一键去除组件RayCast Target:", EditorStyles.largeLabel);
@@ -123,7 +123,7 @@ namespace ACTool
                     EditorGUILayout.Space(5f); EditorGUILayout.LabelField("获取所有T_开头的物体的名称:", EditorStyles.largeLabel);
                     if (GUILayout.Button("获取所有T_开头的物体的名称", EditorStyles.miniButtonMid))
                     {
-                        GetALlGoName(new ACToolFindConfig()
+                        GetALlGoName(new ACToolConfig()
                         {
                             KeyValue = ACUIGetCodeNoPath_Prefix,
                         });
@@ -140,7 +140,7 @@ namespace ACTool
         /// 生成组件属性代码
         /// </summary>
         /// <param name="findtConfig">配置文件</param>
-        private static void GetComonpentProperty(ACToolFindConfig findtConfig)
+        private static void GetComonpentProperty(ACToolConfig findtConfig)
         {
             //获取到当前选择的物体
             GameObject obj = Selection.objects.First() as GameObject;
@@ -157,7 +157,7 @@ namespace ACTool
         /// <summary>
         /// 生成组件查找代码
         /// </summary>
-        private static void GetComponentFind(ACToolFindConfig findtConfig)
+        private static void GetComponentFind(ACToolConfig findtConfig)
         {
             //获取到当前选择的物体
             GameObject obj = Selection.objects.First() as GameObject;
@@ -174,7 +174,7 @@ namespace ACTool
         /// <summary>
         /// 生成监听代码
         /// </summary>
-        private static void GetComonpentListener(ACToolFindConfig findtConfig)
+        private static void GetComonpentListener(ACToolConfig findtConfig)
         {
             //获取到当前选择的物体
             GameObject obj = Selection.objects.First() as GameObject;
@@ -192,7 +192,7 @@ namespace ACTool
         /// 一键生成
         /// </summary>
         /// <param name="KeyValue"></param>
-        private static void OneKeyGeneration(ACToolFindConfig findtConfig)
+        private static void OneKeyGeneration(ACToolConfig findtConfig)
         {
             //获取到当前选择的物体
             GameObject obj = Selection.objects.First() as GameObject;
@@ -218,7 +218,7 @@ namespace ACTool
         /// 获取选中的物体的组件
         /// </summary>
         /// <param name="KeyValue"></param>
-        private static void GetSelectGoCompent(ACToolFindConfig findtConfig)
+        private static void GetSelectGoCompent(ACToolConfig findtConfig)
         {
             //获取到当前选择的物体
             GameObject obj1 = Selection.objects.First() as GameObject;
@@ -269,7 +269,7 @@ namespace ACTool
         /// <summary>
         /// 获取所有的T_开头的物体的名称
         /// </summary>
-        public static void GetALlGoName(ACToolFindConfig findtConfig)
+        public static void GetALlGoName(ACToolConfig findtConfig)
         {
             //获取到当前选择的物体
             GameObject obj = Selection.objects.First() as GameObject;
@@ -302,7 +302,7 @@ namespace ACTool
         /// 组件属性
         /// </summary>
         /// <param name="obj"></param>
-        public static string ComonpentProperty(ACToolFindConfig findtConfig)
+        public static string ComonpentProperty(ACToolConfig findtConfig)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("#region 组件模块 不要的代码请自行删除");
@@ -328,7 +328,7 @@ namespace ACTool
         /// </summary>
         /// <param name="beginStr"></param>
         /// <param name="controlDic"></param>
-        public static string ComponentFind(ACToolFindConfig findtConfig)
+        public static string ComponentFind(ACToolConfig findtConfig)
         {
             //添加前缀
             string beginStr = findtConfig.isAddPrefix ? AddPrefix1(findtConfig.beginStr) : string.Empty;
@@ -365,7 +365,7 @@ namespace ACTool
         /// </summary>
         /// <param name="beginStr"></param>
         /// <param name="controlDic"></param>
-        public static string ComonpentListener(ACToolFindConfig findtConfig)
+        public static string ComonpentListener(ACToolConfig findtConfig)
         {
             //添加前缀
             //string beginStr = findtConfig.isAddPrefix ? AddPrefix1(findtConfig.beginStr) : string.Empty;

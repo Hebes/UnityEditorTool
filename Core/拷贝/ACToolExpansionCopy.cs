@@ -12,7 +12,7 @@ namespace ACTool
         /// <summary>
         /// Copy到剪切板 https://blog.csdn.net/LLLLL__/article/details/114463650
         /// </summary>
-        public static void CopyWord(this string str)
+        public static void ACCopyWord(this string str)
         {
             TextEditor te = new TextEditor();
             te.text = str;
@@ -23,7 +23,7 @@ namespace ACTool
         /// <summary>
         /// Copy到剪切板 https://blog.csdn.net/LLLLL__/article/details/114463650
         /// </summary>
-        public static void CopyWord(this StringBuilder str)
+        public static void ACCopyWord(this StringBuilder str)
         {
             TextEditor te = new TextEditor();
             te.text = str.ToString();
@@ -34,7 +34,7 @@ namespace ACTool
         /// <summary>
         /// Copy到剪切板-Unity3D自带版本 https://blog.csdn.net/LLLLL__/article/details/114463650
         /// </summary>
-        public static void UnityCopyWord(this string str)
+        public static void ACUnityCopyWord(this string str)
         {
             GUIUtility.systemCopyBuffer = str;
         }
@@ -42,7 +42,7 @@ namespace ACTool
         /// <summary>
         /// Copy到剪切板-Unity3D自带版本 https://blog.csdn.net/LLLLL__/article/details/114463650
         /// </summary>
-        public static void UnityCopyWord(this StringBuilder str)
+        public static void ACUnityCopyWord(this StringBuilder str)
         {
             GUIUtility.systemCopyBuffer = str.ToString();
         }

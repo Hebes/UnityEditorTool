@@ -30,16 +30,17 @@ namespace ACTool
         private void OnGUI()
         {
             ACHierarchyPrefix();
-            ACHierarchyRemoveScript();
+            ACHierarchyRemoveDemo();
             ACHierarchyPrefabChange();
         }
 
         //***************************面板前缀***************************
         private static Vector2 ACHierarchyTool_ScrollRoot { get; set; }
-        public static string ACHierarchyTool_Prefix { get; set; } //Hierarchy面板的前缀
-        public static string ACHierarchyTool_InputCustom { get; private set; }//输入自定义
-        public static string[] ACHierarchyTool_options { get; private set; } = new string[] { "None", "T_" };
-        public static int ACHierarchyTool_index { get; private set; } = 0;
+        private static string ACHierarchyTool_Prefix { get; set; } //Hierarchy面板的前缀
+        private static string ACHierarchyTool_InputCustom { get; set; }//输入自定义
+        private static string[] ACHierarchyTool_options { get; set; } = new string[] { "None", "T_" };
+        private static int ACHierarchyTool_index { get; set; } = 0;
+
         /// <summary>
         /// HierarchyPanel前缀
         /// </summary>
@@ -55,7 +56,7 @@ namespace ACTool
                     EditorGUILayout.BeginHorizontal();
                     {
                         ACHierarchyTool_Prefix = EditorGUILayout.TextField("请输入组件查找前缀", ACPrefix());//ACHierarchyTool_Prefix
-                        if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetSelection().ACSaveModification(); }
+                        if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACSaveModification(); }
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
@@ -67,17 +68,17 @@ namespace ACTool
                         }
                         if (GUILayout.Button("获取前缀", EditorStyles.miniButtonMid))
                         {
-                            ACHierarchyTool_Prefix = ACToolExpansionFind.ACGetSelectionOne().ACGetPrefix();
+                            ACHierarchyTool_Prefix = ACToolExpansionFind.ACGetObj().ACGetPrefix();
                         }
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
-                        if (GUILayout.Button("前缀添加", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetSelection().ACAddPrefixLoop(ACHierarchyTool_Prefix); }
-                        if (GUILayout.Button("去除前缀", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetSelection().ACRemovePrefix(ACHierarchyTool_Prefix); }
+                        if (GUILayout.Button("前缀添加", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACAddPrefixLoop(ACHierarchyTool_Prefix); }
+                        if (GUILayout.Button("去除前缀", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACRemovePrefix(ACHierarchyTool_Prefix); }
                     }
                     EditorGUILayout.EndHorizontal();
-                    if (GUILayout.Button("去除空白和特殊字符", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetSelection().ClearTrim(); }
+                    if (GUILayout.Button("去除空白和特殊字符", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ClearTrim(); }
                     ACHierarchyTool_index = EditorGUILayout.Popup("选择常用前缀:", ACHierarchyTool_index, ACHierarchyTool_options);
                 }
                 EditorGUILayout.EndVertical();
@@ -96,20 +97,9 @@ namespace ACTool
         }
 
         //***************************替换物体***************************
-        /// <summary>
-        /// 新的物体
-        /// </summary>
-        public GameObject newPrefab { get; set; }
-
-        /// <summary>
-        /// 预制体
-        /// </summary>
-        public static GameObject tonewPrefab { get; set; }
-
-        /// <summary>
-        /// 重命名
-        /// </summary>
-        private string replaceName { get; set; } = String.Empty;
+        private GameObject newPrefab { get; set; }//新的物体
+        private static GameObject tonewPrefab { get; set; }//预制体
+        private string replaceName { get; set; } = String.Empty;//重命名
 
         /// <summary>
         /// 转换物体
@@ -243,7 +233,7 @@ namespace ACTool
         /// <summary>
         /// 移除脚本
         /// </summary>
-        public static void ACHierarchyRemoveScript()
+        public static void ACHierarchyRemoveDemo()
         {
             ACHierarchyTool_ScrollRoot = EditorGUILayout.BeginScrollView(ACHierarchyTool_ScrollRoot); //开启滚动视图
             {
@@ -252,7 +242,7 @@ namespace ACTool
                     EditorGUILayout.LabelField("Hierarchy通用工具", EditorStyles.boldLabel);
                     //******************************移除丢失脚本******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("移除丢失脚本:", EditorStyles.largeLabel);
-                    if (GUILayout.Button("移除丢失脚本", EditorStyles.miniButtonMid)) { RemoveMissScript(); }
+                    if (GUILayout.Button("移除丢失脚本", EditorStyles.miniButtonMid)) { ACRemoveMissScript(); }
                     ACHierarchyTool_InputCustom = EditorGUILayout.TextField("自定义脚本的名称", ACHierarchyTool_InputCustom);
                     if (GUILayout.Button("移除自定义脚本(单个物体和其子物体)", EditorStyles.miniButtonMid)) { ACRemoveCustomScript(); }
                     if (GUILayout.Button("移除自定义脚本(选中的物体不包括其子物体)", EditorStyles.miniButtonMid)) { ACRemoveSelectCustomScript(); }
@@ -272,7 +262,7 @@ namespace ACTool
         /// <summary>
         /// 移除丢失的脚本
         /// </summary>
-        private static void RemoveMissScript()
+        private static void ACRemoveMissScript()
         {
             List<GameObject> gameObjects = new List<GameObject>();
             for (int i = 0; i < Selection.objects?.Length; i++)
@@ -292,7 +282,7 @@ namespace ACTool
         {
             List<GameObject> gameObjects = new List<GameObject>();
             //获取所有的组件
-            ACToolExpansionFind.ACLoopGetAllGameObject(ACToolExpansionFind.ACGetSelectionOneGo().transform, ref gameObjects);
+            ACToolExpansionFind.ACLoopGetAllGameObject(ACToolExpansionFind.ACGetGo().transform, ref gameObjects);
             //移除自定义脚本
             for (int i = 0; i < gameObjects?.Count; i++)
                 gameObjects[i].ACRemoveScript(ACHierarchyTool_InputCustom);
@@ -303,7 +293,7 @@ namespace ACTool
         /// </summary>
         public static void ACRemoveSelectCustomScript()
         {
-            List<GameObject> gameObjects = ACToolExpansionFind.ACGetSelection().ACGetSelectionGos();
+            List<GameObject> gameObjects = ACToolExpansionFind.ACGetObjs().ACGetGos();
             for (int i = 0; i < gameObjects?.Count; i++)
                 gameObjects[i].ACRemoveScript(ACHierarchyTool_InputCustom);
         }
@@ -313,7 +303,7 @@ namespace ACTool
         /// </summary>
         public static void ACAddSelectCustomScript()
         {
-            List<GameObject> gameObjects = ACToolExpansionFind.ACGetSelection().ACGetSelectionGos();
+            List<GameObject> gameObjects = ACToolExpansionFind.ACGetObjs().ACGetGos();
             for (int i = 0; i < gameObjects?.Count; i++)
                 gameObjects[i].ACAddScript(ACHierarchyTool_InputCustom);
         }
@@ -322,14 +312,18 @@ namespace ACTool
         private static Vector2 ACHierarchyPanelCode_scrollRoot { get; set; }
         private static string ACHierarchyPanelCode_KeyValue { get; set; } = "T_";
         private static string ACHierarchyPanelCode_ClassName { get; set; } = String.Empty;
-        public static string[] ACHierarchyPanelCode_options { get; set; } //= new string[] { "None" };
-        public static int ACHierarchyPanelCode_index { get; private set; } = 0;
-        public static bool ACHierarchyPanelCode_isShowComponent = true;
+        private static string[] ACHierarchyPanelCode_options1 { get; set; } //= new string[] { "None" };
+        private static int ACHierarchyPanelCode_index1 { get; set; } = 0;
+        private static bool ACHierarchyPanelCode_isShowComponent1 { get; set; } = true;
+        private static string[] ACHierarchyPanelCode_options2 { get; set; } //= new string[] { "None" };
+        private static int ACHierarchyPanelCode_index2 { get; set; } = 0;
+        private static bool ACHierarchyPanelCode_isShowComponent2 { get; set; } = true;
 
         /// <summary>
         /// HierarchyPanel代码获取组件
         /// </summary>
-        public static void ACHierarchyPanelCode(Action<StringBuilder, GameObject, Type> action = null)
+        /// <param name="action"></param>
+        public static void ACHierarchyPanelGetCode(ACHierarchyPanelGetCodeConfig aCHierarchyPanelGetCodeConfig = null)
         {
             GUI.skin.button.wordWrap = true;
             ACHierarchyPanelCode_scrollRoot = EditorGUILayout.BeginScrollView(ACHierarchyPanelCode_scrollRoot);
@@ -340,15 +334,32 @@ namespace ACTool
                     //******************************前缀******************************
                     EditorGUILayout.Space(5f); EditorGUILayout.LabelField("请输入组件查找前缀:", EditorStyles.largeLabel);
                     ACHierarchyPanelCode_ClassName = EditorGUILayout.TextField("请输入需要查找的组件", ACShowComponentClassName());
+                    ACShowComponentType2();
+                    //ACShowComponentType1();
+                    //******************************获取物体变量******************************
+                    EditorGUILayout.Space(5f); EditorGUILayout.LabelField("获取物体变量或属性:", EditorStyles.largeLabel);
                     EditorGUILayout.BeginHorizontal();//开始水平布局
                     {
-                        ACShowComponentType();
-                        //if (GUILayout.Button("Text组件", GUILayout.Width(0))) { ACHierarchyPanelCode_ClassName = "Text"; }
-                        //if (GUILayout.Button("InputField组件", GUILayout.Width(0))) { ACHierarchyPanelCode_ClassName = "InputField"; }
-                        //if (GUILayout.Button("Button组件", GUILayout.Width(0))) { ACHierarchyPanelCode_ClassName = "Button"; }
+                        if (GUILayout.Button($"获取{ACHierarchyPanelCode_ClassName}变量", EditorStyles.miniButtonMid))
+                        {
+                            ACGetComponentCode(aCHierarchyPanelGetCodeConfig.actionGetCode);
+                        }
+                        if (GUILayout.Button($"获取{ACHierarchyPanelCode_ClassName}属性", EditorStyles.miniButtonMid))
+                        {
+                            ACGetComponentCode(aCHierarchyPanelGetCodeConfig.actionGetCodeGetSet);
+                        }
                     }
                     EditorGUILayout.EndHorizontal();
-                    if (GUILayout.Button($"获取{ACHierarchyPanelCode_ClassName}组件", EditorStyles.miniButtonMid)) { ACGetComponentCode((sb, go, type) => { action?.Invoke(sb, go, type); }); }
+                    //******************************获取组件******************************
+                    EditorGUILayout.Space(5f); EditorGUILayout.LabelField("获取组件:", EditorStyles.largeLabel);
+                    if (GUILayout.Button($"获取{ACHierarchyPanelCode_ClassName}组件(自己)", EditorStyles.miniButtonMid))
+                    {
+                        Debug.Log("未写");
+                    }
+                    if (GUILayout.Button($"获取{ACHierarchyPanelCode_ClassName}组件", EditorStyles.miniButtonMid))
+                    {
+                        AcGetComponentFind(aCHierarchyPanelGetCodeConfig.actionGetComponent);
+                    }
                     //******************************去除组件RayCastTarget*****************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("去除组件RayCastTarget:", EditorStyles.largeLabel);
                     if (GUILayout.Button($"去除组件RayCastTarget", EditorStyles.miniButtonMid)) { Selection.objects.ClearRayCastTarget(); }
@@ -365,52 +376,82 @@ namespace ACTool
         {
             //查找自定义的需要的组件
             List<GameObject> gameObjects = new List<GameObject>();
-            List<GameObject> obj = ACToolExpansionFind.ACGetSelection().ACGetSelectionGos();
+            List<GameObject> obj = ACToolExpansionFind.ACGetObjs().ACGetGos();
+            if (obj == null)
+            {
+                Debug.Log("未选中物体");
+                return;
+            }
             for (int i = 0; i < obj?.Count; i++)
                 obj[i].transform.ACLoopGetAllGameObject(ref gameObjects);
+
+            //清理不匹配的开头
+            List<GameObject> newGos = gameObjects.FindAll((go) => { return go.name.StartsWith(ACHierarchyPanelCode_KeyValue); });
+
+            //获取类型
+            Type type = null;
+            type = ACHierarchyPanelCode_ClassName.ACReflectClass("UnityEngine.UI");
+            if (type == null)
+                type = ACHierarchyPanelCode_ClassName.ACReflectClass("UnityEngine");
+
             //拼接
-            Type type = ACHierarchyPanelCode_ClassName.ACReflectClass("UnityEngine.UI");
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < gameObjects?.Count; i++)
+            for (int i = 0; i < newGos?.Count; i++)
             {
-                GameObject gameObject = gameObjects[i];
-                if (gameObject.transform.GetComponent(type) != null && gameObject.name.StartsWith(ACHierarchyPanelCode_KeyValue))
+                GameObject gameObject = newGos[i];
+                if (gameObject.transform.GetComponent(type) != null)
                     action?.Invoke(sb, gameObject, type);
+                else
+                    Debug.Log("没有组件类型,请检查!");
             }
-            sb.ToString().UnityCopyWord();
+            sb.ACCopyWord();
             Debug.Log(sb.ToString());
         }
 
         /// <summary>
         /// 显示组件
         /// </summary>
-        public static void ACShowComponentType()
+        public static void ACShowComponentType1()
         {
-            if (ACHierarchyPanelCode_isShowComponent)
+            if (ACHierarchyPanelCode_isShowComponent1)
             {
                 List<string> namespacelist = new List<string>();
-                List<string> classlist = new List<string>();
-                classlist.Add("None");
+                List<string> classlist = new List<string>() { "None" };
                 //Assembly asm = Assembly.GetExecutingAssembly();
-
                 Assembly assem = Assembly.Load("UnityEngine.UI");
-                Type[] types = assem.GetTypes();
-                foreach (Type type in types)
+                Array.ForEach(assem.GetTypes(), (type) =>
                 {
                     if (type.Namespace == "UnityEngine.UI")
                         namespacelist.Add(type.Name);
-                }
-                foreach (string classname in namespacelist)
+                });
+
+                foreach (var classname in namespacelist)
                 {
-                    //需要显示的过滤
-                    if (classname.StartsWith("I") || classname.StartsWith("<"))
-                        continue;
+                    if (classname.StartsWith("I") || classname.StartsWith("<")) continue;
                     classlist.Add(classname);
                 }
-                ACHierarchyPanelCode_options = classlist.ToArray();
-                ACHierarchyPanelCode_isShowComponent = false;
+                ACHierarchyPanelCode_options1 = classlist.ToArray();
+                ACHierarchyPanelCode_isShowComponent1 = false;
             }
-            ACHierarchyPanelCode_index = EditorGUILayout.Popup("选择常用组件:", ACHierarchyPanelCode_index, ACHierarchyPanelCode_options);
+            ACHierarchyPanelCode_index1 = EditorGUILayout.Popup("选择常用组件1:", ACHierarchyPanelCode_index1, ACHierarchyPanelCode_options1);
+        }
+
+        /// <summary>
+        /// 显示组件
+        /// </summary>
+        public static void ACShowComponentType2()
+        {
+            if (ACHierarchyPanelCode_isShowComponent2)
+            {
+                List<string> classlist = new List<string>()
+                {
+                   "None", "Text","Button","Toggle","Transform",
+                   "Animator",
+                };
+                ACHierarchyPanelCode_options2 = classlist.ToArray();
+                ACHierarchyPanelCode_isShowComponent2 = false;
+            }
+            ACHierarchyPanelCode_index2 = EditorGUILayout.Popup("选择常用组件2:", ACHierarchyPanelCode_index2, ACHierarchyPanelCode_options2);
         }
 
         /// <summary>
@@ -419,7 +460,40 @@ namespace ACTool
         public static string ACShowComponentClassName()
         {
             ACHierarchyPanelCode_ClassName = String.Empty;
-            return ACHierarchyPanelCode_index == 0 ? ACHierarchyPanelCode_ClassName : ACHierarchyPanelCode_options[ACHierarchyPanelCode_index];
+            return ACHierarchyPanelCode_index2 == 0 ? ACHierarchyPanelCode_ClassName : ACHierarchyPanelCode_options2[ACHierarchyPanelCode_index2];
+        }
+
+        /// <summary>
+        /// 获取组件查找
+        /// </summary>
+        public static void AcGetComponentFind(Action<StringBuilder,GameObject, Type,string> action)
+        {
+            //获取所有的包含子物体和隐藏的
+            GameObject tempGo = ACToolExpansionFind.ACGetGo();
+            List<GameObject> gos = tempGo.ACLoopGetKeywordGO(ACHierarchyPanelCode_KeyValue);
+            //删选带有组件的
+            Type type = null;//获取类型
+            List<GameObject> tempGos = gos.FindAll((go) =>
+            {
+                type = ACHierarchyPanelCode_ClassName.ACReflectClass("UnityEngine.UI");
+                if (type == null)
+                    type = ACHierarchyPanelCode_ClassName.ACReflectClass("UnityEngine");
+                return go.GetComponent(type) != null;
+            });
+            //添加到字典
+            Dictionary<GameObject, string> keyValuePairs = new Dictionary<GameObject, string>();
+            tempGos?.ForEach((go) =>
+            {
+                string path = go.transform.ACGetPathTransform(tempGo.name);
+                keyValuePairs.Add(go, path);
+            });
+            //变成代码
+            StringBuilder sb = new StringBuilder();
+
+            foreach (GameObject item in keyValuePairs.Keys)
+                action?.Invoke(sb,item, type, keyValuePairs[item]);
+            sb.ACCopyWord();
+            Debug.Log(sb.ToString());
         }
     }
 }

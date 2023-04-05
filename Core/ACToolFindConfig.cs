@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace ACTool
@@ -6,12 +8,12 @@ namespace ACTool
     /// <summary>
     /// Find类型查找配置文件
     /// </summary>
-    public class ACToolFindConfig
+    public class ACToolConfig
     {
         /// <summary>
         /// 构造函数
         /// </summary>
-        public ACToolFindConfig() => controlDic = new Dictionary<string, List<Component>>();
+        public ACToolConfig() => controlDic = new Dictionary<string, List<Component>>();
 
         /// <summary>
         /// 关键词 例如V_
@@ -49,4 +51,19 @@ namespace ACTool
         /// </summary>
         public Dictionary<string, List<Component>> controlDic { get; set; }
     }
+
+    /// <summary>
+    /// 获取代码专用
+    /// </summary>
+    public class ACHierarchyPanelGetCodeConfig
+    {
+        public bool isGetSet;
+        /// <summary>
+        /// 获取物体代码普通版本
+        /// </summary>
+        public Action<StringBuilder, GameObject, Type> actionGetCode { get; set; }
+        public Action<StringBuilder, GameObject, Type> actionGetCodeGetSet { get; set; }
+        public Action<StringBuilder, GameObject, Type, string> actionGetComponent { get; set; }
+    }
+
 }

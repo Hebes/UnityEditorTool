@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace ACTool
         /// 获取选中
         /// </summary>
         /// <returns></returns>
-        public static UnityEngine.Object[] ACGetSelection()
+        public static UnityEngine.Object[] ACGetObjs()
         {
             return Selection.objects;
         }
@@ -20,7 +21,7 @@ namespace ACTool
         /// 获取选中
         /// </summary>
         /// <returns></returns>
-        public static UnityEngine.Object[] ACGetSelection(this UnityEngine.Object obj)
+        public static UnityEngine.Object[] ACGetObjs(this UnityEngine.Object obj)
         {
             return Selection.objects;
         }
@@ -29,16 +30,16 @@ namespace ACTool
         /// 获取一个
         /// </summary>
         /// <returns></returns>
-        public static UnityEngine.Object ACGetSelectionOne()
+        public static UnityEngine.Object ACGetObj()
         {
             return Selection.objects.First();
         }
 
         /// <summary>
-        /// 获取一个
+        /// 获取选中的一个
         /// </summary>
         /// <returns></returns>
-        public static GameObject ACGetSelectionOneGo()
+        public static GameObject ACGetGo()
         {
             return Selection.objects.First() as GameObject;
         }
@@ -47,7 +48,7 @@ namespace ACTool
         /// 获取一个
         /// </summary>
         /// <returns></returns>
-        public static UnityEngine.Object ACGetSelectionOne(this UnityEngine.Object obj)
+        public static UnityEngine.Object ACGetObj(this UnityEngine.Object obj)
         {
             return Selection.objects.First();
         }
@@ -56,10 +57,10 @@ namespace ACTool
         /// 获取返回的
         /// </summary>
         /// <returns></returns>
-        public static List<GameObject> ACGetSelectionGos(this UnityEngine.Object[] objects)
+        public static List<GameObject> ACGetGos(this UnityEngine.Object[] objects)
         {
             List<GameObject> gos = new List<GameObject>();
-            gos.AddRange((IEnumerable<GameObject>)objects);
+            Array.ForEach(objects, (obj) => { gos.Add(obj as GameObject); });
             return gos;
         }
 
@@ -78,7 +79,7 @@ namespace ACTool
         }
 
         /// <summary>
-        /// 查找物体(PS：包含隐藏版、关键词开头,Hierarchy面板)
+        /// 查找物体(PS：包含隐藏版、关键词开头,Hierarchy面板,子物体)
         /// </summary>
         /// <param name="transform"></param>
         /// <param name="keyValue">关键词</param>
@@ -206,10 +207,37 @@ namespace ACTool
         /// <param name="gameObject">物体</param>
         /// <param name="keyWord">关键词</param>
         /// <returns></returns>
-        public static List<Transform> ACGetGameObjects(this GameObject gameObject, string keyWord)
+        public static List<Transform> ACGetTransforms(this GameObject gameObject, string keyWord)
         {
             List<Transform> gos = gameObject.GetComponentsInChildren<Transform>(true).ToList();
             return gos.FindAll((go) => { return go.name.StartsWith(keyWord); });
+        }
+
+        /// <summary>
+        /// 获取组件路径
+        /// </summary>
+        /// <param name="transformTF">需要获取路径的子物体</param>
+        /// <param name="selectGoName">选择的父物体(transformTF要在这个父物体下)</param>
+        /// <returns>返回的路径</returns>
+        public static string ACGetPathTransform(this Transform transformTF, string selectGoName)
+        {
+            //临时变量-存放路径
+            List<string> strs = new List<string>();
+            string path = string.Empty;
+            //获取路径
+            strs.Add(transformTF.name);
+            while (transformTF.parent != null)
+            {
+                transformTF = transformTF.parent;
+                if (transformTF.name == selectGoName) break;
+                strs.Add(transformTF.name);
+            }
+            //转换成路径
+            for (int j = strs.Count - 1; j >= 0; j--)
+            {
+                path += j != 0 ? $"{strs[j]}/" : $"{strs[j]}";
+            }
+            return path;
         }
     }
 }
