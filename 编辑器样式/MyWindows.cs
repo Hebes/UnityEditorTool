@@ -8,7 +8,7 @@ public class MyWindows : EditorWindow
 {
 
 	static List<GUIStyle> styles = null;
-	[MenuItem("Tool/Window/styles")]
+	[MenuItem("EditorGUILayoutÄ£°å/²Î¿¼ÑùÀý2")]
 	public static void Test()
 	{
 		EditorWindow.GetWindow<MyWindows>("styles");

@@ -10,8 +10,8 @@ public class CSVAnalysisWindow : EditorWindow
     public bool isSelectFile { get; private set; }
     public string LoadCSVDirectoryPath { get; private set; }
 
-    [MenuItem("Assets/csv解析窗口(Shift+A) #A")]
-    [MenuItem("Tool/自动化工具窗口窗口(Shift+A) #A", false, 0)]
+    //[MenuItem("Assets/csv解析窗口(Shift+A) #A")]
+    //[MenuItem("Tool/自动化工具窗口窗口(Shift+A) #A", false, 0)]
     public static void ExcelChangeWindow() => EditorWindow.GetWindow(typeof(CSVAnalysisWindow), false, "csv解析").Show();
 
     private void OnGUI()

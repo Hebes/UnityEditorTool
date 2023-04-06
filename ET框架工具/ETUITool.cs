@@ -17,7 +17,6 @@ namespace ACTool
         public static void GeneratorFindComponentTool() => GetWindow(typeof(ETUITool), false, "ET工具-暗沉").Show();
         private void OnGUI()
         {
-            ACHierarchyTool.ACHierarchyPrefix();
             ACHierarchyTool.ACHierarchyPanelCode((sb, go, type) => { ACETUIToolShowCode(sb, go, type); });
             OnETUITool();
         }

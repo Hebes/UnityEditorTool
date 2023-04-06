@@ -24,8 +24,8 @@ using UnityEditor;
 public class OpenTemplate : Editor
 {
     public static bool isOpenTemplate;
-	[MenuItem("Assets/是否启用注释头模板文件(F1) _F1")]
-	[MenuItem("Tool/是否启用注释头模板文件")]
+	//[MenuItem("Assets/是否启用注释头模板文件(F1) _F1")]
+	//[MenuItem("Tool/是否启用注释头模板文件")]
 	public static void SetOpenTemplate()
     {
 		//取反

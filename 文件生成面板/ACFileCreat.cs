@@ -22,7 +22,7 @@ namespace ACTool
 
         private static string SceneConfig { get; set; }
 
-        [MenuItem("Assets/暗沉EditorTool/文件生成/生成配置文件/生成场景文件")]//#E
+        //[MenuItem("Assets/暗沉EditorTool/文件生成/生成配置文件/生成场景文件")]//#E
         public static void FileCreatTool()
         {
             GetWindow(typeof(ACFileCreat), false, "Hierarchy面板通用功能").Show();

@@ -6,8 +6,8 @@ using UnityEngine;
 public class LogOpen : Editor
 {
     public static bool isLogPrint;
-    [MenuItem("Assets/是否启用Log日志打印(F2) _F2")]
-    [MenuItem("Tool/是否启用Log日志打印(F2) _F2")]
+    //[MenuItem("Assets/是否启用Log日志打印(F2) _F2")]
+    //[MenuItem("Tool/是否启用Log日志打印(F2) _F2")]
     public static void SetOpenTemplate()
     {
         //取反

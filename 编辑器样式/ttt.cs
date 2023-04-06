@@ -10,7 +10,7 @@ namespace ACTool
 {
     public sealed class GUIStyle : EditorWindow
     {
-        [MenuItem("SKFramework/Editor/GUI/GUI Style")]
+        [MenuItem("EditorGUILayout模板/参考样例3")]
         private static void OpenGUIStyle()
         {
             GetWindow<GUIStyle>().Show();
