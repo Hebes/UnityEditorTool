@@ -14,7 +14,7 @@ namespace ACTool
         private static Vector2 ETUITool_ScrollRoot { get; set; }
         private ACHierarchyPanelGetCodeConfig aCHierarchyPanelGetCodeConfig;
 
-        [MenuItem("Assets/UI组件获取工具/ET专用工具-暗沉(Shift+E) ")]//#E
+        [MenuItem("Assets/ET专用工具-暗沉(Shift+E) ")]//#E UI组件获取工具/
         public static void GeneratorFindComponentTool()
         {
             GetWindow(typeof(ETUITool), false, "ET工具-暗沉").Show();
@@ -85,20 +85,20 @@ namespace ACTool
         /// </summary>
         public static void ETReferenceCollectorTool()
         {
-            //List<GameObject> gameObjects = new List<GameObject>();
-            //GameObject obj = Selection.objects.First() as GameObject;
-            //obj.transform.ACLoopGetKeywordGO(ETUITool_Prefix, ref gameObjects);
+            List<GameObject> gameObjects = new List<GameObject>();
+            GameObject obj = Selection.objects.First() as GameObject;
+            obj.transform.ACLoopGetKeywordGO(ETUITool_Prefix, ref gameObjects);
 
-            //obj.GetComponent<ReferenceCollector>().data.Clear();//清空原来的数据
+            obj.GetComponent<ReferenceCollector>().data.Clear();//清空原来的数据
 
-            //gameObjects?.ForEach((go) =>
-            //{
-            //    obj.GetComponent<ReferenceCollector>().data.Add(new ReferenceCollectorData()
-            //    {
-            //        key = go.name,
-            //        gameObject = go.gameObject,
-            //    });
-            //});
+            gameObjects?.ForEach((go) =>
+            {
+                obj.GetComponent<ReferenceCollector>().data.Add(new ReferenceCollectorData()
+                {
+                    key = go.name,
+                    gameObject = go.gameObject,
+                });
+            });
         }
 
         /// <summary>
@@ -182,8 +182,8 @@ namespace ACTool
         [MenuItem("Tools/Build/BuildCodeDebug-ac _F5 ")]
         public static void BuildCode()
         {
-            //ET.BuildAssemblieEditor.BuildCodeDebug();
-            //ET.BuildAssemblieEditor.BuildCodeRelease();
+            ET.BuildAssemblieEditor.BuildCodeDebug();
+            ET.BuildAssemblieEditor.BuildCodeRelease();
         }
 
         /// <summary>
