@@ -4,31 +4,25 @@ using System.Linq;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ACTool
 {
     public class ETUITool : EditorWindow
     {
         private static string ETUITool_Prefix { get; set; } = "T_";//关键的前缀
-        public static string ETUITool_InputPrefix { get; set; }//输入物体的Transform，就是前缀
         private static Vector2 ETUITool_ScrollRoot { get; set; }
-        private ACHierarchyPanelGetCodeConfig aCHierarchyPanelGetCodeConfig;
+        public static string ETUITool_ClassName { get; set; }
 
         [MenuItem("Assets/ET专用工具-暗沉(Shift+E) ")]//#E UI组件获取工具/
         public static void GeneratorFindComponentTool()
         {
             GetWindow(typeof(ETUITool), false, "ET工具-暗沉").Show();
         }
-        private void Awake()
-        {
-            aCHierarchyPanelGetCodeConfig = new ACHierarchyPanelGetCodeConfig();
-            aCHierarchyPanelGetCodeConfig.actionGetCode = ACETUIToolShowCode;
-        }
 
         private void OnGUI()
         {
             ACHierarchyTool.ACHierarchyPrefix();
-            ACHierarchyTool.ACHierarchyPanelGetCode(aCHierarchyPanelGetCodeConfig);
             OnETUITool();
         }
 
@@ -62,9 +56,6 @@ namespace ACTool
                         if (GUILayout.Button("获取组件专用System的方法", EditorStyles.miniButtonMid)) { GetALlComponentGetSet(); }
                     }
                     EditorGUILayout.EndHorizontal();
-                    //******************************去除组件RayCastTarget*****************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField("去除组件RayCastTarget:", EditorStyles.largeLabel);
-                    if (GUILayout.Button("去除组件RayCastTarget", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ClearRayCastTarget(); }
                     //******************************资源包快速获取名称******************************
                     //GUILayout.Space(5f); EditorGUILayout.LabelField("资源包快速获取名称:", EditorStyles.largeLabel);
                     //EditorGUILayout.BeginHorizontal();//开始水平布局
@@ -74,6 +65,33 @@ namespace ACTool
                     //    }
                     //}
                     //EditorGUILayout.EndHorizontal();
+                    //******************************获取物体组件******************************
+                    GUILayout.Space(5f); ETUITool_ClassName = EditorGUILayout.TextField("请输入需要查找的组件", ETUITool_ClassName);
+                    EditorGUILayout.LabelField("获取物体变量或属性:", EditorStyles.largeLabel);
+                    EditorGUILayout.BeginHorizontal();//开始水平布局
+                    {
+                        if (GUILayout.Button($"Button", EditorStyles.miniButtonMid)) { ETUITool_ClassName = "Button"; }
+                        if (GUILayout.Button($"InputField", EditorStyles.miniButtonMid)) { ETUITool_ClassName = "InputField"; }
+                        if (GUILayout.Button($"Text", EditorStyles.miniButtonMid)) { ETUITool_ClassName = "Text"; }
+                    }
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.BeginHorizontal();//开始水平布局
+                    {
+                        if (GUILayout.Button($"获取{ETUITool_ClassName}变量", EditorStyles.miniButtonMid))
+                        {
+                            ACGetComponentCode(ACETUIToolShowCode);
+                        }
+                    }
+                    EditorGUILayout.EndHorizontal();
+                    //******************************获取组件******************************
+                    EditorGUILayout.Space(5f); EditorGUILayout.LabelField("获取组件:", EditorStyles.largeLabel);
+                    if (GUILayout.Button($"获取{ETUITool_ClassName}组件", EditorStyles.miniButtonMid))
+                    {
+                        //AcGetComponentFind(ACETUIToolShowCode);
+                    }
+                    //******************************去除组件RayCastTarget*****************************
+                    GUILayout.Space(5f); EditorGUILayout.LabelField("去除组件RayCastTarget:", EditorStyles.largeLabel);
+                    if (GUILayout.Button($"去除组件RayCastTarget", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ClearRayCastTarget(); }
                 }
                 EditorGUILayout.EndVertical();
             }
@@ -124,6 +142,7 @@ namespace ACTool
             GUIUtility.systemCopyBuffer = sb.ToString();
             Debug.Log(sb.ToString());
         }
+
         /// <summary>
         /// 获取组件专用GetSet
         /// </summary>
@@ -207,6 +226,73 @@ namespace ACTool
                     sb.AppendLine($"self.{gameObject.name}.GetComponent<Button>().onClick.AddListener(self.On{gameObject.name});");
                     break;
             }
+        }
+
+        /// <summary>
+        /// 获取代码组件
+        /// </summary>
+        public static void ACGetComponentCode(Action<StringBuilder, GameObject, Type> action = null)
+        {
+            //查找自定义的需要的组件
+            List<GameObject> gameObjects = new List<GameObject>();
+            List<GameObject> obj = ACToolExpansionFind.ACGetObjs().ACGetGos();
+            if (obj == null) { Debug.Log("未选中物体"); return; }
+            for (int i = 0; i < obj?.Count; i++)
+                obj[i].transform.ACLoopGetAllGameObject(ref gameObjects);
+            //清理不匹配的开头
+            List<GameObject> newGos = gameObjects.FindAll((go) => { return go.name.StartsWith(ETUITool_Prefix); });
+
+            //获取类型
+            Type type = null;
+            type = ETUITool_ClassName.ACReflectClass("UnityEngine.UI");
+            if (type == null)
+                type = ETUITool_ClassName.ACReflectClass("UnityEngine");
+
+            //拼接
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < newGos?.Count; i++)
+            {
+                GameObject gameObject = newGos[i];
+                if (gameObject.transform.GetComponent(type) != null)
+                    action?.Invoke(sb, gameObject, type);
+                else
+                    Debug.Log("没有组件类型,请检查!");
+            }
+            sb.ACCopyWord();
+            Debug.Log(sb.ToString());
+        }
+
+        /// <summary>
+        /// 获取组件查找
+        /// </summary>
+        public static void AcGetComponentFind(Action<StringBuilder, GameObject, Type, string> action)
+        {
+            //获取所有的包含子物体和隐藏的
+            GameObject tempGo = ACToolExpansionFind.ACGetGo();
+            List<GameObject> gos = tempGo.ACLoopGetKeywordGO(ETUITool_Prefix);
+            //删选带有组件的
+            Type type = null;//获取类型
+            List<GameObject> tempGos = gos.FindAll((go) =>
+            {
+                type = ETUITool_ClassName.ACReflectClass("UnityEngine.UI");
+                if (type == null)
+                    type = ETUITool_ClassName.ACReflectClass("UnityEngine");
+                return go.GetComponent(type) != null;
+            });
+            //添加到字典
+            Dictionary<GameObject, string> keyValuePairs = new Dictionary<GameObject, string>();
+            tempGos?.ForEach((go) =>
+            {
+                string path = go.transform.ACGetPathTransform(tempGo.name);
+                keyValuePairs.Add(go, path);
+            });
+            //变成代码
+            StringBuilder sb = new StringBuilder();
+
+            foreach (GameObject item in keyValuePairs.Keys)
+                action?.Invoke(sb, item, type, keyValuePairs[item]);
+            sb.ACCopyWord();
+            Debug.Log(sb.ToString());
         }
     }
 }
