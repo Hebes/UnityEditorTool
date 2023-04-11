@@ -55,7 +55,7 @@ namespace ACTool
                     EditorGUILayout.Space(5f); EditorGUILayout.LabelField("请输入组件查找前缀:", EditorStyles.largeLabel);
                     EditorGUILayout.BeginHorizontal();
                     {
-                        ACHierarchyTool_Prefix = EditorGUILayout.TextField("请输入组件查找前缀", ACPrefix());//ACHierarchyTool_Prefix
+                        ACHierarchyTool_Prefix = EditorGUILayout.TextField("请输入组件查找前缀", ACHierarchyTool_Prefix);//ACPrefix()
                         if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACSaveModification(); }
                     }
                     EditorGUILayout.EndHorizontal();
