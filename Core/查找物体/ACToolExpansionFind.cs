@@ -39,9 +39,9 @@ namespace ACTool
         /// 获取选中的一个
         /// </summary>
         /// <returns></returns>
-        public static GameObject ACGetGo()
+        public static GameObject ACGetGo
         {
-            return Selection.objects.First() as GameObject;
+            get { return Selection.objects.First() as GameObject; }
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace ACTool
         /// <param name="goList"></param>
         public static List<GameObject> ACLoopGetKeywordGO(this GameObject transform, string keyValue)
         {
-            List <GameObject> goList = new List<GameObject>(); 
+            List<GameObject> goList = new List<GameObject>();
             if (transform.name.StartsWith(keyValue))
                 goList.Add(transform.gameObject);
             for (int i = 0; i < transform?.transform.childCount; i++)

@@ -29,17 +29,14 @@ namespace ACTool
         /// </summary>
         private void OnGUI()
         {
+            ACHierarchyOhterTool();
             ACHierarchyPrefix();
             ACHierarchyRemoveDemo();
             ACHierarchyPrefabChange();
         }
 
-        //***************************面板前缀***************************
-        private static Vector2 ACHierarchyTool_ScrollRoot { get; set; }
-        private static string ACHierarchyTool_Prefix { get; set; } //Hierarchy面板的前缀
-        private static string ACHierarchyTool_InputCustom { get; set; }//输入自定义
-        private static string[] ACHierarchyTool_options { get; set; } = new string[] { "None", "T_" };
-        private static int ACHierarchyTool_index { get; set; } = 0;
+        //***************************HierarchyPanel其他工具***************************
+       private static Font ACHierarchyTool_OhterTool_Prefab { get; set; }
 
         /// <summary>
         /// HierarchyPanel其他工具
@@ -51,16 +48,30 @@ namespace ACTool
                 EditorGUILayout.BeginVertical("box");
                 {
                     EditorGUILayout.LabelField("修改组件Text字体设置", EditorStyles.boldLabel);
+                    ACHierarchyTool_OhterTool_Prefab = (Font)EditorGUILayout.ObjectField(ACHierarchyTool_OhterTool_Prefab, typeof(Font), true, GUILayout.MinWidth(100f));
                     //******************************前缀******************************
-                    if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) 
+                    if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid))
                     {
-                        ACToolExpansionFind.ACGetObjs().ACSaveModification();
+                        List<GameObject> gameObjects = ACToolExpansionFind.ACGetGo.ACLoopGetKeywordGO(String.Empty);
+
+                        foreach (GameObject go in gameObjects)
+                        {
+                            if (go.GetComponent<Text>()!=null)
+                                go.GetComponent<Text>().font = ACHierarchyTool_OhterTool_Prefab;
+                        }
                     }
                 }
                 EditorGUILayout.EndVertical();
             }
             EditorGUILayout.EndScrollView(); //结束滚动视图
         }
+
+        //***************************面板前缀***************************
+        private static Vector2 ACHierarchyTool_ScrollRoot { get; set; }
+        private static string ACHierarchyTool_Prefix { get; set; } //Hierarchy面板的前缀
+        private static string ACHierarchyTool_InputCustom { get; set; }//输入自定义
+        private static string[] ACHierarchyTool_options { get; set; } = new string[] { "None", "T_" };
+        private static int ACHierarchyTool_index { get; set; } = 0;
 
         /// <summary>
         /// HierarchyPanel前缀
@@ -303,7 +314,7 @@ namespace ACTool
         {
             List<GameObject> gameObjects = new List<GameObject>();
             //获取所有的组件
-            ACToolExpansionFind.ACLoopGetAllGameObject(ACToolExpansionFind.ACGetGo().transform, ref gameObjects);
+            ACToolExpansionFind.ACLoopGetAllGameObject(ACToolExpansionFind.ACGetGo.transform, ref gameObjects);
             //移除自定义脚本
             for (int i = 0; i < gameObjects?.Count; i++)
                 gameObjects[i].ACRemoveScript(ACHierarchyTool_InputCustom);
@@ -490,7 +501,7 @@ namespace ACTool
         public static void AcGetComponentFind(Action<StringBuilder,GameObject, Type,string> action)
         {
             //获取所有的包含子物体和隐藏的
-            GameObject tempGo = ACToolExpansionFind.ACGetGo();
+            GameObject tempGo = ACToolExpansionFind.ACGetGo;
             List<GameObject> gos = tempGo.ACLoopGetKeywordGO(ACHierarchyPanelCode_KeyValue);
             //删选带有组件的
             Type type = null;//获取类型

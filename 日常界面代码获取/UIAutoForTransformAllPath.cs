@@ -167,7 +167,7 @@ namespace ACTool
         public static void AcGetComponentFind(Action<StringBuilder, GameObject, Type, string> action)
         {
             //获取所有的包含子物体和隐藏的
-            GameObject tempGo = ACToolExpansionFind.ACGetGo();
+            GameObject tempGo = ACToolExpansionFind.ACGetGo;
             List<GameObject> gos = tempGo.ACLoopGetKeywordGO(ACUIDemoAllPath_Prefix);
             //删选带有组件的
             Type type = null;//获取类型
