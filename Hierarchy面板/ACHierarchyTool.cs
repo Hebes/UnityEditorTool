@@ -42,6 +42,22 @@ namespace ACTool
         private static int ACHierarchyTool_index { get; set; } = 0;
 
         /// <summary>
+        /// HierarchyPanel其他工具
+        /// </summary>
+        public static void ACHierarchyOhterTool()
+        {
+            ACHierarchyTool_ScrollRoot = EditorGUILayout.BeginScrollView(ACHierarchyTool_ScrollRoot); //开启滚动视图
+            {
+                EditorGUILayout.BeginVertical("box");
+                {
+
+                }
+                EditorGUILayout.EndVertical();
+            }
+            EditorGUILayout.EndScrollView(); //结束滚动视图
+        }
+
+        /// <summary>
         /// HierarchyPanel前缀
         /// </summary>
         public static void ACHierarchyPrefix()
