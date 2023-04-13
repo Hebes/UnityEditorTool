@@ -50,7 +50,12 @@ namespace ACTool
             {
                 EditorGUILayout.BeginVertical("box");
                 {
-
+                    EditorGUILayout.LabelField("修改组件Text字体设置", EditorStyles.boldLabel);
+                    //******************************前缀******************************
+                    if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) 
+                    {
+                        ACToolExpansionFind.ACGetObjs().ACSaveModification();
+                    }
                 }
                 EditorGUILayout.EndVertical();
             }
