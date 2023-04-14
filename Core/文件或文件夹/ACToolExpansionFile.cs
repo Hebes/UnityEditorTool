@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 namespace ACTool
@@ -35,7 +36,7 @@ namespace ACTool
         /// <param name="folderPath">文件夹路径</param>
         /// <param name="fileName">文件名</param>
         /// <param name="content">内容</param>
-        public static void CreatCSharpScript(string folderPath, string fileName, string content)
+        public static void ACCreatScript(string folderPath, string fileName, string content)
         {
             //创建并写入内容
             string filePath = $"{folderPath}/{fileName}";
@@ -49,6 +50,18 @@ namespace ACTool
                 }
             }
             folderPath.ACAssetDatabaseRefresh();
+        }
+
+        /// <summary>
+        /// 设置单个资源的ABName
+        /// </summary>
+        /// <param name="abName"></param>
+        /// <param name="path">资源路径</param>
+        public static void ACSetABName(this string path, string abName)
+        {
+            AssetImporter ai = AssetImporter.GetAtPath(path);
+            if (ai != null)
+                ai.assetBundleName = abName;
         }
     }
 }

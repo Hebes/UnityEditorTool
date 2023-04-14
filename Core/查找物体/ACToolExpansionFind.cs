@@ -239,5 +239,13 @@ namespace ACTool
             }
             return path;
         }
+
+        /// <summary>
+        /// 获取资源路径(PS:Project面板选中的物体)
+        /// </summary>
+        public static string ACGetAssetDataPath(this UnityEngine.Object @object)
+        {
+          return  AssetDatabase.GetAssetPath(@object);
+        }
     }
 }

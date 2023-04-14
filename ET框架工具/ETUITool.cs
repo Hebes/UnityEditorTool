@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.UI;
 
 namespace ACTool
@@ -33,6 +34,13 @@ namespace ACTool
                 EditorGUILayout.BeginVertical("box");
                 {
                     EditorGUILayout.LabelField("ET工具", EditorStyles.boldLabel);
+                    if (GUILayout.Button("设置AB包标签", EditorStyles.miniButtonMid))
+                    {
+                        Debug.Log("设置AB包标签");
+                        UnityEngine.Object obj = ACToolExpansionFind.ACGetObj();
+                        obj.ACGetAssetDataPath().ACSetABName($"{obj.name}.unity3d");
+                        ACToolExpansionDateSave.ACReAssets();
+                    }
                     //******************************编译代码******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("编译代码:", EditorStyles.largeLabel);
                     if (GUILayout.Button("编译代码", EditorStyles.miniButtonMid)) { BuildCode(); }
