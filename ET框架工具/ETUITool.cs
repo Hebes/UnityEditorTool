@@ -37,8 +37,7 @@ namespace ACTool
                     if (GUILayout.Button("设置AB包标签", EditorStyles.miniButtonMid))
                     {
                         Debug.Log("设置AB包标签");
-                        UnityEngine.Object obj = ACToolExpansionFind.ACGetObj();
-                        obj.ACGetAssetDataPath().ACSetABName($"{obj.name}.unity3d");
+                        Array.ForEach(ACToolExpansionFind.ACGetObjs(), obj => obj.ACGetAssetDataPath().ACSetABName($"{obj.name}.unity3d"));
                         ACToolExpansionDateSave.ACReAssets();
                     }
                     //******************************编译代码******************************
