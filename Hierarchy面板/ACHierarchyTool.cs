@@ -34,6 +34,19 @@ namespace ACTool
             ACHierarchyRemoveDemo();
             ACHierarchyPrefabChange();
         }
+        //***************************HierarchyPanel重命名工具***************************
+        public static void ACHierarchyReNameTool()
+        {
+            ACHierarchyTool_ScrollRoot = EditorGUILayout.BeginScrollView(ACHierarchyTool_ScrollRoot); //开启滚动视图
+            {
+                EditorGUILayout.BeginVertical("box");
+                {
+                    EditorGUILayout.LabelField("重命名工具", EditorStyles.boldLabel);
+                }
+                EditorGUILayout.EndVertical();
+            }
+            EditorGUILayout.EndScrollView(); //结束滚动视图
+        }
 
         //***************************HierarchyPanel其他工具***************************
         private static Font ACHierarchyTool_OhterTool_Prefab { get; set; }
@@ -88,7 +101,7 @@ namespace ACTool
                     EditorGUILayout.BeginHorizontal();
                     {
                         ACHierarchyTool_Prefix = EditorGUILayout.TextField("请输入组件查找前缀", ACHierarchyTool_Prefix);//ACPrefix()
-                        if (GUILayout.Button("复制", EditorStyles.miniButtonMid)) { ACHierarchyTool_Prefix.Replace("_","").ACCopyWord(); }
+                        if (GUILayout.Button("复制", EditorStyles.miniButtonMid)) { ACHierarchyTool_Prefix.ACCopyWord(); }
                         if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACSaveModification(); }
                     }
                     EditorGUILayout.EndHorizontal();
@@ -104,12 +117,13 @@ namespace ACTool
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
-                        if (GUILayout.Button("前缀添加", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACAddPrefixLoop($"{ACHierarchyTool_Prefix}_"); }
+                        if (GUILayout.Button("前缀添加", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACAddPrefixLoop($"{ACHierarchyTool_Prefix}"); }
                         if (GUILayout.Button("去除前缀", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACRemovePrefix($"{ACHierarchyTool_Prefix}_"); }
                     }
                     EditorGUILayout.EndHorizontal();
                     if (GUILayout.Button("去除空白和特殊字符", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ClearTrim(); }
-                    ACHierarchyTool_index = EditorGUILayout.Popup("选择常用前缀:", ACHierarchyTool_index, ACHierarchyTool_options);
+                    if (GUILayout.Button("T_", EditorStyles.miniButtonMid)) { ACHierarchyTool_Prefix = "T_"; }
+                    //ACHierarchyTool_index = EditorGUILayout.Popup("选择常用前缀:", ACHierarchyTool_index, ACHierarchyTool_options);
                 }
                 EditorGUILayout.EndVertical();
             }

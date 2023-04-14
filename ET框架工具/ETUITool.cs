@@ -172,7 +172,7 @@ namespace ACTool
                     {
                         case "Button":
                             sb.AppendLine($" /// <summary>\r\n        /// \r\n        /// </summary>\r\n        /// <param name=\"self\"></param>");
-                            sb.AppendLine($"public static void On{gameObject.name}(this UIMateLoginComponent self)\r\n        {{\r\n\r\n        }}");
+                            sb.AppendLine($"public static void On{gameObject.name}(this {obj[0].name}Compont self)\r\n        {{\r\n\r\n        }}");
                             break;
                     }
                 }
