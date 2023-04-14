@@ -36,7 +36,7 @@ namespace ACTool
         }
 
         //***************************HierarchyPanel其他工具***************************
-       private static Font ACHierarchyTool_OhterTool_Prefab { get; set; }
+        private static Font ACHierarchyTool_OhterTool_Prefab { get; set; }
 
         /// <summary>
         /// HierarchyPanel其他工具
@@ -56,7 +56,7 @@ namespace ACTool
 
                         foreach (GameObject go in gameObjects)
                         {
-                            if (go.GetComponent<Text>()!=null)
+                            if (go.GetComponent<Text>() != null)
                                 go.GetComponent<Text>().font = ACHierarchyTool_OhterTool_Prefab;
                         }
                     }
@@ -88,26 +88,24 @@ namespace ACTool
                     EditorGUILayout.BeginHorizontal();
                     {
                         ACHierarchyTool_Prefix = EditorGUILayout.TextField("请输入组件查找前缀", ACHierarchyTool_Prefix);//ACPrefix()
+                        if (GUILayout.Button("复制", EditorStyles.miniButtonMid)) { ACHierarchyTool_Prefix.Replace("_","").ACCopyWord(); }
                         if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACSaveModification(); }
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
+                        if (GUILayout.Button("获取前缀", EditorStyles.miniButtonMid)) { ACHierarchyTool_Prefix = ACToolExpansionFind.ACGetObj().ACGetPrefix(); }
                         if (GUILayout.Button("清空前缀", EditorStyles.miniButtonMid))
                         {
                             ACHierarchyTool_Prefix = string.Empty;
                             ACHierarchyTool_index = 0;
                         }
-                        if (GUILayout.Button("获取前缀", EditorStyles.miniButtonMid))
-                        {
-                            ACHierarchyTool_Prefix = ACToolExpansionFind.ACGetObj().ACGetPrefix();
-                        }
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
-                        if (GUILayout.Button("前缀添加", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACAddPrefixLoop(ACHierarchyTool_Prefix); }
-                        if (GUILayout.Button("去除前缀", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACRemovePrefix(ACHierarchyTool_Prefix); }
+                        if (GUILayout.Button("前缀添加", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACAddPrefixLoop($"{ACHierarchyTool_Prefix}_"); }
+                        if (GUILayout.Button("去除前缀", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ACRemovePrefix($"{ACHierarchyTool_Prefix}_"); }
                     }
                     EditorGUILayout.EndHorizontal();
                     if (GUILayout.Button("去除空白和特殊字符", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ClearTrim(); }
@@ -498,7 +496,7 @@ namespace ACTool
         /// <summary>
         /// 获取组件查找
         /// </summary>
-        public static void AcGetComponentFind(Action<StringBuilder,GameObject, Type,string> action)
+        public static void AcGetComponentFind(Action<StringBuilder, GameObject, Type, string> action)
         {
             //获取所有的包含子物体和隐藏的
             GameObject tempGo = ACToolExpansionFind.ACGetGo;
@@ -523,7 +521,7 @@ namespace ACTool
             StringBuilder sb = new StringBuilder();
 
             foreach (GameObject item in keyValuePairs.Keys)
-                action?.Invoke(sb,item, type, keyValuePairs[item]);
+                action?.Invoke(sb, item, type, keyValuePairs[item]);
             sb.ACCopyWord();
             Debug.Log(sb.ToString());
         }

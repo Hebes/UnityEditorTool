@@ -55,7 +55,7 @@ namespace ACTool
         /// </summary>
         public static string ACGetPrefix(this UnityEngine.Object obj)
         {
-            return $"{obj.name}_";
+            return $"{obj.name}";
         }
 
     }
