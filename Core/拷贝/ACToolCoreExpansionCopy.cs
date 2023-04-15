@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ACTool
 {
-    public static  class ACToolExpansionCopy
+    public static  class ACToolCoreExpansionCopy
     {
         /// <summary>
         /// Copy到剪切板 https://blog.csdn.net/LLLLL__/article/details/114463650

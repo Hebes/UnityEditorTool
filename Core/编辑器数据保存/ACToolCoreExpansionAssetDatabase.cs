@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-public static class ACToolExpansionAssetDatabase
+public static class ACToolCoreExpansionAssetDatabase
 {
     /// <summary>
     /// 重命名API
@@ -10,5 +10,13 @@ public static class ACToolExpansionAssetDatabase
     public static  void ACRenameAsset(this string pathName, string newName)
     {
         AssetDatabase.RenameAsset(pathName, newName);//改名API
+    }
+
+    /// <summary>
+    /// 刷新数据
+    /// </summary>
+    public static void ACRefresh()
+    {
+        AssetDatabase.Refresh();
     }
 }

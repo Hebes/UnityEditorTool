@@ -12,7 +12,7 @@ namespace ACTool
     /// <summary>
     /// 文件
     /// </summary>
-    public static class ACToolExpansionFile
+    public static class ACCoreToolExpansionFile
     {
         /// <summary>
         /// 文件以追加写入的方式
@@ -62,6 +62,26 @@ namespace ACTool
             AssetImporter ai = AssetImporter.GetAtPath(path);
             if (ai != null)
                 ai.assetBundleName = abName;
+        }
+
+
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static void ACFileDelete(this string filePath)
+        {
+            File.Delete(filePath);
+        }
+
+        /// <summary>
+        /// 创建文件并写入
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="str"></param>
+        public static void ACCreateFileText(this string filePath,string str)
+        {
+            using (StreamWriter writer = File.CreateText(filePath)) { writer.Write(str); Debug.Log("内容写入成功!"); }
         }
     }
 }

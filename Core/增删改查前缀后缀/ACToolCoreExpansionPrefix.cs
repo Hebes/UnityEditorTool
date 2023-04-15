@@ -8,7 +8,10 @@ using UnityEngine;
 
 namespace ACTool
 {
-    public static class ACToolExpansionPrefix
+    /// <summary>
+    /// 前缀
+    /// </summary>
+    public static class ACToolCoreExpansionPrefix
     {
         /// <summary>
         /// 选择的物体添加前缀
@@ -36,7 +39,7 @@ namespace ACTool
         /// </summary>
         /// <param name="objs">通常是Selection.objects</param>
         /// <param name="prefix">前缀</param>
-        public static void ACRemovePrefix(this UnityEngine.Object[] objs, string prefix)
+        public static void ACRemovePrefixLoop(this UnityEngine.Object[] objs, string prefix)
         {
             if (objs.Length == 0) { Debug.Log("没有物体"); return; }
             Array.ForEach(objs, (obj) => { ACRemovePrefixOne(obj as GameObject, prefix); });
@@ -51,7 +54,7 @@ namespace ACTool
         }
 
         /// <summary>
-        /// 获取选择的物品的前缀
+        /// 获取选择的物品的名称
         /// </summary>
         public static string ACGetPrefix(this UnityEngine.Object obj)
         {

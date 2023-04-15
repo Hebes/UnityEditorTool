@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ACTool
 {
-    public static class ACToolExpansionScript
+    public static class ACToolCoreExpansionScript
     {
         /// <summary>
         /// 移除脚本(PS:自定义版本,一个物体里面)

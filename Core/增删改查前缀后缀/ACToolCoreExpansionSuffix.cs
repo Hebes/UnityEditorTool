@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace ACTool
 {
-    public static class ACToolExpansionSuffix
+    /// <summary>
+    /// 去除后缀
+    /// </summary>
+    public static class ACToolCoreExpansionSuffix
     {
 
     }

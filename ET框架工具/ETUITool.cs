@@ -23,7 +23,7 @@ namespace ACTool
 
         private void OnGUI()
         {
-            ACHierarchyTool.ACHierarchyPrefix();
+            ACHierarchyToolReNameReName.ACHierarchyPrefix();
             OnETUITool();
         }
 
@@ -37,8 +37,8 @@ namespace ACTool
                     if (GUILayout.Button("设置AB包标签", EditorStyles.miniButtonMid))
                     {
                         Debug.Log("设置AB包标签");
-                        Array.ForEach(ACToolExpansionFind.ACGetObjs(), obj => obj.ACGetAssetDataPath().ACSetABName($"{obj.name}.unity3d"));
-                        ACToolExpansionDateSave.ACReAssets();
+                        Array.ForEach(ACToolCoreExpansionFind.ACGetObjs(), obj => obj.ACGetAssetDataPath().ACSetABName($"{obj.name}.unity3d"));
+                        ACToolCoreExpansionDateSave.ACReAssets();
                     }
                     //******************************编译代码******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("编译代码:", EditorStyles.largeLabel);
@@ -63,15 +63,6 @@ namespace ACTool
                         if (GUILayout.Button("获取组件专用System的方法", EditorStyles.miniButtonMid)) { GetALlComponentGetSet(); }
                     }
                     EditorGUILayout.EndHorizontal();
-                    //******************************资源包快速获取名称******************************
-                    //GUILayout.Space(5f); EditorGUILayout.LabelField("资源包快速获取名称:", EditorStyles.largeLabel);
-                    //EditorGUILayout.BeginHorizontal();//开始水平布局
-                    //{
-                    //    if (GUILayout.Button("资源包快速获取名称", EditorStyles.miniButtonMid)) 
-                    //    {
-                    //    }
-                    //}
-                    //EditorGUILayout.EndHorizontal();
                     //******************************获取物体组件******************************
                     GUILayout.Space(5f); ETUITool_ClassName = EditorGUILayout.TextField("请输入需要查找的组件", ETUITool_ClassName);
                     EditorGUILayout.LabelField("获取物体变量或属性:", EditorStyles.largeLabel);
@@ -96,9 +87,6 @@ namespace ACTool
                     {
                         //AcGetComponentFind(ACETUIToolShowCode);
                     }
-                    //******************************去除组件RayCastTarget*****************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField("去除组件RayCastTarget:", EditorStyles.largeLabel);
-                    if (GUILayout.Button($"去除组件RayCastTarget", EditorStyles.miniButtonMid)) { ACToolExpansionFind.ACGetObjs().ClearRayCastTarget(); }
                 }
                 EditorGUILayout.EndVertical();
             }
@@ -110,20 +98,20 @@ namespace ACTool
         /// </summary>
         public static void ETReferenceCollectorTool()
         {
-            List<GameObject> gameObjects = new List<GameObject>();
-            GameObject obj = Selection.objects.First() as GameObject;
-            obj.transform.ACLoopGetKeywordGO(ETUITool_Prefix, ref gameObjects);
+            //List<GameObject> gameObjects = new List<GameObject>();
+            //GameObject obj = Selection.objects.First() as GameObject;
+            //obj.transform.ACLoopGetKeywordGO(ETUITool_Prefix, ref gameObjects);
 
-            obj.GetComponent<ReferenceCollector>().data.Clear();//清空原来的数据
+            //obj.GetComponent<ReferenceCollector>().data.Clear();//清空原来的数据
 
-            gameObjects?.ForEach((go) =>
-            {
-                obj.GetComponent<ReferenceCollector>().data.Add(new ReferenceCollectorData()
-                {
-                    key = go.name,
-                    gameObject = go.gameObject,
-                });
-            });
+            //gameObjects?.ForEach((go) =>
+            //{
+            //    obj.GetComponent<ReferenceCollector>().data.Add(new ReferenceCollectorData()
+            //    {
+            //        key = go.name,
+            //        gameObject = go.gameObject,
+            //    });
+            //});
         }
 
         /// <summary>
@@ -157,7 +145,7 @@ namespace ACTool
         {
             //查找自定义的需要的组件
             List<GameObject> gameObjects = new List<GameObject>();
-            List<GameObject> obj = ACToolExpansionFind.ACGetObjs().ACGetGos();
+            List<GameObject> obj = ACToolCoreExpansionFind.ACGetObjs().ACGetGos();
             for (int i = 0; i < obj?.Count; i++)
                 obj[i].transform.ACLoopGetAllGameObject(ref gameObjects);
             //拼接
@@ -209,8 +197,8 @@ namespace ACTool
         [MenuItem("Tools/Build/BuildCodeDebug-ac _F5 ")]
         public static void BuildCode()
         {
-            ET.BuildAssemblieEditor.BuildCodeDebug();
-            ET.BuildAssemblieEditor.BuildCodeRelease();
+            //ET.BuildAssemblieEditor.BuildCodeDebug();
+            //ET.BuildAssemblieEditor.BuildCodeRelease();
         }
 
         /// <summary>
@@ -242,7 +230,7 @@ namespace ACTool
         {
             //查找自定义的需要的组件
             List<GameObject> gameObjects = new List<GameObject>();
-            List<GameObject> obj = ACToolExpansionFind.ACGetObjs().ACGetGos();
+            List<GameObject> obj = ACToolCoreExpansionFind.ACGetObjs().ACGetGos();
             if (obj == null) { Debug.Log("未选中物体"); return; }
             for (int i = 0; i < obj?.Count; i++)
                 obj[i].transform.ACLoopGetAllGameObject(ref gameObjects);
@@ -275,7 +263,7 @@ namespace ACTool
         public static void AcGetComponentFind(Action<StringBuilder, GameObject, Type, string> action)
         {
             //获取所有的包含子物体和隐藏的
-            GameObject tempGo = ACToolExpansionFind.ACGetGo;
+            GameObject tempGo = ACToolCoreExpansionFind.ACGetGo;
             List<GameObject> gos = tempGo.ACLoopGetKeywordGO(ETUITool_Prefix);
             //删选带有组件的
             Type type = null;//获取类型

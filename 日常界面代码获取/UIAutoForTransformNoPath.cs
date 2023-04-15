@@ -31,7 +31,7 @@ namespace ACTool
         public static void GeneratorFindComponentTool() => GetWindow(typeof(ACUIGetCodeNoPath), false, "Transform组件查找(没路径)").Show();
         private void OnGUI()
         {
-            ACHierarchyTool.ACHierarchyPrefix();
+            ACHierarchyToolReNameReName.ACHierarchyPrefix();
             ACHierarchyTool.ACHierarchyPanelGetCode();
             OnUIAutoForTransformNoPath();
         }

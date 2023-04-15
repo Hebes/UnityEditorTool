@@ -12,7 +12,7 @@ namespace ACTool
     /// <summary>
     /// 文件夹
     /// </summary>
-    public static  class ACToolExpansionFolder
+    public static  class ACToolCoreExpansionFolder
     {
         /// <summary>
         /// 通过路径检文件夹是否存在，如果不存在则创建
