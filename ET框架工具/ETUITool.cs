@@ -82,11 +82,11 @@ namespace ACTool
                     }
                     EditorGUILayout.EndHorizontal();
                     //******************************获取组件******************************
-                    EditorGUILayout.Space(5f); EditorGUILayout.LabelField("获取组件:", EditorStyles.largeLabel);
-                    if (GUILayout.Button($"获取{ETUITool_ClassName}组件", EditorStyles.miniButtonMid))
-                    {
-                        //AcGetComponentFind(ACETUIToolShowCode);
-                    }
+                    //EditorGUILayout.Space(5f); EditorGUILayout.LabelField("获取组件:", EditorStyles.largeLabel);
+                    //if (GUILayout.Button($"获取{ETUITool_ClassName}组件", EditorStyles.miniButtonMid))
+                    //{
+                    //    //AcGetComponentFind(ACETUIToolShowCode);
+                    //}
                 }
                 EditorGUILayout.EndVertical();
             }
@@ -98,20 +98,20 @@ namespace ACTool
         /// </summary>
         public static void ETReferenceCollectorTool()
         {
-            //List<GameObject> gameObjects = new List<GameObject>();
-            //GameObject obj = Selection.objects.First() as GameObject;
-            //obj.transform.ACLoopGetKeywordGO(ETUITool_Prefix, ref gameObjects);
+            List<GameObject> gameObjects = new List<GameObject>();
+            GameObject obj = Selection.objects.First() as GameObject;
+            obj.transform.ACLoopGetKeywordGO(ETUITool_Prefix, ref gameObjects);
 
-            //obj.GetComponent<ReferenceCollector>().data.Clear();//清空原来的数据
+            obj.GetComponent<ReferenceCollector>().data.Clear();//清空原来的数据
 
-            //gameObjects?.ForEach((go) =>
-            //{
-            //    obj.GetComponent<ReferenceCollector>().data.Add(new ReferenceCollectorData()
-            //    {
-            //        key = go.name,
-            //        gameObject = go.gameObject,
-            //    });
-            //});
+            gameObjects?.ForEach((go) =>
+            {
+                obj.GetComponent<ReferenceCollector>().data.Add(new ReferenceCollectorData()
+                {
+                    key = go.name,
+                    gameObject = go.gameObject,
+                });
+            });
         }
 
         /// <summary>
@@ -197,8 +197,8 @@ namespace ACTool
         [MenuItem("Tools/Build/BuildCodeDebug-ac _F5 ")]
         public static void BuildCode()
         {
-            //ET.BuildAssemblieEditor.BuildCodeDebug();
-            //ET.BuildAssemblieEditor.BuildCodeRelease();
+            ET.BuildAssemblieEditor.BuildCodeDebug();
+            ET.BuildAssemblieEditor.BuildCodeRelease();
         }
 
         /// <summary>
