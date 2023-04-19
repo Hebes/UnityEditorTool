@@ -16,6 +16,7 @@ namespace ACTool
         public static Vector2 ACProjectReName_ScrollRoot { get; private set; }
         public static string InputSuffixNumber { get; private set; }
         public static string ACProjectReName_SuffixNumber { get; private set; }
+        public static string ACProjectReName_Suffix { get; private set; }
         public static string ACProjectReName_REName { get; private set; }
         public static string ACProjectReName_OldChangeName { get; private set; }
         public static string ACProjectReName_NewChangeName { get; private set; }
@@ -230,32 +231,37 @@ namespace ACTool
                 }
                 //******************************上一级文件夹名称变成物体名称******************************
                 GUILayout.Space(5f); EditorGUILayout.LabelField("上一级文件夹名称变成物体名称", EditorStyles.largeLabel);
-                if (GUILayout.Button("上一级文件夹名称变成物体名称", EditorStyles.miniButtonMid))
+                EditorGUILayout.BeginHorizontal();//开始水平布局
                 {
-                    if (ACToolCoreExpansionFind.ACGetObjs().Length == 0) return;
-                    Array.ForEach(ACToolCoreExpansionFind.ACGetObjs(), (obj) =>
+                    ACProjectReName_Suffix = EditorGUILayout.TextField("输入点后缀", ACProjectReName_Suffix);
+                    if (GUILayout.Button("上一级文件夹名称变成物体名称", EditorStyles.miniButtonMid))
                     {
-                        //单个文件的修改
-                        string path_g = AssetDatabase.GetAssetPath(obj);//获得选中物的路径
-                        DirectoryInfo direction = new DirectoryInfo(path_g);
-                        FileInfo[] files = direction.GetFiles("*");
-
-                        for (int i = 0; i < files.Length; i++)
+                        if (ACToolCoreExpansionFind.ACGetObjs().Length == 0) return;
+                        Array.ForEach(ACToolCoreExpansionFind.ACGetObjs(), (obj) =>
                         {
-                            //忽略关联文件
-                            if (files[i].Name.EndsWith(".prefab"))
+                            //单个文件的修改
+                            string path_g = AssetDatabase.GetAssetPath(obj);//获得选中物的路径
+                            DirectoryInfo direction = new DirectoryInfo(path_g);
+                            FileInfo[] files = direction.GetFiles("*");
+                            //FileInfo[] files = direction.GetFiles("*",SearchOption.AllDirectories);
+
+                            for (int i = 0; i < files.Length; i++)
                             {
-                                //Debug.Log("文件名:" + files[i].Name);
-                                //Debug.Log("文件绝对路径:" + files[i].FullName);
-                                //Debug.Log("文件相对路径:" + path_g +"/"+ files[i].Name);
-                                //Debug.Log("文件所在目录:" + files[i].DirectoryName);
-                                AssetDatabase.RenameAsset(path_g + "/" + files[i].Name, obj.name);//改名API
-                                //Debug.Log("文件路径:" + path_g);
+                                //忽略关联文件
+                                if (files[i].Name.EndsWith(ACProjectReName_Suffix))
+                                {
+                                    //Debug.Log("文件名:" + files[i].Name);
+                                    //Debug.Log("文件绝对路径:" + files[i].FullName);
+                                    //Debug.Log("文件相对路径:" + path_g +"/"+ files[i].Name);
+                                    //Debug.Log("文件所在目录:" + files[i].DirectoryName);
+                                    AssetDatabase.RenameAsset(path_g + "/" + files[i].Name, obj.name);//改名API
+                                }
                             }
-                        }
-                    });
-                    ACToolCoreExpansionDateSave.ACReAssets();
+                        });
+                        ACToolCoreExpansionDateSave.ACReAssets();
+                    }
                 }
+                EditorGUILayout.EndHorizontal();
             }
             GUILayout.EndVertical();
         }
