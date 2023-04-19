@@ -14,6 +14,7 @@ namespace ACTool
         private static string ETUITool_Prefix { get; set; } = "T_";//关键的前缀
         private static Vector2 ETUITool_ScrollRoot { get; set; }
         public static string ETUITool_ClassName { get; set; }
+        public static string ETUITool_ETClassName { get; private set; }
 
         [MenuItem("Assets/ET专用工具-暗沉(Shift+E) ")]//#E UI组件获取工具/
         public static void GeneratorFindComponentTool()
@@ -57,12 +58,16 @@ namespace ACTool
                     //******************************获取组件专用******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("获取组件专用:", EditorStyles.largeLabel);
                     if (GUILayout.Button("必须的添加", EditorStyles.miniButtonMid)) { GUIUtility.systemCopyBuffer = "ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();"; }
+                    if (GUILayout.Button("获取组件专用System", EditorStyles.miniButtonMid)) { GetALlComponent(new ACToolConfig() { KeyValue = ETUITool_Prefix, }); }
                     EditorGUILayout.BeginHorizontal();//开始水平布局
                     {
-                        if (GUILayout.Button("获取组件专用System", EditorStyles.miniButtonMid)) { GetALlComponent(new ACToolConfig() { KeyValue = ETUITool_Prefix, }); }
+                        ETUITool_ETClassName = EditorGUILayout.TextField("请输入方法里面的类名", ETUITool_ETClassName);
                         if (GUILayout.Button("获取组件专用System的方法", EditorStyles.miniButtonMid)) { GetALlComponentGetSet(); }
+                        if (GUILayout.Button("清空", EditorStyles.miniButtonMid)) { ETUITool_ETClassName = string.Empty; }
                     }
                     EditorGUILayout.EndHorizontal();
+
+                   
                     //******************************获取物体组件******************************
                     GUILayout.Space(5f); ETUITool_ClassName = EditorGUILayout.TextField("请输入需要查找的组件", ETUITool_ClassName);
                     EditorGUILayout.LabelField("获取物体变量或属性:", EditorStyles.largeLabel);
@@ -143,6 +148,11 @@ namespace ACTool
         /// </summary>
         public static void GetALlComponentGetSet()
         {
+            if (string.IsNullOrEmpty(ETUITool_ETClassName))
+            {
+                Debug.Log("请输入ET的类型名称");
+                return;
+            }
             //查找自定义的需要的组件
             List<GameObject> gameObjects = new List<GameObject>();
             List<GameObject> obj = ACToolCoreExpansionFind.ACGetObjs().ACGetGos();
@@ -160,7 +170,7 @@ namespace ACTool
                     {
                         case "Button":
                             sb.AppendLine($" /// <summary>\r\n        /// \r\n        /// </summary>\r\n        /// <param name=\"self\"></param>");
-                            sb.AppendLine($"public static void On{gameObject.name}(this {obj[0].name}Compont self)\r\n        {{\r\n\r\n        }}");
+                            sb.AppendLine($"public static void On{gameObject.name}(this {ETUITool_ETClassName} self)\r\n        {{\r\n\r\n        }}");
                             break;
                     }
                 }
