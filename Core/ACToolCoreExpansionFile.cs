@@ -12,7 +12,7 @@ namespace ACTool
     /// <summary>
     /// 文件
     /// </summary>
-    public static class ACCoreToolExpansionFile
+    public static class ACToolCoreExpansionFile
     {
         /// <summary>
         /// 文件以追加写入的方式

@@ -47,18 +47,25 @@ namespace ACTool
                     //******************************ReferenceCollector自动化组件专用******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("ReferenceCollector自动设置:", EditorStyles.largeLabel);
                     if (GUILayout.Button("ReferenceCollector自动化组件专用", EditorStyles.miniButtonMid)) { ETReferenceCollectorTool(); }
+                    if (GUILayout.Button("ReferenceCollector全场景添加", EditorStyles.miniButtonMid)) { ETScaneReferenceCollectorTool(); }
                     //******************************生成GameObject专用******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("ReferenceCollector获取组件代码:", EditorStyles.largeLabel);
                     EditorGUILayout.BeginHorizontal();//开始水平布局
                     {
-                        if (GUILayout.Button("RC获取代码", EditorStyles.miniButtonMid)) { GetUIALlGoName(new ACToolConfig() { KeyValue = ETUITool_Prefix, isGetSet = false, }); }
-                        if (GUILayout.Button("RC获取代码Get.Set", EditorStyles.miniButtonMid)) { GetUIALlGoName(new ACToolConfig() { KeyValue = ETUITool_Prefix, isGetSet = true, }); }
+                        //if (GUILayout.Button("RC获取代码", EditorStyles.miniButtonMid)) { GetUIALlGoName(new ACToolConfig() { KeyValue = ETUITool_Prefix, isGetSet = false, }); }
+                        if (GUILayout.Button("RC获取代码Get.Set", EditorStyles.miniButtonMid)) 
+                        {
+                            GetUIALlGoName(new ACToolConfig() { KeyValue = ETUITool_Prefix, isGetSet = true, });
+                        }
                     }
                     EditorGUILayout.EndHorizontal();
                     //******************************获取组件专用******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("获取组件专用:", EditorStyles.largeLabel);
                     if (GUILayout.Button("必须的添加", EditorStyles.miniButtonMid)) { GUIUtility.systemCopyBuffer = "ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();"; }
-                    if (GUILayout.Button("获取组件专用System", EditorStyles.miniButtonMid)) { GetALlComponent(new ACToolConfig() { KeyValue = ETUITool_Prefix, }); }
+                    if (GUILayout.Button("获取组件专用System", EditorStyles.miniButtonMid)) 
+                    { 
+                        GetALlComponent(new ACToolConfig() { KeyValue = ETUITool_Prefix, }); 
+                    }
                     EditorGUILayout.BeginHorizontal();//开始水平布局
                     {
                         ETUITool_ETClassName = EditorGUILayout.TextField("请输入方法里面的类名", ETUITool_ETClassName);
@@ -67,7 +74,7 @@ namespace ACTool
                     }
                     EditorGUILayout.EndHorizontal();
 
-                   
+
                     //******************************获取物体组件******************************
                     GUILayout.Space(5f); ETUITool_ClassName = EditorGUILayout.TextField("请输入需要查找的组件", ETUITool_ClassName);
                     EditorGUILayout.LabelField("获取物体变量或属性:", EditorStyles.largeLabel);
@@ -120,6 +127,24 @@ namespace ACTool
         }
 
         /// <summary>
+        /// 从场景添加
+        /// </summary>
+        public static void ETScaneReferenceCollectorTool()
+        {
+            List<GameObject> gos = ACToolCoreExpansionFind.GetAllGameObject().FindAll((go) =>
+            {
+                return go.name.StartsWith(ETUITool_Prefix);
+            });
+            ReferenceCollector referenceCollector = ACToolCoreExpansionFind.ACGetGo.GetComponent<ReferenceCollector>();
+            referenceCollector.data.Clear();//清空原来的数据
+
+            gos?.ForEach((go) =>
+            {
+                referenceCollector.data.Add(new ReferenceCollectorData() { key = go.name, gameObject = go, });
+            });
+        }
+
+        /// <summary>
         /// 获取组件专用
         /// </summary>
         public static void GetALlComponent(ACToolConfig findtConfig)
@@ -141,6 +166,18 @@ namespace ACTool
             //复制
             GUIUtility.systemCopyBuffer = sb.ToString();
             Debug.Log(sb.ToString());
+
+
+            //StringBuilder sb = new StringBuilder();
+            //sb.AppendLine("#region 请自行填写注释");
+            //ACToolCoreExpansionFind.ACGetGo.GetComponent<ReferenceCollector>().data?.ForEach((date) =>
+            //{
+            //    sb.AppendLine($"\tself.{date.gameObject.name} = rc.Get<GameObject>(\"{date.gameObject.name}\");");
+            //});
+            //sb.AppendLine("#endregion");
+            ////复制
+            //GUIUtility.systemCopyBuffer = sb.ToString();
+            //Debug.Log(sb.ToString());
         }
 
         /// <summary>
@@ -185,19 +222,16 @@ namespace ACTool
         /// </summary>
         public static void GetUIALlGoName(ACToolConfig findtConfig)
         {
-            string isGetSet = findtConfig.isGetSet ? "{ get; set; }" : ";";
-            //获取到当前选择的物体
-            GameObject obj = Selection.objects.First() as GameObject;
-            List<GameObject> gameObjects = new List<GameObject>();
-            obj.transform.ACLoopGetKeywordGO(ETUITool_Prefix, ref gameObjects);
-            //打印
             StringBuilder sb = new StringBuilder();
+            string isGetSet = findtConfig.isGetSet ? "{ get; set; }" : ";";
+            ReferenceCollector referenceCollector = ACToolCoreExpansionFind.ACGetGo.GetComponent<ReferenceCollector>();
             sb.AppendLine("#region 请自行填写注释");
-            for (int i = 0; i < gameObjects.Count; i++)
-                sb.AppendLine($"\tpublic GameObject {gameObjects[i].name}{isGetSet}");
+            referenceCollector.data?.ForEach((date) =>
+            {
+                sb.AppendLine($"\tpublic GameObject {date.gameObject.name}{isGetSet}");
+            });
             sb.AppendLine("#endregion");
-            //复制
-            GUIUtility.systemCopyBuffer = sb.ToString();
+            GUIUtility.systemCopyBuffer = sb.ToString();//复制
             Debug.Log(sb.ToString());
         }
 

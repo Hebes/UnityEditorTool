@@ -56,6 +56,10 @@ namespace ACTool
                 ACHierarchyToolReName_Prefix1 = EditorGUILayout.TextField("请输入组件查找前缀", ACHierarchyToolReName_Prefix1);
                 if (GUILayout.Button("复制", EditorStyles.miniButtonMid)) { ACHierarchyToolReName_Prefix1.ACCopyWord(); }
                 if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) { ACToolCoreExpansionFind.ACGetObjs().ACSaveModification(); }
+                if (GUILayout.Button("清除", EditorStyles.miniButtonMid))
+                {
+                    ACHierarchyToolReName_Prefix1 = string.Empty;
+                }
             }
             EditorGUILayout.EndHorizontal();
 
@@ -64,10 +68,6 @@ namespace ACTool
                 if (GUILayout.Button("获取前缀", EditorStyles.miniButtonMid))
                 {
                     ACHierarchyToolReName_Prefix1 = ACToolCoreExpansionFind.ACGetObj().ACGetPrefix();
-                }
-                if (GUILayout.Button("清空前缀", EditorStyles.miniButtonMid))
-                {
-                    ACHierarchyToolReName_Prefix1 = string.Empty;
                 }
                 if (GUILayout.Button("前缀添加", EditorStyles.miniButtonMid))
                 {

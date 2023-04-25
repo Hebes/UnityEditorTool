@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ACTool
 {
@@ -53,6 +54,15 @@ namespace ACTool
                     {
                         ACRemoveMissScript();
                     }
+                    if (GUILayout.Button("查找丢失脚本的物体", EditorStyles.miniButtonMid))
+                    {
+                        ACGetMissScript();
+                    }
+                    //if (GUILayout.Button("判断是否是预制体", EditorStyles.miniButtonMid))
+                    //{
+                    //    List<GameObject> gos = ACToolCoreExpansionFind.GetAllGameObject();
+                    //    PrefabUtility.getpa
+                    //}
                     ACHierarchyToolCSharp_InputCustom = EditorGUILayout.TextField("自定义脚本的名称", ACHierarchyToolCSharp_InputCustom);
                     if (GUILayout.Button("移除自定义脚本(单个物体和其子物体)", EditorStyles.miniButtonMid))
                     {
@@ -132,6 +142,50 @@ namespace ACTool
             List<GameObject> gameObjects = ACToolCoreExpansionFind.ACGetObjs().ACGetGos();
             for (int i = 0; i < gameObjects?.Count; i++)
                 gameObjects[i].ACAddScript(ACHierarchyToolCSharp_InputCustom);
+        }
+
+        /// <summary>
+        /// 获取丢失的脚本的物体
+        /// </summary>
+        public static void ACGetMissScript()
+        {
+            //Get the current scene and all top-level GameObjects in the scene hierarchy
+            Scene currentScene = SceneManager.GetActiveScene();//获取当前的活动场景
+            GameObject[] rootObjects = currentScene.GetRootGameObjects();//获取当前场景的顶级GameObjects
+
+            List<UnityEngine.Object> objectsWithDeadLinks = new List<UnityEngine.Object>();
+            foreach (GameObject g in rootObjects)
+            {
+                var trans = g.GetComponentsInChildren<Transform>();
+                foreach (Transform tran in trans)
+                {
+                    Component[] components = tran.GetComponents<Component>();
+                    for (int i = 0; i < components.Length; i++)
+                    {
+                        Component currentComponent = components[i];
+
+                        //If the component is null, that means it's a missing script!
+                        if (currentComponent == null)
+                        {
+                            //Add the sinner to our naughty-list
+                            objectsWithDeadLinks.Add(tran.gameObject);
+                            Selection.activeGameObject = tran.gameObject;
+                            Debug.Log(tran.gameObject + " has a missing script!"); //Console中输出
+                            break;
+                        }
+                    }
+                }
+                //Get all components on the GameObject, then loop through them 
+            }
+            if (objectsWithDeadLinks.Count > 0)
+            {
+                //Set the selection in the editor
+                Selection.objects = objectsWithDeadLinks.ToArray();
+            }
+            else
+            {
+                Debug.Log("No GameObjects in '" + currentScene.name + "' have missing scripts! Yay!");
+            }
         }
     }
 }
