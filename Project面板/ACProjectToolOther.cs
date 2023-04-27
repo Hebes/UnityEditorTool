@@ -10,7 +10,7 @@ using UnityEditor;
 using UnityEngine.UI;
 using UnityEngine;
 
-namespace ACtool
+namespace ACTool
 {
     public class ACProjectToolOther : EditorWindow
     {

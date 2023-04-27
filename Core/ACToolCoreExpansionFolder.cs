@@ -18,7 +18,7 @@ namespace ACTool
         /// 通过路径检文件夹是否存在，如果不存在则创建
         /// </summary>
         /// <param name="folderPath">文件夹路径</param>
-        public static void ACChackFolder(this string folderPath)
+        public static string ACChackFolder(this string folderPath)
         {
             if (!Directory.Exists(folderPath))//是否存在这个文件
             {
@@ -27,6 +27,16 @@ namespace ACTool
                 AssetDatabase.Refresh();//刷新编辑器
                 Debug.Log("创建成功!");
             }
+            return folderPath;
+        }
+
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <returns></returns>
+        public static bool ACFolderExist()
+        {
+            return false;
         }
 
         /// <summary>
