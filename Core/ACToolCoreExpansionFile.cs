@@ -57,11 +57,12 @@ namespace ACTool
         /// </summary>
         /// <param name="abName"></param>
         /// <param name="path">资源路径</param>
-        public static void ACSetABName(this string path, string abName)
+        public static string ACSetABName(this string path, string abName)
         {
             AssetImporter ai = AssetImporter.GetAtPath(path);
             if (ai != null)
                 ai.assetBundleName = abName;
+            return abName;
         }
 
 

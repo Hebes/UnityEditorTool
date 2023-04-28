@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEditor;
@@ -41,8 +42,30 @@ namespace ACTool
                         Array.ForEach(ACToolCoreExpansionFind.ACGetObjs(), obj => obj.ACGetAssetDataPath().ACSetABName($"{obj.name}.unity3d"));
                         ACToolCoreExpansionDateSave.ACReAssets();
                     }
-                    //******************************编译代码******************************
-                    GUILayout.Space(5f); EditorGUILayout.LabelField("编译代码:", EditorStyles.largeLabel);
+                    if (GUILayout.Button("打成AB包", EditorStyles.miniButtonMid))
+                    {
+                        UnityEngine.Object[] objs = ACToolCoreExpansionFind.ACGetObjs();
+                        Debug.Log(AssetDatabase.GetAssetPath(objs[0]));
+                        AssetBundleBuild[] buildMap = new AssetBundleBuild[objs.Length];
+                        for (int i = 0; i < objs.Length; i++)
+                        {
+                            UnityEngine.Object obj = objs[i];
+                            obj.ACGetAssetDataPath().ACSetABName($"{obj.name.ToLower()}.unity3d");
+                            buildMap[i].assetBundleName = $"{obj.name.ToLower()}.unity3d";
+                            string[] enemyAssets = new string[1];
+                            enemyAssets[0] = AssetDatabase.GetAssetPath(obj);
+                            buildMap[i].assetNames = enemyAssets;
+                        }
+                        string path = "F:/test";// "F:\\Yet\\Project\\Mate\\Release\\PC\\StreamingAssets\\StreamingAssets";
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        BuildPipeline.BuildAssetBundles(path, buildMap, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
+                        EditorUtility.RevealInFinder(path);
+                    }
+                        //******************************编译代码******************************
+                        GUILayout.Space(5f); EditorGUILayout.LabelField("编译代码:", EditorStyles.largeLabel);
                     if (GUILayout.Button("编译代码", EditorStyles.miniButtonMid)) { BuildCode(); }
                     //******************************ReferenceCollector自动化组件专用******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("ReferenceCollector自动设置:", EditorStyles.largeLabel);
