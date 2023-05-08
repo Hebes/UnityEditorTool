@@ -18,7 +18,6 @@ namespace ACTool
         /// </summary>
         public static void ACSetAssetBundleName(string path, string assetBundleName)
         {
-            //path "Assets/Bundles/Code/Code.dll.bytes"
             // 设置ab包
             AssetImporter assetImporter1 = AssetImporter.GetAtPath(path);
             assetImporter1.assetBundleName = assetBundleName;

@@ -1,5 +1,4 @@
 #加载的路径
-F:/Yet/Project/Mate/Unity/Bundles/StandaloneWindows64
 #转移的路径
 C:/Users/yet/Desktop/Hot/CDN/PC
 #加载路径的排除

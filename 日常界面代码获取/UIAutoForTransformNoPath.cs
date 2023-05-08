@@ -27,7 +27,8 @@ namespace ACTool
         //[MenuItem("GameObject/组件查找和重命名(Shift+A) #A", false, 0)]
         //[MenuItem("Assets/组件查找和重命名(Shift+A) #A")]
         //[MenuItem("Tool/组件查找和重命名(Shift+A) #A", false, 0)]
-        [MenuItem("Assets/UI组件获取工具/Transform组件查找-Transform没路径(Shift+A) ")]//#A
+        
+        [MenuItem("Assets/暗沉EditorTool/UI组件获取工具/Transform组件查找-Transform没路径(Shift+A) ")]//#A
         public static void GeneratorFindComponentTool() => GetWindow(typeof(ACUIGetCodeNoPath), false, "Transform组件查找(没路径)").Show();
         private void OnGUI()
         {

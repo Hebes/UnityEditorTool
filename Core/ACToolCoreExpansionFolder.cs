@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening.Plugins.Core.PathCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace ACTool
             {
                 Debug.Log("文件夹不存在,正在创建...");
                 Directory.CreateDirectory(folderPath);//创建
-                AssetDatabase.Refresh();//刷新编辑器
+                //AssetDatabase.Refresh();//刷新编辑器
                 Debug.Log("创建成功!");
             }
             return folderPath;
@@ -34,9 +35,9 @@ namespace ACTool
         /// 是否存在
         /// </summary>
         /// <returns></returns>
-        public static bool ACFolderExist()
+        public static bool ACFolderExist(this string folderPath)
         {
-            return false;
+            return Directory.Exists(folderPath);
         }
 
         /// <summary>

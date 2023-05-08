@@ -24,7 +24,8 @@ namespace ACTool
              "Text","Button","Toggle","Transform","Animator",
         };
 
-        [MenuItem("Assets/UI组件获取工具/Transform组件查找-Transform全路径(Shift+A) ")]//#A
+        
+        [MenuItem("Assets/暗沉EditorTool/UI组件获取工具/Transform组件查找-Transform全路径(Shift+A) ")]//#A
         public static void GeneratorFindComponentTool()
         {
             GetWindow(typeof(ACUIDemoAllPath), false, "Transform组件查找(全路径)").Show();

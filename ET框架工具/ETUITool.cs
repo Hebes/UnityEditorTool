@@ -17,7 +17,8 @@ namespace ACTool
         public static string ETUITool_ClassName { get; set; }
         public static string ETUITool_ETClassName { get; private set; }
 
-        [MenuItem("Assets/ET专用工具-暗沉(Shift+E) ")]//#E UI组件获取工具/
+        //[MenuItem("Assets/暗沉EditorTool/文件操作面板")]//#E
+        [MenuItem("Assets/暗沉EditorTool/ET专用工具-暗沉(Shift+E) #E")]//#E UI组件获取工具/
         public static void GeneratorFindComponentTool()
         {
             GetWindow(typeof(ETUITool), false, "ET工具-暗沉").Show();
@@ -35,6 +36,13 @@ namespace ACTool
             {
                 EditorGUILayout.BeginVertical("box");
                 {
+                    //******************************文件夹******************************
+                    EditorGUILayout.LabelField("文件夹", EditorStyles.boldLabel);
+                    if (GUILayout.Button("打开目录", EditorStyles.miniButtonMid))
+                    {
+                        ("/").ACOpenPath();
+                    }
+                    //******************************AB包******************************
                     EditorGUILayout.LabelField("ET工具", EditorStyles.boldLabel);
                     if (GUILayout.Button("设置AB包标签", EditorStyles.miniButtonMid))
                     {
@@ -57,15 +65,12 @@ namespace ACTool
                             buildMap[i].assetNames = enemyAssets;
                         }
                         string path = "F:/test";// "F:\\Yet\\Project\\Mate\\Release\\PC\\StreamingAssets\\StreamingAssets";
-                        if (!Directory.Exists(path))
-                        {
-                            Directory.CreateDirectory(path);
-                        }
+                        path.ACChackFolder();
                         BuildPipeline.BuildAssetBundles(path, buildMap, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
-                        EditorUtility.RevealInFinder(path);
+                        path.ACOpenPath();
                     }
-                        //******************************编译代码******************************
-                        GUILayout.Space(5f); EditorGUILayout.LabelField("编译代码:", EditorStyles.largeLabel);
+                    //******************************编译代码******************************
+                    GUILayout.Space(5f); EditorGUILayout.LabelField("编译代码:", EditorStyles.largeLabel);
                     if (GUILayout.Button("编译代码", EditorStyles.miniButtonMid)) { BuildCode(); }
                     //******************************ReferenceCollector自动化组件专用******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("ReferenceCollector自动设置:", EditorStyles.largeLabel);
@@ -76,7 +81,7 @@ namespace ACTool
                     EditorGUILayout.BeginHorizontal();//开始水平布局
                     {
                         //if (GUILayout.Button("RC获取代码", EditorStyles.miniButtonMid)) { GetUIALlGoName(new ACToolConfig() { KeyValue = ETUITool_Prefix, isGetSet = false, }); }
-                        if (GUILayout.Button("RC获取代码Get.Set", EditorStyles.miniButtonMid)) 
+                        if (GUILayout.Button("RC获取代码Get.Set", EditorStyles.miniButtonMid))
                         {
                             GetUIALlGoName(new ACToolConfig() { KeyValue = ETUITool_Prefix, isGetSet = true, });
                         }
@@ -85,9 +90,9 @@ namespace ACTool
                     //******************************获取组件专用******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("获取组件专用:", EditorStyles.largeLabel);
                     if (GUILayout.Button("必须的添加", EditorStyles.miniButtonMid)) { GUIUtility.systemCopyBuffer = "ReferenceCollector rc = self.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();"; }
-                    if (GUILayout.Button("获取组件专用System", EditorStyles.miniButtonMid)) 
-                    { 
-                        GetALlComponent(new ACToolConfig() { KeyValue = ETUITool_Prefix, }); 
+                    if (GUILayout.Button("获取组件专用System", EditorStyles.miniButtonMid))
+                    {
+                        GetALlComponent(new ACToolConfig() { KeyValue = ETUITool_Prefix, });
                     }
                     EditorGUILayout.BeginHorizontal();//开始水平布局
                     {

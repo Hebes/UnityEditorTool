@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CameraCap : Editor
 {
+    //[MenuItem("Assets/暗沉EditorTool/文件操作面板")]//#E
     [MenuItem("Tools/Screenshots/照相机截图测试 &`", false, 0)]
     //[MenuItem("Tools/照相机截图")]
     public static void ScreenShot()
