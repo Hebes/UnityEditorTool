@@ -13,7 +13,7 @@ namespace ACTool
     /// <summary>
     /// 文件夹
     /// </summary>
-    public static  class ACToolCoreExpansionFolder
+    public static class ACToolCoreExpansionFolder
     {
         /// <summary>
         /// 通过路径检文件夹是否存在，如果不存在则创建
@@ -35,8 +35,9 @@ namespace ACTool
         /// 是否存在
         /// </summary>
         /// <returns></returns>
-        public static bool ACFolderExist(this string folderPath)
+        public static bool ACFolderExist(this string folderPath, Action<bool> action = null)
         {
+            action?.Invoke(Directory.Exists(folderPath));
             return Directory.Exists(folderPath);
         }
 

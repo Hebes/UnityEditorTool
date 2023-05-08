@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using UnityEditor;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.UI;
@@ -38,9 +40,13 @@ namespace ACTool
                 {
                     //******************************文件夹******************************
                     EditorGUILayout.LabelField("文件夹", EditorStyles.boldLabel);
-                    if (GUILayout.Button("打开目录", EditorStyles.miniButtonMid))
+                    if (GUILayout.Button("打开Mate目录", EditorStyles.miniButtonMid))
                     {
                         ("/").ACOpenPath();
+                    }
+                    if (GUILayout.Button("打开StreamingAssets目录", EditorStyles.miniButtonMid))
+                    {
+                        ("F:\\Yet\\Project\\Mate\\Release\\PC\\StreamingAssets\\StreamingAssets").ACOpenPath();
                     }
                     //******************************AB包******************************
                     EditorGUILayout.LabelField("ET工具", EditorStyles.boldLabel);
@@ -67,7 +73,13 @@ namespace ACTool
                         string path = "F:/test";// "F:\\Yet\\Project\\Mate\\Release\\PC\\StreamingAssets\\StreamingAssets";
                         path.ACChackFolder();
                         BuildPipeline.BuildAssetBundles(path, buildMap, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
-                        path.ACOpenPath();
+                        ($"{path}/").ACOpenPath();
+                    }
+                    if (GUILayout.Button("进入目录", EditorStyles.miniButtonMid))
+                    {
+                        string path = "F:/test";
+                        if (!path.ACFolderExist()) return;
+                        ($"{path}/").ACOpenPath();
                     }
                     //******************************编译代码******************************
                     GUILayout.Space(5f); EditorGUILayout.LabelField("编译代码:", EditorStyles.largeLabel);
