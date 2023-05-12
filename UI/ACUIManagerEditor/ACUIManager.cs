@@ -21,13 +21,12 @@ public class ACUIDataComparer : IComparer<ACUIData>
     }
 }
 
-public class ACUIManager : MonoBehaviour
+public class ACUIManager : MonoBehaviour, ISerializationCallbackReceiver
 {
     public List<ACUIData> data = new List<ACUIData>();
     private readonly Dictionary<string, Object> dict = new Dictionary<string, Object>();//Object并非C#基础中的Object，而是 UnityEngine.Object
 
 #if UNITY_EDITOR
-    //添加新的元素
     public void Add(string key, Object obj)
     {
         UnityEditor.SerializedObject serializedObject = new UnityEditor.SerializedObject(this);
@@ -65,8 +64,7 @@ public class ACUIManager : MonoBehaviour
         UnityEditor.EditorUtility.SetDirty(this);
         serializedObject.ApplyModifiedProperties();
         serializedObject.UpdateIfRequiredOrScript();
-    }
-    //删除元素，知识点与上面的添加相似
+    }//添加新的元素
     public void Remove(string key)
     {
         UnityEditor.SerializedObject serializedObject = new UnityEditor.SerializedObject(this);
@@ -86,7 +84,7 @@ public class ACUIManager : MonoBehaviour
         UnityEditor.EditorUtility.SetDirty(this);
         serializedObject.ApplyModifiedProperties();
         serializedObject.UpdateIfRequiredOrScript();
-    }
+    }//删除元素，知识点与上面的添加相似
     public void Clear()
     {
         UnityEditor.SerializedObject serializedObject = new UnityEditor.SerializedObject(this);
@@ -113,6 +111,12 @@ public class ACUIManager : MonoBehaviour
         if (!dict.TryGetValue(key, out dictGo)) return null;
         return dictGo as T;
     }
+    public T GetComponent<T>(string key) where T : Component
+    {
+        Object dictGo;
+        if (!dict.TryGetValue(key, out dictGo)) return null;
+        return (dictGo as GameObject).GetComponent<T>();
+    }
     public Object GetObject(string key)
     {
         Object dictGo;
@@ -126,6 +130,7 @@ public class ACUIManager : MonoBehaviour
     }
     public void OnAfterDeserialize()
     {
+        Debug.Log("执行了反序列化");
         dict.Clear();
         foreach (ACUIData referenceCollectorData in data)
         {
