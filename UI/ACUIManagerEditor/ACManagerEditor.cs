@@ -4,12 +4,29 @@ using System.Reflection;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;//Object并非C#基础中的Object，而是 UnityEngine.Object
 
-/// <summary>
-/// 修改ACManager样式
-/// </summary>
-[CustomEditor(typeof(ACUIManager), true)]//自定义ReferenceCollector类在界面中的显示与功能
+/*--------脚本描述-----------
+				
+电子邮箱：
+	1607388033@qq.com
+作者:
+	暗沉
+描述:
+    修改ACManager样式
+
+    SerializedProperty  以完全通用的方式编辑对象上的属性（可自动处理撤销），同时还能调整预制件的 UI 样式
+    https://docs.unity.cn/cn/2021.1/ScriptReference/SerializedProperty.html
+    EditorGUILayout  EditorGUI 的自动布局版本
+    https://docs.unity.cn/cn/2021.1/ScriptReference/EditorGUILayout.html
+    SerializedObject     以完全通用的方式编辑 Unity 对象上的可序列化字段。
+    https://docs.unity.cn/cn/2021.1/ScriptReference/SerializedObject.html
+
+-----------------------*/
+
+/// <summary> 自定义ReferenceCollector类在界面中的显示与功能 </summary>
+[CustomEditor(typeof(ACUIManager), true)]
 public class ACManagerEditor : Editor
 {
     private string ACUIData_key = "key";
@@ -19,7 +36,8 @@ public class ACManagerEditor : Editor
     private string Prefix = "T_";
     private string _searchKey = "";
     private Object heroPrefab;
-    //输入在textfield中的字符串
+
+    /// <summary> 输入在textfield中的字符串 </summary>
     private string searchKey
     {
         get
@@ -36,6 +54,21 @@ public class ACManagerEditor : Editor
         }
     }
     private ACUIManager aCManager { get; set; }
+    public string ETUITool_ClassName { get; set; }
+    public int toolbarid { get; set; }
+    public string ETUITool_ClassName1 { get; private set; }
+
+
+    /// <summary> 组件列表 </summary>
+    public List<string> components = new List<string>()
+    {
+         typeof(Button).Name,
+         typeof(Text).Name,
+         typeof(Image).Name,
+         typeof(GameObject).Name,
+         typeof(InputField).Name,
+    };
+
 
     private void OnEnable()
     {
@@ -46,9 +79,7 @@ public class ACManagerEditor : Editor
     {
         Debug.Log("面板关闭了");
     }
-    //https://docs.unity.cn/cn/2021.1/ScriptReference/SerializedProperty.html
-    //https://docs.unity.cn/cn/2021.1/ScriptReference/EditorGUILayout.html
-    //https://docs.unity.cn/cn/2021.1/ScriptReference/SerializedObject.html
+
     public override void OnInspectorGUI()
     {
         SerializedProperty dataProperty = OnUIGetSerializedProperty();
@@ -67,13 +98,15 @@ public class ACManagerEditor : Editor
         OnUIUpdata();
     }
 
+    /// <summary> 获取属性 </summary>
     private SerializedProperty OnUIGetSerializedProperty()
     {
         //使ReferenceCollector支持撤销操作，还有Redo，不过没有在这里使用
         Undo.RecordObject(aCManager, "Changed Settings");
         var dataProperty = serializedObject.FindProperty(ACUIManager_data);//按名称查找序列化属性。
         return dataProperty;
-    }//获取属性
+    }
+    /// <summary> 前缀按钮 </summary>
     private void OnUIPrefixButton(SerializedProperty dataProperty)
     {
         EditorGUILayout.BeginHorizontal();
@@ -84,7 +117,8 @@ public class ACManagerEditor : Editor
         if (GUILayout.Button("去除空格"))
             OnDelTrim(dataProperty);
         EditorGUILayout.EndHorizontal();
-    }//前缀按钮
+    }
+    /// <summary> 获取物体 </summary>
     private void OnUIGetGameObject(SerializedProperty dataProperty)
     {
         EditorGUILayout.BeginHorizontal();
@@ -99,7 +133,8 @@ public class ACManagerEditor : Editor
         if (GUILayout.Button("排序"))
             aCManager.Sort();
         EditorGUILayout.EndHorizontal();
-    }//获取物体
+    }
+    /// <summary> 内容 </summary>
     private void OnUIContent1(SerializedProperty dataProperty)
     {
         EditorGUILayout.BeginHorizontal();
@@ -115,8 +150,9 @@ public class ACManagerEditor : Editor
         }
         EditorGUILayout.Space();
         EditorGUILayout.EndHorizontal();
-    }//内容
-    private void OnUIContent2(SerializedProperty dataProperty)//内容二
+    }
+    /// <summary> 内容二 </summary>
+    private void OnUIContent2(SerializedProperty dataProperty)
     {
         if (dataProperty.arraySize == 0) return;
         SerializedProperty property;
@@ -134,6 +170,7 @@ public class ACManagerEditor : Editor
             EditorGUILayout.EndHorizontal();
         }
     }
+    /// <summary> 拖拽 </summary>
     private void OnUIDrog(SerializedProperty dataProperty)
     {
         var eventType = Event.current.type;
@@ -151,15 +188,14 @@ public class ACManagerEditor : Editor
             }
             Event.current.Use();
         }
-    }//拖拽
+    }
+    /// <summary> 更新 </summary>
     private void OnUIUpdata()
     {
         serializedObject.ApplyModifiedProperties();//应用属性修改。
         serializedObject.UpdateIfRequiredOrScript();//更新序列化对象的表示形式
-    }//更新
-    public string ETUITool_ClassName { get; set; }
-    public int toolbarid { get; set; }
-    public List<string> components = new List<string>() { "Button", "Text", "Image" };
+    }
+    /// <summary> 获取脚本按钮组 </summary>
     private void OnUIGetScript(SerializedProperty dataProperty)
     {
         EditorGUILayout.BeginHorizontal();
@@ -170,16 +206,28 @@ public class ACManagerEditor : Editor
         EditorGUILayout.EndHorizontal();
         //***********************************************************************************
         toolbarid = GUILayout.SelectionGrid(toolbarid, components.ToArray(), 4);
-        EditorGUILayout.BeginHorizontal();
         ETUITool_ClassName = EditorGUILayout.TextField("组件类型", components[toolbarid]);
+        EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("变量获取"))
             OnGetValue(dataProperty, ETUITool_ClassName);
         if (GUILayout.Button("组件获取"))
             OnGetButtonCode(dataProperty, ETUITool_ClassName);
+        if (GUILayout.Button("常用方法获取"))
+            OnCreatCommonGetCode(dataProperty, ETUITool_ClassName);
         EditorGUILayout.EndHorizontal();
-    }//获取脚本按钮组
+        //***********************************************************************************
+        EditorGUILayout.BeginHorizontal();
+        ETUITool_ClassName1 = EditorGUILayout.TextField("组件类型", ETUITool_ClassName1);
+        if (GUILayout.Button("清空"))
+            ETUITool_ClassName1 = string.Empty;
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("常用方法生成"))
+            OnCreatCommonCreatCode(dataProperty, ETUITool_ClassName);
+        EditorGUILayout.EndHorizontal();
+    }
 
-
+    /// <summary> 添加元素 </summary>
     private void AddReference(SerializedProperty dataProperty, string key, Object obj)
     {
         int index = dataProperty.arraySize;
@@ -187,7 +235,8 @@ public class ACManagerEditor : Editor
         var element = dataProperty.GetArrayElementAtIndex(index);
         element.FindPropertyRelative(ACUIData_key).stringValue = key;
         element.FindPropertyRelative(ACUIData_gameObject).objectReferenceValue = obj;
-    }//添加元素
+    }
+    /// <summary> 修改引用名称 </summary>
     private void ReplaceReferenceName(SerializedProperty dataProperty, string key)
     {
         Debug.Log("走的序列化的修改并设置");
@@ -218,51 +267,59 @@ public class ACManagerEditor : Editor
         //https://docs.unity.cn/cn/2019.4/ScriptReference/EditorUtility.SetDirty.html
         EditorUtility.SetDirty(aCManager);
         OnUIUpdata();
-    }//修改引用名称
+    }
+    /// <summary> 查找物体(PS：包含隐藏版、关键词开头,Hierarchy面板) </summary>
     public void ACLoopGetKeywordGO(Transform transform, string keyValue, ref List<GameObject> goList)
     {
         if (transform.name.StartsWith(keyValue))
             goList.Add(transform.gameObject);
         for (int i = 0; i < transform?.childCount; i++)
             ACLoopGetKeywordGO(transform.GetChild(i), keyValue, ref goList);
-    }//查找物体(PS：包含隐藏版、关键词开头,Hierarchy面板)
+    }
 
 
+    /// <summary> 去除空白 </summary>
     private void OnDelTrim(SerializedProperty dataProperty)
     {
         if (dataProperty.arraySize == 0)
             Array.ForEach(Selection.gameObjects, (go) => { go.name = go?.name.Trim().Replace(" ", ""); });
         else
             ReplaceReferenceName(dataProperty, "Trim");
-    }//去除空白
+    }
+    /// <summary> 添加前缀 </summary>
     private void OnAddPrefix(SerializedProperty dataProperty, string Prefix)
     {
         if (dataProperty.arraySize == 0)
             Array.ForEach(Selection.gameObjects, (go) => { go.name = $"{Prefix}{go.name}"; });
         else
             ReplaceReferenceName(dataProperty, "Add");
-    }//添加前缀
+    }
+    /// <summary> 移除前缀 </summary>
     private void OnRemovePrefix(SerializedProperty dataProperty, string Prefix)
     {
         if (dataProperty.arraySize == 0)
             Array.ForEach(Selection.gameObjects, (go) => { go.name = go.name.Replace(Prefix, ""); });
         else
             ReplaceReferenceName(dataProperty, "Remove");
-    }//移除前缀
+    }
+    /// <summary> 反射命名空间 </summary>
     private Type ACReflectClass(string className, string namespaceName = "UnityEngine.UI")
     {
         Assembly assem = Assembly.Load(namespaceName);
         Type type = assem.GetType($"{namespaceName}.{className}");
         return type;
-    }//反射命名空间
+    }
+    /// <summary> 复制 </summary>
     private void Copy(string content)
     {
         TextEditor te = new TextEditor();
         te.text = content.ToString();
         te.SelectAll();
         te.Copy();
-    }//复制
+    }
 
+
+    /// <summary> 删除空引用 </summary>
     private void OnDelNullReference()
     {
         var dataProperty = serializedObject.FindProperty(ACUIManager_data);
@@ -276,7 +333,8 @@ public class ACManagerEditor : Editor
                 OnUIUpdata();
             }
         }
-    }//删除空引用
+    }
+    /// <summary> 获取关键字开头的物体 </summary>
     private void OoGetKeyGos(SerializedProperty dataProperty)
     {
         if (dataProperty.arraySize >= 0)
@@ -294,9 +352,10 @@ public class ACManagerEditor : Editor
         ACLoopGetKeywordGO(aCManager.gameObject.transform, Prefix, ref gameObjects);
         for (int i = 0; i < gameObjects?.Count; i++)
             AddReference(dataProperty, gameObjects[i].name, gameObjects[i]);
-    }//获取关键字开头的物体
+    }
 
 
+    /// <summary> 获取脚本必要代码 请自行填写 </summary>
     private void OnGetEssentialCode()
     {
         StringBuilder sb = new StringBuilder();
@@ -305,11 +364,13 @@ public class ACManagerEditor : Editor
         Debug.Log(sb.ToString());
         Copy(sb.ToString());
 
-    }//获取脚本必要代码 请自行填写
+    }
+    /// <summary> 获取脚本 请自行填写 </summary>
     private void OnGetCode()
     {
         Debug.Log("暂时没写");
-    }//获取脚本 请自行填写
+    }
+    /// <summary> 获取变量 请自行填写 </summary>
     private void OnGetValue(SerializedProperty dataProperty, string eTUITool_ClassName)
     {
         StringBuilder sb = new StringBuilder();
@@ -318,14 +379,24 @@ public class ACManagerEditor : Editor
         {
             var gameObjectProperty = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative(ACUIData_gameObject);//查找物体
             Type type = ACReflectClass(eTUITool_ClassName);
-            Component component = (gameObjectProperty.objectReferenceValue as GameObject).GetComponent(type);
-            if (component != null)
-                sb.AppendLine($"public {eTUITool_ClassName} {gameObjectProperty.objectReferenceValue.name}{eTUITool_ClassName};");
+            if (type == null) type = ACReflectClass(eTUITool_ClassName, "UnityEngine");
+
+            if (type == typeof(GameObject))
+            {
+                sb.AppendLine($"public {eTUITool_ClassName} {gameObjectProperty.objectReferenceValue.name} {{get;set;}}");
+            }
+            else
+            {
+                Component component = (gameObjectProperty.objectReferenceValue as GameObject).GetComponent(type);
+                if (component != null)
+                    sb.AppendLine($"public {eTUITool_ClassName} {gameObjectProperty.objectReferenceValue.name}{eTUITool_ClassName} {{get;set;}}");
+            }
         }
 
         Debug.Log(sb.ToString());
         Copy(sb.ToString());
-    }//获取变量 请自行填写
+    }
+    /// <summary> 获取Button脚本 </summary>
     private void OnGetButtonCode(SerializedProperty dataProperty, string eTUITool_ClassName)
     {
         StringBuilder sb = new StringBuilder();
@@ -334,12 +405,87 @@ public class ACManagerEditor : Editor
         {
             var gameObjectProperty = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative(ACUIData_gameObject);//查找物体
             Type type = ACReflectClass(eTUITool_ClassName);
-            Component component = (gameObjectProperty.objectReferenceValue as GameObject).GetComponent(type);
-            if (component != null)
-                sb.AppendLine($"{gameObjectProperty.objectReferenceValue.name}{eTUITool_ClassName} = aCUIManager.GetComponent<{eTUITool_ClassName}>(\"{gameObjectProperty.objectReferenceValue.name}\");");
+            if (type == null) type = ACReflectClass(eTUITool_ClassName, "UnityEngine");
+            //if (type == typeof(GameObject))
+            //{
+            //    sb.AppendLine($"self.{gameObjectProperty.objectReferenceValue.name} = aCUIManager.GetComponent<{eTUITool_ClassName}>(\"{gameObjectProperty.objectReferenceValue.name}\");");
+            //}
+            //else
+            //{
+            //    Component component = (gameObjectProperty.objectReferenceValue as GameObject).GetComponent(type);
+            //    if (component != null)
+            //        sb.AppendLine($"{gameObjectProperty.objectReferenceValue.name}{eTUITool_ClassName} = aCUIManager.GetComponent<{eTUITool_ClassName}>(\"{gameObjectProperty.objectReferenceValue.name}\");");
+            //}
+
+            if (type == typeof(GameObject))
+            {
+                sb.AppendLine($"self.{gameObjectProperty.objectReferenceValue.name} = rc.Get<{eTUITool_ClassName}>(\"{gameObjectProperty.objectReferenceValue.name}\");");
+            }
+            else
+            {
+                Component component = (gameObjectProperty.objectReferenceValue as GameObject).GetComponent(type);
+                if (component != null)
+                    sb.AppendLine($"{gameObjectProperty.objectReferenceValue.name} = rc.Get<{eTUITool_ClassName}>(\"{gameObjectProperty.objectReferenceValue.name}\");");
+            }
         }
 
         Debug.Log(sb.ToString());
         Copy(sb.ToString());
-    }//获取Button脚本
+    }
+
+    /// <summary> 常用获取 </summary>
+    private void OnCreatCommonGetCode(SerializedProperty dataProperty, string eTUITool_ClassName)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = dataProperty.arraySize - 1; i >= 0; i--)
+        {
+            var gameObjectProperty = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative(ACUIData_gameObject);//查找物体
+            Type type = ACReflectClass(eTUITool_ClassName);
+            if (type == null) type = ACReflectClass(eTUITool_ClassName, "UnityEngine");
+            if (type == typeof(GameObject))
+            {
+                Debug.Log("自行填写");
+            }
+            else if (type == typeof(Button))
+            {
+                //self.T_Close.GetComponent<Button>().onClick.AddListener(self.OnT_Close);
+                Component component = (gameObjectProperty.objectReferenceValue as GameObject).GetComponent(type);
+                if (component != null)
+                    sb.AppendLine($"self.{gameObjectProperty.objectReferenceValue.name}.GetComponent<{eTUITool_ClassName}>().onClick.AddListener(self.On{gameObjectProperty.objectReferenceValue.name});");
+            }
+            else if (type == typeof(Text))
+            {
+                //self.T_Close.GetComponent<Button>().onClick.AddListener(self.OnT_Close);
+                Component component = (gameObjectProperty.objectReferenceValue as GameObject).GetComponent(type);
+                if (component != null)
+                    sb.AppendLine($"self.{gameObjectProperty.objectReferenceValue.name}.GetComponent<{eTUITool_ClassName}>().text =;");
+            }
+        }
+        Debug.Log(sb.ToString());
+        Copy(sb.ToString());
+    }
+    /// <summary> 常用方法生成 </summary>
+    private void OnCreatCommonCreatCode(SerializedProperty dataProperty, string eTUITool_ClassName)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = dataProperty.arraySize - 1; i >= 0; i--)
+        {
+            var gameObjectProperty = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative(ACUIData_gameObject);//查找物体
+            GameObject go = gameObjectProperty.objectReferenceValue as GameObject;
+            Type type = ACReflectClass(eTUITool_ClassName);
+            if (type == typeof(Button))
+            {
+                Component component = go.GetComponent(type);
+                if (component != null)
+                {
+                    sb.AppendLine($"/// <summary>  </summary>");
+                    sb.AppendLine($"public static void On{gameObjectProperty.objectReferenceValue.name}(this {ETUITool_ClassName1} self)\t\n{{\t\n}}");
+                }
+            }
+        }
+        Debug.Log(sb.ToString());
+        Copy(sb.ToString());
+    }
 }

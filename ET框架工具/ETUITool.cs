@@ -282,7 +282,7 @@ namespace ACTool
         public static void BuildCode()
         {
             ET.BuildAssemblieEditor.BuildCodeDebug();
-            ET.BuildAssemblieEditor.BuildCodeRelease();
+            //ET.BuildAssemblieEditor.BuildCodeRelease();
         }
 
         /// <summary>
