@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using UnityEngine;
 
 namespace ACTool
 {
-    public static  class ACToolCoreExpansionCopy
+    public static  class ACCoreExpansion_Copy
     {
         /// <summary>
         /// Copy到剪切板 https://blog.csdn.net/LLLLL__/article/details/114463650

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ACTool
 {
-    public static class ACToolCoreExpansionType
+    public static class ACCoreExpansion_Type
     {
         /// <summary>
         /// 类型转换

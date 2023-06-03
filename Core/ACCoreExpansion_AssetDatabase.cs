@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-public static class ACToolCoreExpansionAssetDatabase
+public static class ACCoreExpansion_AssetDatabase
 {
     /// <summary>
     /// 重命名API

@@ -67,7 +67,7 @@ namespace ACTool
                 sb.AppendLine($"\tpublic static string {itemNameTemp} => \"{item.Value}\";");
             }
             Debug.Log(sb.ToString());
-            ACToolCoreExpansionAssetDatabase.ACRefresh();
+            ACCoreExpansion_AssetDatabase.ACRefresh();
         }
     }
 }

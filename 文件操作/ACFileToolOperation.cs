@@ -1,16 +1,8 @@
-﻿using DG.Tweening.Plugins.Core.PathCore;
-using I18N.Common;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.Progress;
 
 namespace ACTool
 {
@@ -76,7 +68,7 @@ namespace ACTool
                         ClearTextAsset(LoadConfigPath);
                         string content = DictionaryChangeStr();
                         WriteTextAsset(LoadConfigPath, content);
-                        ACToolCoreExpansionDateSave.ACAssetDatabaseRefresh();
+                        ACCoreExpansion_DateSave.ACAssetDatabaseRefresh();
                         isResolution = true;
                     }
                 }
@@ -88,7 +80,7 @@ namespace ACTool
                     ClearTextAsset(LoadConfigPath);
                     string content = DictionaryChangeStr();
                     WriteTextAsset(LoadConfigPath, content);
-                    ACToolCoreExpansionDateSave.ACAssetDatabaseRefresh();
+                    ACCoreExpansion_DateSave.ACAssetDatabaseRefresh();
                     isResolution = true;
                 }
 
@@ -122,14 +114,14 @@ namespace ACTool
                             ClearTextAsset(LoadConfigPath);
                             string content = DictionaryChangeStr();
                             WriteTextAsset(LoadConfigPath, content);
-                            ACToolCoreExpansionDateSave.ACAssetDatabaseRefresh();
+                            ACCoreExpansion_DateSave.ACAssetDatabaseRefresh();
                             isResolution = true;
                         }
                         if (GUILayout.Button("转移(只限定有文件的)", GUILayout.Width(200)))
                         {
                             //创建文件夹
                             string str = path.Replace(ACFileToolOperation_SelectPath, ACFileToolOperation_NewPathName);
-                            ACToolCoreExpansionFolder.ACChackFolder(str);
+                            ACCoreExpansion_Folder.ACChackFolder(str);
 
                             //移动文件
                             string[] filePaths = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
@@ -168,7 +160,7 @@ namespace ACTool
                         ClearTextAsset(LoadConfigPath);
                         string content = DictionaryChangeStr();
                         WriteTextAsset(LoadConfigPath, content);
-                        ACToolCoreExpansionDateSave.ACAssetDatabaseRefresh();
+                        ACCoreExpansion_DateSave.ACAssetDatabaseRefresh();
                     }
                 }
                 if (GUILayout.Button("清除记录", GUILayout.Width(100)))
@@ -178,7 +170,7 @@ namespace ACTool
                     ClearTextAsset(LoadConfigPath);
                     string content = DictionaryChangeStr();
                     WriteTextAsset(LoadConfigPath, content);
-                    ACToolCoreExpansionDateSave.ACAssetDatabaseRefresh();
+                    ACCoreExpansion_DateSave.ACAssetDatabaseRefresh();
                 }
             }
             EditorGUILayout.EndHorizontal();
@@ -196,7 +188,7 @@ namespace ACTool
                     {
                         EditorGUILayout.LabelField($"删除文件:   {path}", EditorStyles.largeLabel);
                         if (GUILayout.Button("复制路径", GUILayout.Width(100)))
-                            ACToolCoreExpansionCopy.ACCopyWord(path);
+                            ACCoreExpansion_Copy.ACCopyWord(path);
                         if (GUILayout.Button("打开", GUILayout.Width(100)))
                             EditorUtility.RevealInFinder(path);
                         if (GUILayout.Button("删除", GUILayout.Width(100)))
@@ -207,7 +199,7 @@ namespace ACTool
                             ClearTextAsset(LoadConfigPath);
                             string content = DictionaryChangeStr();
                             WriteTextAsset(LoadConfigPath, content);
-                            ACToolCoreExpansionDateSave.ACAssetDatabaseRefresh();
+                            ACCoreExpansion_DateSave.ACAssetDatabaseRefresh();
                         }
                     }
                     EditorGUILayout.EndHorizontal();

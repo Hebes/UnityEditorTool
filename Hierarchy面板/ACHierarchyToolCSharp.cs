@@ -118,7 +118,7 @@ namespace ACTool
         {
             List<GameObject> gameObjects = new List<GameObject>();
             //获取所有的组件
-            ACToolCoreExpansionFind.ACLoopGetAllGameObject(ACToolCoreExpansionFind.ACGetGo.transform, ref gameObjects);
+            ACCoreExpansion_Find.ACLoopGetAllGameObject(ACCoreExpansion_Find.ACGetGo.transform, ref gameObjects);
             //移除自定义脚本
             for (int i = 0; i < gameObjects?.Count; i++)
                 gameObjects[i].ACRemoveScript(ACHierarchyToolCSharp_InputCustom);
@@ -129,7 +129,7 @@ namespace ACTool
         /// </summary>
         public static void ACRemoveSelectCustomScript()
         {
-            List<GameObject> gameObjects = ACToolCoreExpansionFind.ACGetObjs().ACGetGos();
+            List<GameObject> gameObjects = ACCoreExpansion_Find.ACGetObjs().ACGetGos();
             for (int i = 0; i < gameObjects?.Count; i++)
                 gameObjects[i].ACRemoveScript(ACHierarchyToolCSharp_InputCustom);
         }
@@ -139,7 +139,7 @@ namespace ACTool
         /// </summary>
         public static void ACAddSelectCustomScript()
         {
-            List<GameObject> gameObjects = ACToolCoreExpansionFind.ACGetObjs().ACGetGos();
+            List<GameObject> gameObjects = ACCoreExpansion_Find.ACGetObjs().ACGetGos();
             for (int i = 0; i < gameObjects?.Count; i++)
                 gameObjects[i].ACAddScript(ACHierarchyToolCSharp_InputCustom);
         }

@@ -55,7 +55,7 @@ namespace ACTool
             {
                 ACHierarchyToolReName_Prefix1 = EditorGUILayout.TextField("请输入组件查找前缀", ACHierarchyToolReName_Prefix1);
                 if (GUILayout.Button("复制", EditorStyles.miniButtonMid)) { ACHierarchyToolReName_Prefix1.ACCopyWord(); }
-                if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) { ACToolCoreExpansionFind.ACGetObjs().ACSaveModification(); }
+                if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) { ACCoreExpansion_Find.ACGetObjs().ACSaveModification(); }
                 if (GUILayout.Button("清除", EditorStyles.miniButtonMid))
                 {
                     ACHierarchyToolReName_Prefix1 = string.Empty;
@@ -67,20 +67,20 @@ namespace ACTool
             {
                 if (GUILayout.Button("获取前缀", EditorStyles.miniButtonMid))
                 {
-                    ACHierarchyToolReName_Prefix1 = ACToolCoreExpansionFind.ACGetObj().ACGetPrefix();
+                    ACHierarchyToolReName_Prefix1 = ACCoreExpansion_Find.ACGetObj().ACGetPrefix();
                 }
                 if (GUILayout.Button("前缀添加", EditorStyles.miniButtonMid))
                 {
-                    ACToolCoreExpansionFind.ACGetObjs().ACAddPrefixLoop(ACHierarchyToolReName_Prefix1);
+                    ACCoreExpansion_Find.ACGetObjs().ACChangePrefixLoop(ACHierarchyToolReName_Prefix1);
                 }
                 if (GUILayout.Button("去除前缀", EditorStyles.miniButtonMid))
                 {
-                    ACToolCoreExpansionFind.ACGetObjs().ACRemovePrefixLoop(ACHierarchyToolReName_Prefix1);
+                    ACCoreExpansion_Find.ACGetObjs().ACChangePrefixLoop(ACHierarchyToolReName_Prefix1, false);
                 }
             }
             EditorGUILayout.EndHorizontal();
 
-            if (GUILayout.Button("去除空白", EditorStyles.miniButtonMid)) { ACToolCoreExpansionFind.ACGetObjs().ClearTrims(" "); }
+            if (GUILayout.Button("去除空白", EditorStyles.miniButtonMid)) { ACCoreExpansion_Find.ACGetObjs().ACClearSpecificSymbolLoop("", " "); }
 
             EditorGUILayout.BeginHorizontal();
             {
@@ -110,7 +110,7 @@ namespace ACTool
                             int number = 0;
                             bool result = int.TryParse(ACHierarchyToolReName_SuffixNumber, out number); //i now = 108
                             if (!result) { Debug.Log("默认序列号添加"); }
-                            Array.ForEach(ACToolCoreExpansionFind.ACGetObjs(), (obj) =>
+                            Array.ForEach(ACCoreExpansion_Find.ACGetObjs(), (obj) =>
                             {
                                 string name = obj.name.Trim();//去除头尾空白字符串
                                 (obj as GameObject).name = $"{name}_{number}";
@@ -123,8 +123,8 @@ namespace ACTool
                     GUILayout.Space(5f); EditorGUILayout.LabelField("移除所有后缀", EditorStyles.largeLabel);
                     if (GUILayout.Button("移除所有后缀", EditorStyles.miniButtonMid))
                     {
-                        if (ACToolCoreExpansionFind.ACGetObjs().Length == 0) return;
-                        Array.ForEach(ACToolCoreExpansionFind.ACGetObjs(), (obj) =>
+                        if (ACCoreExpansion_Find.ACGetObjs().Length == 0) return;
+                        Array.ForEach(ACCoreExpansion_Find.ACGetObjs(), (obj) =>
                         {
                             if (obj.name.Contains("_")) { (obj as GameObject).name = obj.name.Split("_")[0]; }
                         });
@@ -136,8 +136,8 @@ namespace ACTool
                         ACHierarchyToolReName_REName = EditorGUILayout.TextField("输入新的名称", ACHierarchyToolReName_REName);
                         if (GUILayout.Button("物体重命名", EditorStyles.miniButtonMid))
                         {
-                            if (ACToolCoreExpansionFind.ACGetObjs().Length == 0) return;
-                            Array.ForEach(ACToolCoreExpansionFind.ACGetObjs(), (obj) =>
+                            if (ACCoreExpansion_Find.ACGetObjs().Length == 0) return;
+                            Array.ForEach(ACCoreExpansion_Find.ACGetObjs(), (obj) =>
                             {
                                 (obj as GameObject).name = ACHierarchyToolReName_REName;
                             });
@@ -149,13 +149,13 @@ namespace ACTool
                     ACHierarchyToolReName_OldChangeName = EditorGUILayout.TextField("老的名称", ACHierarchyToolReName_OldChangeName);
                     if (GUILayout.Button("获取老的关键词(请手动删除不需要的)", EditorStyles.miniButtonMid))
                     {
-                        ACHierarchyToolReName_OldChangeName = ACToolCoreExpansionFind.ACGetObj().name;
+                        ACHierarchyToolReName_OldChangeName = ACCoreExpansion_Find.ACGetObj().name;
                     }
                     ACHierarchyToolReName_NewChangeName = EditorGUILayout.TextField("输入新的名称", ACHierarchyToolReName_NewChangeName);
                     if (GUILayout.Button("物体重命名", EditorStyles.miniButtonMid))
                     {
-                        if (ACToolCoreExpansionFind.ACGetObjs().Length == 0) return;
-                        Array.ForEach(ACToolCoreExpansionFind.ACGetObjs(), (obj) =>
+                        if (ACCoreExpansion_Find.ACGetObjs().Length == 0) return;
+                        Array.ForEach(ACCoreExpansion_Find.ACGetObjs(), (obj) =>
                         {
                             if (obj.name.Contains(ACHierarchyToolReName_OldChangeName))
                             {

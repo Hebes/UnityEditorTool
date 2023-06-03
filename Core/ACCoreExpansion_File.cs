@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +7,7 @@ namespace ACTool
     /// <summary>
     /// 文件操作
     /// </summary>
-    public static class ACToolCoreExpansionFile
+    public static class ACCoreExpansion_File
     {
         /// <summary>
         /// 文件以追加写入的方式
@@ -51,20 +46,6 @@ namespace ACTool
             }
             folderPath.ACAssetDatabaseRefresh();
         }
-
-        /// <summary>
-        /// 设置单个资源的ABName
-        /// </summary>
-        /// <param name="abName"></param>
-        /// <param name="path">资源路径</param>
-        public static string ACSetABName(this string path, string abName)
-        {
-            AssetImporter ai = AssetImporter.GetAtPath(path);
-            if (ai != null)
-                ai.assetBundleName = abName;
-            return abName;
-        }
-
 
         /// <summary>
         /// 删除文件

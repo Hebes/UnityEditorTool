@@ -45,7 +45,7 @@ namespace ACTool
             ACHierarchyToolComponent_OhterTool_Prefab = (Font)EditorGUILayout.ObjectField(ACHierarchyToolComponent_OhterTool_Prefab, typeof(Font), true, GUILayout.MinWidth(100f));
             if (GUILayout.Button("修改选择的物体和子物体", EditorStyles.miniButtonMid))
             {
-                List<GameObject> gameObjects = ACToolCoreExpansionFind.ACGetGo.ACLoopGetKeywordGO(String.Empty);
+                List<GameObject> gameObjects = ACCoreExpansion_Find.ACGetGo.ACLoopGetKeywordGO(String.Empty);
                 gameObjects?.ForEach((go) =>
                 {
                     go.ACSetFont(ACHierarchyToolComponent_OhterTool_Prefab);
@@ -56,7 +56,7 @@ namespace ACTool
             GUILayout.Space(5f); EditorGUILayout.LabelField("去除组件RayCastTarget:", EditorStyles.largeLabel);
             if (GUILayout.Button($"去除组件RayCastTarget", EditorStyles.miniButtonMid)) 
             {
-                ACToolCoreExpansionFind.ACGetObjs().ClearRayCastTarget(); 
+                ACCoreExpansion_Find.ACGetObjs().ClearRayCastTarget(); 
             }
         }
     }

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace ACTool
 {
     /// <summary>
-    /// 标签类
+    /// 设置Ab包名称
     /// </summary>
-    public class ACToolCoreExpansionTag
+    public static class ACCoreExpansion_AB
     {
         /// <summary>
         /// 设置ab包名称
@@ -26,13 +21,16 @@ namespace ACTool
         }
 
         /// <summary>
-        /// 反射获取当前Game视图，提示编译完成
+        /// 设置单个资源的ABName
         /// </summary>
-        /// <param name="tips"></param>
-        public static void ShowNotification(string tips)
+        /// <param name="abName"></param>
+        /// <param name="path">资源路径</param>
+        public static string ACSetABName(this string path, string abName)
         {
-            var game = EditorWindow.GetWindow(typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
-            game?.ShowNotification(new GUIContent($"{tips}"));
+            AssetImporter ai = AssetImporter.GetAtPath(path);
+            if (ai != null)
+                ai.assetBundleName = abName;
+            return abName;
         }
     }
 }

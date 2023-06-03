@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
-using UnityEditor.Graphs;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace ACTool
 {
@@ -34,10 +30,6 @@ namespace ACTool
         {
             ACHierarchyPrefabChange();
         }
-       
-        
-
-        
 
         //***************************替换物体***************************
         private GameObject newPrefab { get; set; }//新的物体
@@ -242,7 +234,7 @@ namespace ACTool
         {
             //查找自定义的需要的组件
             List<GameObject> gameObjects = new List<GameObject>();
-            List<GameObject> obj = ACToolCoreExpansionFind.ACGetObjs().ACGetGos();
+            List<GameObject> obj = ACCoreExpansion_Find.ACGetObjs().ACGetGos();
             if (obj == null)
             {
                 Debug.Log("未选中物体");
@@ -335,7 +327,7 @@ namespace ACTool
         public static void AcGetComponentFind(Action<StringBuilder, GameObject, Type, string> action)
         {
             //获取所有的包含子物体和隐藏的
-            GameObject tempGo = ACToolCoreExpansionFind.ACGetGo;
+            GameObject tempGo = ACCoreExpansion_Find.ACGetGo;
             List<GameObject> gos = tempGo.ACLoopGetKeywordGO(ACHierarchyPanelCode_KeyValue);
             //删选带有组件的
             Type type = null;//获取类型

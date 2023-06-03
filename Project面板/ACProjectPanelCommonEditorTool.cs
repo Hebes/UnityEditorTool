@@ -87,7 +87,7 @@ namespace ACTool
                             //获取物体
                             UnityEngine.Object[] obj = Selection.objects;
                             ProjectObjAddPrefix(obj, InputGameObjectTransform);
-                            ACToolCoreExpansionDateSave.ACReAssets();
+                            ACCoreExpansion_DateSave.ACReAssets();
                         }
 
                         if (GUILayout.Button("移除前缀", EditorStyles.miniButtonMid))
@@ -95,7 +95,7 @@ namespace ACTool
                             //获取物体
                             UnityEngine.Object[] obj = Selection.objects;
                             ProjectObjRemoePrefix(obj, InputGameObjectTransform);
-                            ACToolCoreExpansionDateSave.ACReAssets();
+                            ACCoreExpansion_DateSave.ACReAssets();
                         }
                     }
                     EditorGUILayout.EndHorizontal();
@@ -129,7 +129,7 @@ namespace ACTool
                                 //    AssetDatabase.RenameAsset(path_g, nam11e);//改名API
                                 //}
                             }
-                            ACToolCoreExpansionDateSave.ACReAssets();
+                            ACCoreExpansion_DateSave.ACReAssets();
                         }
                         InputGameObjectTransformSuffixNumber = GUILayout.TextField(InputGameObjectTransformSuffixNumber, "BoldTextField");
                     }
@@ -158,7 +158,7 @@ namespace ACTool
                                 //    AssetDatabase.RenameAsset(path_g, nam11e);//改名API
                                 //}
                             }
-                            ACToolCoreExpansionDateSave.ACReAssets();
+                            ACCoreExpansion_DateSave.ACReAssets();
                         }
 
 
@@ -183,7 +183,7 @@ namespace ACTool
                                                                                     //改后缀
                                 AssetDatabase.RenameAsset(path_g, InputGameObjectTransformReName + "_" + i);//改名API
                             }
-                            ACToolCoreExpansionDateSave.ACReAssets();
+                            ACCoreExpansion_DateSave.ACReAssets();
                         }
                         InputGameObjectTransformReName = GUILayout.TextField(InputGameObjectTransformReName, "BoldTextField");
                     }
@@ -205,7 +205,7 @@ namespace ACTool
                                 string nam11e = name.Replace(InputGameObjectTransformClear, "");//清除
                                 AssetDatabase.RenameAsset(path_g, nam11e);//改名API
                             }
-                            ACToolCoreExpansionDateSave.ACReAssets();
+                            ACCoreExpansion_DateSave.ACReAssets();
                         }
                         InputGameObjectTransformClear = GUILayout.TextField(InputGameObjectTransformClear, "BoldTextField");
                     }

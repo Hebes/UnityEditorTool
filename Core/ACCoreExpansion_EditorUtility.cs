@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using UnityEditor;
 
 namespace ACTool
 {
-    public static class ACToolCoreExpansionEditorUtility
+    public static class ACCoreExpansion_EditorUtility
     {
         /// <summary>
         /// 打开路径
