@@ -28,7 +28,8 @@ public class ExcelConvertor
 
         if (string.IsNullOrEmpty(_excelPath) || string.IsNullOrEmpty(_outputPath) || string.IsNullOrEmpty(_excelExtension))
         {
-            Debug.WriteLine("Excute some path is null or empty");
+            //Debug.WriteLine("Excute some path is null or empty");
+            Debug.Log("Excute some path is null or empty");
             return;
         }
 

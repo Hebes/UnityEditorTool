@@ -1,0 +1,1 @@
+要用这个工具,请把AStarMapEdit/Scripts移出编辑器目录

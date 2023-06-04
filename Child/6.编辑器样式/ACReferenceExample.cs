@@ -8,7 +8,7 @@ using UnityEditor;
 public class EditorGUILayoutOtherExample : EditorWindow
 {
     //PropertyField  GetControlRect  PrefixLabel
-    [MenuItem("EditorGUILayout模板/参考样例1")]
+    [MenuItem("Tools/EditorGUILayout模板/参考样例1")]
     static void Init()
     {
         EditorGUILayoutOtherExample window = (EditorGUILayoutOtherExample)EditorWindow.GetWindow(typeof(EditorGUILayoutOtherExample));
