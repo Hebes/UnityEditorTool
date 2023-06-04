@@ -11,7 +11,7 @@ namespace ACTool
         private int mapZ = 64;
         private int blockSize = 8;
         int blockHeight = 8;
-        private string blockPath = "Assets/UnityEditorTool/Child/AStart地图数据/AStarMapEdit/Res/Cube.prefab";
+        private string blockPath = "Assets/UnityEditorTool/Child/07.AStart地图数据/AStarMapEdit/Res/Cube.prefab";
 
         [MenuItem("Assets/暗沉EditorTool/AStart/地图数据生成MapEidtorGen")]
         static void run()
@@ -68,7 +68,11 @@ namespace ACTool
                 }
             }
         }
-
+        
+        /// <summary>
+        /// 重置地图
+        /// </summary>
+        /// <param name="org"></param>
         private void ResetBlocks(GameObject org)
         {
             int count = org.transform.childCount;
@@ -80,9 +84,12 @@ namespace ACTool
             }
         }
 
+        /// <summary>
+        /// 清理地图
+        /// </summary>
+        /// <param name="org"></param>
         private void ClearBlocksAt(GameObject org)
         {
-
             int count = org.transform.childCount;
             for (int i = 0; i < count; i++)
             {

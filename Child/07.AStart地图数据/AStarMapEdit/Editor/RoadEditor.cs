@@ -13,7 +13,8 @@ namespace ACTool
         private bool placing = false;
         private bool enterPlacingBatMode = false;
 
-        private string mapPath = "Assets/AssetsPackage/Maps/SGYD/mapTex.asset";
+        //private string mapPath = "Assets/AssetsPackage/Maps/SGYD/mapTex.asset";
+        private string mapPath = "Assets/UnityEditorTool/Child/07.AStart地图数据/AStarMapEdit/SGYD/mapTex.asset";
 
         void changeMapValue(ref RaycastHit hitInfo)
         {
@@ -31,14 +32,10 @@ namespace ACTool
 
         public void OnSceneGUI()
         {
-            if (this.placing == false)
-            {
-                return;
-            }
+            if (this.placing == false) return;
 
             if (Event.current.type == EventType.KeyDown)
             {
-
                 if (Event.current.keyCode == KeyCode.Space)
                 { // 连续模式
                     Event.current.Use();
@@ -66,23 +63,13 @@ namespace ACTool
             }
             // end 
 
-            if (this.enterPlacingBatMode == false)
-            {
-                return;
-            }
-
+            if (this.enterPlacingBatMode == false) return;
 
             // 连续模式
             Ray worldRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
             RaycastHit hitInfo;
-            if (!Physics.Raycast(worldRay, out hitInfo))
-            {
-                return;
-            }
-            if (hitInfo.collider.gameObject.name != "block")
-            {
-                return;
-            }
+            if (!Physics.Raycast(worldRay, out hitInfo)) return;
+            if (hitInfo.collider.gameObject.name != "block") return;
             // end 
 
             this.setMapValue(ref hitInfo, 1);
@@ -91,19 +78,12 @@ namespace ACTool
         void setMapValue(ref RaycastHit hitInfo, int value)
         {
             BlockData data = hitInfo.collider.gameObject.GetComponent<BlockData>();
-            if (data == null)
-            {
-                return;
-            }
+            if (data == null) return;
             data.isGo = value;
             if (data.isGo == 1)
-            {
                 hitInfo.collider.gameObject.GetComponent<MeshRenderer>().enabled = false;
-            }
             else
-            {
                 hitInfo.collider.gameObject.GetComponent<MeshRenderer>().enabled = true;
-            }
         }
 
         public static SceneView GetSceneView()
@@ -146,6 +126,10 @@ namespace ACTool
                 this.enterPlacingBatMode = false;
                 this.ExportMapBitMap();
             }
+
+            GUILayout.Label("空格键按下连续模式");
+            GUILayout.Label("C键单点模式");
+            GUILayout.Label("当前地图是512*512,block大小为8,按照一个方块8的大小,8*8=64");
         }
 
         private void ExportMapBitMap()
