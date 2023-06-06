@@ -157,6 +157,24 @@ namespace ACTool
         }
 
         /// <summary>
+        /// 获取Hierarchy全部物体
+        /// </summary>
+        /// <returns></returns>
+        public static List<UnityEngine.Object> ACGetHierarchyAllGameObject()
+        {
+            return Resources.FindObjectsOfTypeAll<UnityEngine.Object>().ToList();
+        }
+
+        /// <summary>
+        /// 获取所有物体
+        /// </summary>
+        /// <returns></returns>
+        public static List<UnityEngine.Object> ACGetResourcesAllObject()
+        {
+            return Resources.FindObjectsOfTypeAll<UnityEngine.Object>().ToList();
+        }
+
+        /// <summary>
         /// 查找子物体.(PS:适用于单个,代码中可直接用,可找到隐藏物体)
         /// </summary>
         /// <param name="transform"></param>
@@ -246,7 +264,7 @@ namespace ACTool
         /// </summary>
         public static string ACGetAssetDataPath(this UnityEngine.Object @object)
         {
-          return  AssetDatabase.GetAssetPath(@object);
+            return AssetDatabase.GetAssetPath(@object);
         }
     }
 }
