@@ -41,13 +41,13 @@ public class ScreenCaptureEditor : EditorWindow
         GUILayout.Label("保存路径: " + directory);
     }
 
-    [MenuItem("Tools/Screenshots/打开窗口 &`", false, 0)]
+    [MenuItem("Assets/暗沉EditorTool/其他/Screenshots/打开窗口 &`", false, 0)]
     public static void ShowWindow()
     {
         GetWindow(typeof(ScreenCaptureEditor));
     }
 
-    [MenuItem("Tools/Screenshots/存储路径 &2", false, 2)]
+    [MenuItem("Assets/暗沉EditorTool/其他//Screenshots/存储路径 &2", false, 2)]
     private static void ShowFolder()
     {
         if (File.Exists(latestScreenshotPath))
@@ -59,7 +59,7 @@ public class ScreenCaptureEditor : EditorWindow
         EditorUtility.RevealInFinder(directory);
     }
 
-    [MenuItem("Tools/Screenshots/单张截图 &1", false, 1)]
+    [MenuItem("Assets/暗沉EditorTool/其他//Screenshots/单张截图 &1", false, 1)]
     private static void TakeScreenshot()
     {
         Directory.CreateDirectory(directory);

@@ -49,7 +49,7 @@ public class AssetsProject : MonoBehaviour
     private static string prefabLoadPath = "Prefabs";//Resourcesm目录下的
     private static string ClassName = "ConfigUIPrefab";
 
-    [MenuItem("Assets/生成prefab的配置文件")]
+    [MenuItem("Assets/暗沉EditorTool/其他/生成prefab的配置文件")]
     public static void SearchPrefab()
     {
         //输出内容

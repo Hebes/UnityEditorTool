@@ -23,7 +23,7 @@ public class CreatAnimation : Editor
     //private static string ImagePath = Application.dataPath + "";
 
 
-    [MenuItem("Assets/批量生成动画")]
+    [MenuItem("Assets/暗沉EditorTool/其他/批量生成动画")]
     public static void BuildAniamtion()
     {
         DirectoryInfo raw = new DirectoryInfo(ImagePath);
