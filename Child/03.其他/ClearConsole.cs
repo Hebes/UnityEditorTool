@@ -16,7 +16,7 @@ public class ClearConsole
     //	clearMethod.Invoke(null, null);
     //}
 
-    [MenuItem("Assets/Clear Console(键盘左上角[`]) _`")] // Ctrl + ALT + C 避免与唤出控制台的快捷方式冲突
+    [MenuItem("Assets/暗沉EditorTool/其他/Clear Console(键盘左上角[`]) _`")] // Ctrl + ALT + C 避免与唤出控制台的快捷方式冲突
     public static void ClearConsole1()
     {
         Assembly assembly = Assembly.GetAssembly(typeof(SceneView));

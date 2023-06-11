@@ -76,9 +76,6 @@
 //                        if (!path.ACFolderExist()) return;
 //                        ($"{path}/").ACOpenPath();
 //                    }
-//                    //******************************编译代码******************************
-//                    GUILayout.Space(5f); EditorGUILayout.LabelField("编译代码:", EditorStyles.largeLabel);
-//                    if (GUILayout.Button("编译代码", EditorStyles.miniButtonMid)) { BuildCode(); }
 //                    //******************************ReferenceCollector自动化组件专用******************************
 //                    GUILayout.Space(5f); EditorGUILayout.LabelField("ReferenceCollector自动设置:", EditorStyles.largeLabel);
 //                    if (GUILayout.Button("ReferenceCollector自动化组件专用", EditorStyles.miniButtonMid)) { ETReferenceCollectorTool(); }
@@ -268,16 +265,6 @@
 //            sb.AppendLine("#endregion");
 //            GUIUtility.systemCopyBuffer = sb.ToString();//复制
 //            Debug.Log(sb.ToString());
-//        }
-
-//        /// <summary>
-//        /// 编译代码
-//        /// </summary>
-//        [MenuItem("Tools/Build/BuildCodeDebug-ac _F5 ")]
-//        public static void BuildCode()
-//        {
-//            ET.BuildAssemblieEditor.BuildCodeDebug();
-//            //ET.BuildAssemblieEditor.BuildCodeRelease();
 //        }
 
 //        /// <summary>

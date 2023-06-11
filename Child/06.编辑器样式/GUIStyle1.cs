@@ -5,7 +5,7 @@ namespace ACTool
 {
     public sealed class GUIStyle1 : EditorWindow
     {
-        [MenuItem("Tools/EditorGUILayout模板/参考样例3")]
+        [MenuItem("Assets/暗沉EditorTool/其他/EditorGUILayout模板/参考样例3")]
         private static void OpenGUIStyle()
         {
             GetWindow<GUIStyle1>().Show();
