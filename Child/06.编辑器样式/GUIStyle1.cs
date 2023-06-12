@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace ACTool
 {
-    public sealed class GUIStyle : EditorWindow
+    public sealed class GUIStyle1 : EditorWindow
     {
         [MenuItem("Assets/暗沉EditorTool/其他/EditorGUILayout模板/参考样例3")]
         private static void OpenGUIStyle()
         {
-            GetWindow<GUIStyle>().Show();
+            GetWindow<GUIStyle1>().Show();
         }
 
         private UnityEngine.GUIStyle[] styles;
