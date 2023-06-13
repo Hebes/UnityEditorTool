@@ -11,6 +11,7 @@ namespace ACTool
         private string number { get; set; }
         private string PlayerPrefsKey { get; set; } = "key";
         private Vector2 scrollPosition { get; set; }
+        private string info { get; set; }=string.Empty;
 
 
         [MenuItem("Assets/暗沉工具面板Alt+Q &Q")]//#E
@@ -30,6 +31,8 @@ namespace ACTool
         private void Awake()
         {
             number = PlayerPrefs.GetString(PlayerPrefsKey);
+            if (number == null)
+                number = btnNameList[0];
         }
 
         /// <summary>
@@ -59,9 +62,10 @@ namespace ACTool
                                 PlayerPrefs.SetString(PlayerPrefsKey, btnNameList[i]);
                             }
                         }
+                        GUILayout.Space(5);
                     }
                     EditorGUILayout.EndScrollView();
-
+                    
                     GUILayout.Space(5);
                     LetfV2ScrollView = EditorGUILayout.BeginScrollView(LetfV2ScrollView, GUILayout.Height(position.height - 20));
                     {
@@ -99,11 +103,50 @@ namespace ACTool
                                     case "Project重命名后缀":
                                         ACProjectToolReName.ACProjectSuffix();
                                         break;
-                                    case "Project重命名重命名":
+                                    case "Project重命名1":
                                         ACProjectToolReName.ACProjectReName();
                                         break;
                                     case "创建目录":
                                         ACCreatBaseDirectory.OnShow();
+                                        break;
+                                    case "ET工具集合":
+                                        ETUITool.OnShow();
+                                        break;
+                                    case "编辑器样式":
+                                        EditorGUILayout.BeginHorizontal();
+                                        if (GUILayout.Button("样式1"))
+                                            CreateInstance<ACGUIStyle1>().Show();
+                                        if (GUILayout.Button("关闭"))
+                                            GetWindow<ACGUIStyle1>().Close();
+                                        EditorGUILayout.EndHorizontal();
+
+                                        EditorGUILayout.BeginHorizontal();
+                                        if (GUILayout.Button("样式5"))
+                                            CreateInstance<ACGUIStyle5>().Show();
+                                        if (GUILayout.Button("关闭"))
+                                            GetWindow<ACGUIStyle5>().Close();
+                                        EditorGUILayout.EndHorizontal();
+
+                                        EditorGUILayout.BeginHorizontal();
+                                        if (GUILayout.Button("样式4"))
+                                            CreateInstance<ACGUIStyle4>().Show();
+                                        if (GUILayout.Button("关闭"))
+                                            GetWindow<ACGUIStyle4>().Close();
+                                        EditorGUILayout.EndHorizontal();
+
+                                        EditorGUILayout.BeginHorizontal();
+                                        if (GUILayout.Button("组件1"))
+                                            CreateInstance<ACEditorComponent1>().Show();
+                                        if (GUILayout.Button("关闭"))
+                                            GetWindow<ACEditorComponent1>().Close();
+                                        EditorGUILayout.EndHorizontal();
+
+                                        EditorGUILayout.BeginHorizontal();
+                                        if (GUILayout.Button("组件2"))
+                                            CreateInstance<ACEditorComponent2>().Show();
+                                        if (GUILayout.Button("关闭"))
+                                            GetWindow<ACEditorComponent2>().Close();
+                                        EditorGUILayout.EndHorizontal();
                                         break;
                                 }
                             }
@@ -130,9 +173,16 @@ namespace ACTool
             "场景获取工具",
             "Project重命名前缀",
             "Project重命名后缀",
-            "Project重命名重命名",
+            "Project重命名1",
             "创建目录",
+            "ET工具集合",
+            "编辑器样式",
         };
         public Vector2 LetfV2ScrollView { get; private set; }
+
+        private static void OnShowOInfo()
+        {
+            GUILayout.BeginHorizontal();
+        }
     }
 }

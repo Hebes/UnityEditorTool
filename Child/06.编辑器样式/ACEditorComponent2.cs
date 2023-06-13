@@ -1,20 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEditor;
 using UnityEngine;
-using UnityEditor;
 /// <summary>
 /// Unity 5.6   
 /// </summary>
-public class EditorGUILayoutOtherExample : EditorWindow
+public class ACEditorComponent2 : EditorWindow
 {
-    //PropertyField  GetControlRect  PrefixLabel
-    [MenuItem("Assets/暗沉EditorTool/其他/EditorGUILayout模板/参考样例1")]
-    static void Init()
-    {
-        EditorGUILayoutOtherExample window = (EditorGUILayoutOtherExample)EditorWindow.GetWindow(typeof(EditorGUILayoutOtherExample));
-        window.Show();
-    }
-
     #region  DropdownButton
     private string m_itemString = "";
     #endregion

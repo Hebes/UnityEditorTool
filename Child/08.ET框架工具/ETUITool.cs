@@ -1,4 +1,4 @@
-﻿#define TEST
+﻿// 定义宏#define TEST
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,8 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-#if !TEST
+//使用宏定义  File -> Build Settings -> Player Settings -> Player -> Script Compilation 添加ACTool
+#if ACTool
 namespace ACTool
 {
     public class ETUITool : EditorWindow
@@ -16,14 +17,7 @@ namespace ACTool
         public static string ETUITool_ClassName { get; set; }
         public static string ETUITool_ETClassName { get; private set; }
 
-        //[MenuItem("Assets/暗沉EditorTool/文件操作面板")]//#E
-        [MenuItem("Assets/暗沉EditorTool/ET专用工具-暗沉(Shift+E) #E")]//#E UI组件获取工具/
-        public static void GeneratorFindComponentTool()
-        {
-            GetWindow(typeof(ETUITool), false, "ET工具-暗沉").Show();
-        }
-
-        private void OnGUI()
+        public static void OnShow()
         {
             ACHierarchyToolReNameReName.ACHierarchyPrefix();
             OnETUITool();
@@ -68,14 +62,14 @@ namespace ACTool
                             buildMap[i].assetNames = enemyAssets;
                         }
                         string path = "F:/test";// "F:\\Yet\\Project\\Mate\\Release\\PC\\StreamingAssets\\StreamingAssets";
-                        path.ACChackFolder();
+                        path.ACFolderCreat();
                         BuildPipeline.BuildAssetBundles(path, buildMap, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
                         ($"{path}/").ACOpenPath();
                     }
                     if (GUILayout.Button("进入目录", EditorStyles.miniButtonMid))
                     {
                         string path = "F:/test";
-                        if (!path.ACFolderExist()) return;
+                        if (!path.ACFolderChack()) return;
                         ($"{path}/").ACOpenPath();
                     }
                     //******************************ReferenceCollector自动化组件专用******************************
@@ -359,5 +353,4 @@ namespace ACTool
         }
     }
 }
-
 #endif

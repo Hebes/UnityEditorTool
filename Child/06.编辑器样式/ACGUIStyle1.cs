@@ -3,19 +3,18 @@ using UnityEngine;
 
 namespace ACTool
 {
-    public sealed class GUIStyle1 : EditorWindow
+    public sealed class ACGUIStyle1 : EditorWindow
     {
-        [MenuItem("Assets/暗沉EditorTool/其他/EditorGUILayout模板/参考样例3")]
-        private static void OpenGUIStyle()
-        {
-            GetWindow<GUIStyle1>().Show();
-        }
-
         private UnityEngine.GUIStyle[] styles;
         private Vector2 scroll = Vector2.zero;
         private string searchContent = "";
 
         private void OnGUI()
+        {
+            OnShow();
+        }
+
+        public void OnShow()
         {
             if (styles == null)
             {
