@@ -1,44 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
+
+/*--------脚本描述-----------
+				
+电子邮箱：
+	1607388033@qq.com
+作者:
+	暗沉
+描述:
+    组件设置
+
+-----------------------*/
 
 namespace ACTool
 {
-    public  class ACHierarchyToolComponent : EditorWindow
+    public class ACHierarchyToolComponent : EditorWindow
     {
-
-        [MenuItem("Assets/暗沉EditorTool/Hierarchy面板/组件工具")]//#E
-        public static void GeneratorFindComponentTool()
-        {
-            GetWindow(typeof(ACHierarchyToolComponent), false, "Hierarchy面板组件工具").Show();
-        }
-
-        private void OnGUI()
-        {
-            ACHierarchyOhterTool();
-        }
-
-        /// <summary>
-        /// 刷新界面
-        /// </summary>
-        void OnInspectorUpdate()
-        {
-            // Call Repaint on OnInspectorUpdate as it repaints the windows
-            // less times as if it was OnGUI/Update
-            Repaint();
-        }
-
         private static Font ACHierarchyToolComponent_OhterTool_Prefab { get; set; }
 
         /// <summary>
         /// HierarchyPanel其他工具
         /// </summary>
-        public static void ACHierarchyOhterTool()
+        public static void OnShow()
         {
             EditorGUILayout.Space(5f); EditorGUILayout.LabelField("修改组件Text字体设置", EditorStyles.boldLabel);
             //******************************Text组件*****************************

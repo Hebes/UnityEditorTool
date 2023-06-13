@@ -45,7 +45,7 @@ namespace AC
                             string strName = str[str.Length - 1];//物体的名称
                             string newPath = $"{path_g.Split('.')[1]}/Model";//新的文件夹路径
                             //创建文件夹
-                            newPath.ACChackFolder();
+                            newPath.ACFolderCreat();
                             //移动物体
                             string strMoveInfo = AssetDatabase.MoveAsset(path_g, $"{newPath}/{strName}");
                             Debug.Log(strMoveInfo);

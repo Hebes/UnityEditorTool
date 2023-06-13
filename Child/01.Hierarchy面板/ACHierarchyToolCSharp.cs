@@ -1,47 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*--------脚本描述-----------
+				
+电子邮箱：
+	1607388033@qq.com
+作者:
+	暗沉
+描述:
+    脚本
+
+-----------------------*/
+
 namespace ACTool
 {
-    /// <summary>
-    /// 物体脚本
-    /// </summary>
     public class ACHierarchyToolCSharpCSharp : EditorWindow
     {
-        [MenuItem("Assets/暗沉EditorTool/Hierarchy面板/物体脚本操作")]//#E
-        public static void GeneratorFindComponentTool()
-        {
-            GetWindow(typeof(ACHierarchyToolCSharpCSharp), false, "Hierarchy面板物体脚本操作").Show();
-        }
-
-        private void OnGUI()
-        {
-            ACHierarchyRemoveDemo();
-        }
-
-        /// <summary>
-        /// 刷新界面
-        /// </summary>
-        void OnInspectorUpdate()
-        {
-            // Call Repaint on OnInspectorUpdate as it repaints the windows
-            // less times as if it was OnGUI/Update
-            Repaint();
-        }
-
         private static Vector2 ACHierarchyToolCSharpCSharp_ScrollRoot { get; set; }//滑动条
         private static string ACHierarchyToolCSharp_InputCustom { get; set; }//输入自定义
 
         /// <summary>
         /// 移除脚本
         /// </summary>
-        public static void ACHierarchyRemoveDemo()
+        public static void OnShow()
         {
             ACHierarchyToolCSharpCSharp_ScrollRoot = EditorGUILayout.BeginScrollView(ACHierarchyToolCSharpCSharp_ScrollRoot); //开启滚动视图
             {

@@ -38,7 +38,7 @@ namespace ACTool
         {
             BaseDirectoryList?.ForEach(baseDirectory =>
             {
-                baseDirectory.ACChackFolder();
+                baseDirectory.ACFileCreat();
             });
         }
     }

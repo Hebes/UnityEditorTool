@@ -33,7 +33,7 @@ namespace ACTool
         private void OnGUI()
         {
             ACHierarchyToolReNameReName.ACHierarchyPrefix();
-            ACHierarchyTool.ACHierarchyPanelGetCode();
+            ACHierarchyGetCode.OnShow();
             OnUIAutoForTransformNoPath();
         }
 

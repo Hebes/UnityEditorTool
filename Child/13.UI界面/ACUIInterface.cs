@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,142 +6,105 @@ namespace ACTool
 {
     public class ACUIInterface : EditorWindow
     {
-        private Vector2 scrollRoot;
-        private int gridId;
-        private UnityEngine.Color m_color;
-        private GUIContent colorTitle = new GUIContent("颜色选择");
-        private float vSbarValue;
-        private Vector2 ttt;
-
-        // The variable to control where the scrollview 'looks' into its child elements.
-        Vector2 scrollPosition;
-
-        // The string to display inside the scrollview. 2 buttons below add &amp; clear this string.
-        string longString = "This is a long-ish string";
-
-        [MenuItem("Assets/暗沉EditorTool/UI界面")]//#E
-        public static void GeneratorFindComponentTool()
+        private List<string> btnNameList { get; set; } = new List<string>()
         {
-            GetWindow(typeof(ACUIInterface), false, "UI界面").Show();
+            "Hierarchy替换物体",
+            "Hierarchy获取代码",
+            "Hierarchy组件设置",
+            "移除脚本",
+            "Hierarchy重命名",
+            //"Hierarchy后缀重命名",
+            "显示",
+        };
+        private string number { get; set; }
+        private string PlayerPrefsKey { get; set; } = "key";
+        private Vector2 scrollPosition { get; set; }
+
+
+        [MenuItem("Assets/暗沉工具面板Alt+Q &Q")]//#E
+        public static void OnShow()
+        {
+            //https://docs.unity3d.com/cn/2020.3/ScriptReference/EditorWindow.GetWindow.html
+            //https://docs.unity3d.com/cn/2020.3/ScriptReference/EditorWindow.html
+            EditorWindow tempWindow = GetWindow(typeof(ACUIInterface), false, "UI界面");
+            if (EditorWindow.HasOpenInstances<ACUIInterface>())
+                tempWindow.Show();
         }
+
+        [MenuItem("Assets/暗沉工具面板Alt+Q &Q")]
+        public static void OnHide()
+        {
+            EditorWindow tempWindow = GetWindow(typeof(ACUIInterface), false, "UI界面");
+            if (EditorWindow.HasOpenInstances<ACUIInterface>())
+                tempWindow.Close();
+        }
+
+        //https://docs.unity3d.com/cn/2020.3/ScriptReference/EditorWindow.html
+        private void Awake()
+        {
+            number = PlayerPrefs.GetString(PlayerPrefsKey);
+        }
+
+        //https://docs.unity3d.com/cn/2020.3/ScriptReference/EditorWindow.html
+        /// <summary>
+        /// 刷新界面
+        /// </summary>
+        void OnInspectorUpdate()
+        {
+            Repaint();
+        }
+
 
         private void OnGUI()
         {
-            //scrollPosition = GUILayout.BeginScrollView(
-            //scrollPosition, GUILayout.Width(100), GUILayout.Height(100));
-
-            //// We just add a single label to go inside the scroll view. Note how the
-            //// scrollbars will work correctly with wordwrap.
-            //GUILayout.Label(longString);
-
-            //// Add a button to clear the string. This is inside the scroll area, so it
-            //// will be scrolled as well. Note how the button becomes narrower to make room
-            //// for the vertical scrollbar
-            //if (GUILayout.Button("Clear"))
-            //    longString = "";
-            // if (GUILayout.Button("Clear"))
-            //    longString = "";
-            // if (GUILayout.Button("Clear"))
-            //    longString = "";
-            // if (GUILayout.Button("Clear"))
-            //    longString = "";
-            // if (GUILayout.Button("Clear"))
-            //    longString = "";
-            // if (GUILayout.Button("Clear"))
-            //    longString = "";
-
-            //// End the scrollview we began above.
-            //GUILayout.EndScrollView();
-
-            //// Now we add a button outside the scrollview - this will be shown below
-            //// the scrolling area.
-            //if (GUILayout.Button("Add More Text"))
-            //    longString += "\nHere is another line";
-
             GUILayout.BeginArea(new Rect(5, 5, position.width - 10, position.height - 10), new GUIStyle("LODBlackBox"));
             {
                 GUILayout.Space(5);
                 EditorGUILayout.BeginHorizontal();
                 {
-                    //vSbarValue = GUILayout.VerticalScrollbar(vSbarValue, 700f, 700f, 100.0f);
                     GUILayout.Space(5);
-                    scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, "Wizard Box", GUILayout.Height(position.height - 20));
+                    scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, "Wizard Box", GUILayout.Height(position.height - 20), GUILayout.Width(150));
                     {
-                        //gridId = GUILayout.SelectionGrid(gridId, new[] { "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "311", "2", "3", "1", "2", "312" }, 1, GUILayout.Height(position.height - 25));
-                        if (GUILayout.Button("测hi是", GUILayout.Height(50)))
+                        GUILayout.Space(5);
+                        for (int i = 0; i < btnNameList.Count; i++)
                         {
-
+                            if (GUILayout.Button(btnNameList[i], GUILayout.Height(40)))
+                            {
+                                number = btnNameList[i];
+                                PlayerPrefs.SetString(PlayerPrefsKey, btnNameList[i]);
+                            }
                         }
-                        if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                        if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                        if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                        if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                        if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                        if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                        if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                         if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                         if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                         if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                         if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                         if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-                         if (GUILayout.Button("测hi是", GUILayout.Height(50)))
-                        {
-
-                        }
-
                     }
                     EditorGUILayout.EndScrollView();
 
-                    //EditorGUILayout.BeginVertical("Wizard Box", GUILayout.Height(position.height - 20), GUILayout.Width(200));
-                    //{
-                    //    gridId = GUILayout.SelectionGrid(gridId, new[] { "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "311" }, 1, GUILayout.Height(position.height-25));
-                    //}
-                    //EditorGUILayout.EndVertical(); 
-
                     GUILayout.Space(5);
-                    EditorGUILayout.BeginHorizontal("Wizard Box", GUILayout.Width(position.width - 200), GUILayout.Height(position.height - 20));
+                    EditorGUILayout.BeginHorizontal("Wizard Box", GUILayout.Width(position.width - 175), GUILayout.Height(position.height - 20));
                     {
+                        GUILayout.Space(5);
                         EditorGUILayout.BeginVertical();
                         {
-                            m_color = EditorGUILayout.ColorField(colorTitle, m_color, true, true, true);
+                            switch (number)
+                            {
+                                case "Hierarchy替换物体":
+                                    ACHierarchyPrefabChange.OnShow();
+                                    break;
+                                case "Hierarchy获取代码":
+                                    ACHierarchyGetCode.OnShow();
+                                    break;
+                                case "Hierarchy组件设置":
+                                    ACHierarchyToolComponent.OnShow();
+                                    break;
+                                case "移除脚本":
+                                    ACHierarchyToolCSharpCSharp.OnShow();
+                                    break;
+                                case "Hierarchy重命名":
+                                    ACHierarchyToolReNameReName.OnShow();
+                                    break;
+
+                            }
                         }
                         EditorGUILayout.EndVertical();
+                        GUILayout.Space(5);
                     }
                     EditorGUILayout.EndHorizontal();
                     GUILayout.Space(5);

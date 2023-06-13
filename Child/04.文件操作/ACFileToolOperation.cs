@@ -121,7 +121,7 @@ namespace ACTool
                         {
                             //创建文件夹
                             string str = path.Replace(ACFileToolOperation_SelectPath, ACFileToolOperation_NewPathName);
-                            str.ACChackFolder();
+                            str.ACFolderCreat();
 
                             //移动文件
                             string[] filePaths = Directory.GetFiles(path, "*", SearchOption.AllDirectories);

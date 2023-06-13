@@ -1,40 +1,31 @@
-﻿using ACTool;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using UnityEditor;
 using UnityEngine;
 
+/*--------脚本描述-----------
+				
+电子邮箱：
+	1607388033@qq.com
+作者:
+	暗沉
+描述:
+    重命名
+
+-----------------------*/
+
 namespace ACTool
 {
-    /// <summary>
-    /// 重命名
-    /// </summary>
     public class ACHierarchyToolReNameReName : EditorWindow
     {
-        [MenuItem("Assets/暗沉EditorTool/Hierarchy面板/重命名")]//#E
-        public static void GeneratorFindComponentTool()
-        {
-            GetWindow(typeof(ACHierarchyToolReNameReName), false, "Hierarchy面板重命名").Show();
-        }
-
-        private void OnGUI()
+        /// <summary>
+        /// 重命名
+        /// </summary>
+        public static void OnShow()
         {
             ACHierarchyPrefix();
             ACHierarchySuffix();
         }
 
-        /// <summary>
-        /// 刷新界面
-        /// </summary>
-        void OnInspectorUpdate()
-        {
-            // Call Repaint on OnInspectorUpdate as it repaints the windows
-            // less times as if it was OnGUI/Update
-            Repaint();
-        }
 
         private static Vector2 ACHierarchyToolReName_ScrollRoot { get; set; }//滑动条
         public static string ACHierarchyToolReName_Prefix1 { get; set; }//前缀
