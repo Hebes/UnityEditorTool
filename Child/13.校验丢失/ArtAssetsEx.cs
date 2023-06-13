@@ -44,6 +44,8 @@ public class ArtAssetsEx : EditorWindow
     }
     static public string[] _toolStr = { "浏览器", "设置" };
     static public int _selectTool;
+
+    [System.Obsolete]
     void OnGUI()
     {
         _selectTool = GUILayout.Toolbar(_selectTool, _toolStr);
@@ -99,6 +101,8 @@ public class ArtAssetsEx : EditorWindow
         }
     }
     Vector2 pos;
+
+    [System.Obsolete]
     void ShowTest()
     {
         bool change = false;
@@ -244,6 +248,8 @@ public class AllAssetsData
         }
         return -1;
     }
+
+    [System.Obsolete]
     public void OnGUI(int _SelectAssetType, ArtFindSet set)
     {
         if (_SelectAssetType >= 0 && _SelectAssetType < _data.Count)
@@ -365,6 +371,8 @@ public class AssetUsedData
             }
         }
     }
+
+    [System.Obsolete]
     public void OnGUI()
     {
         EditorGUILayout.BeginVertical();

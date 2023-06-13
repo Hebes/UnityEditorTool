@@ -7,61 +7,73 @@ namespace ACTool
 {
     public class ACProjectToolReName : EditorWindow
     {
-        public static string ACProjectReName_Prefix { get; private set; }
-        public static Vector2 ACProjectReName_ScrollRoot { get; private set; }
-        public static string InputSuffixNumber { get; private set; }
-        public static string ACProjectReName_SuffixNumber { get; private set; }
-        public static string ACProjectReName_Suffix { get; private set; }
-        public static string ACProjectReName_REName { get; private set; }
-        public static string ACProjectReName_OldChangeName { get; private set; }
-        public static string ACProjectReName_NewChangeName { get; private set; }
+        private static string Prefix { get; set; }
+        private static string SuffixNumber { get; set; }
+        private static string Suffix { get; set; }
+        private static string REName { get; set; }
+        private static string OldChangeName { get; set; }
+        private static string NewChangeName { get; set; }
 
+        /// <summary>
+        /// 重命名显示
+        /// </summary>
+        public static void OnShow()
+        {
+            ACProjectPrefix();
+            ACProjectSuffix();
+            ACProjectReName();
+        }
 
         //*******************************前缀*******************************
 
         public static void ACProjectPrefix()
         {
-            EditorGUILayout.Space(5f); EditorGUILayout.LabelField("Project前缀工具", EditorStyles.boldLabel);
-            //******************************添加前缀******************************
-            EditorGUILayout.Space(5f); EditorGUILayout.LabelField("请输入组件查找前缀:", EditorStyles.largeLabel);
-
-            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Space(5f);
+            EditorGUILayout.BeginVertical("box");
             {
-                ACProjectReName_Prefix = EditorGUILayout.TextField("请输入组件查找前缀", ACProjectReName_Prefix);
-                if (GUILayout.Button("复制", EditorStyles.miniButtonMid)) { ACProjectReName_Prefix.ACCopyWord(); }
-                if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) { ACCoreExpansion_DateSave.ACReAssets(); }
+                EditorGUILayout.LabelField("Project前缀工具", EditorStyles.boldLabel);
+                EditorGUILayout.Space(5f);
+                EditorGUILayout.BeginHorizontal();
+                {
+                    Prefix = EditorGUILayout.TextField("请输入组件查找前缀", Prefix);
+                    if (GUILayout.Button("复制", EditorStyles.miniButtonMid)) { Prefix.ACCopyWord(); }
+                    if (GUILayout.Button("保存修改", EditorStyles.miniButtonMid)) { ACCoreExpansion_DateSave.ACReAssets(); }
+                }
+                EditorGUILayout.EndHorizontal();
+
+
+                EditorGUILayout.BeginHorizontal();
+                {
+                    if (GUILayout.Button("获取前缀", EditorStyles.miniButtonMid))
+                    {
+                        Prefix = ACCoreExpansion_Find.ACGetObj().ACGetPrefix();
+                    }
+                    if (GUILayout.Button("清空前缀", EditorStyles.miniButtonMid))
+                    {
+                        Prefix = string.Empty;
+                    }
+                    if (GUILayout.Button("前缀添加", EditorStyles.miniButtonMid))
+                    {
+                        ProjectObjAddPrefix(ACCoreExpansion_Find.ACGetObjs(), Prefix);
+
+                    }
+                    if (GUILayout.Button("去除前缀", EditorStyles.miniButtonMid))
+                    {
+                        ProjectObjRemoePrefix(ACCoreExpansion_Find.ACGetObjs(), Prefix);
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
+
+
+                if (GUILayout.Button("去除空白", EditorStyles.miniButtonMid)) { ACCoreExpansion_Find.ACGetObjs().ACClearSpecificSymbolLoop("", " "); }
+
+                EditorGUILayout.BeginHorizontal();
+                {
+                    if (GUILayout.Button("T_", EditorStyles.miniButtonMid)) { Prefix = "T_"; }
+                }
+                EditorGUILayout.EndHorizontal();
             }
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            {
-                if (GUILayout.Button("获取前缀", EditorStyles.miniButtonMid))
-                {
-                    ACProjectReName_Prefix = ACCoreExpansion_Find.ACGetObj().ACGetPrefix();
-                }
-                if (GUILayout.Button("清空前缀", EditorStyles.miniButtonMid))
-                {
-                    ACProjectReName_Prefix = string.Empty;
-                }
-                if (GUILayout.Button("前缀添加", EditorStyles.miniButtonMid))
-                {
-                    ProjectObjAddPrefix(ACCoreExpansion_Find.ACGetObjs(), ACProjectReName_Prefix);
-
-                }
-                if (GUILayout.Button("去除前缀", EditorStyles.miniButtonMid))
-                {
-                    ProjectObjRemoePrefix(ACCoreExpansion_Find.ACGetObjs(), ACProjectReName_Prefix);
-                }
-            }
-            EditorGUILayout.EndHorizontal();
-
-            if (GUILayout.Button("去除空白", EditorStyles.miniButtonMid)) { ACCoreExpansion_Find.ACGetObjs().ACClearSpecificSymbolLoop("", " "); }
-
-            EditorGUILayout.BeginHorizontal();
-            {
-                if (GUILayout.Button("T_", EditorStyles.miniButtonMid)) { ACProjectReName_Prefix = "T_"; }
-            }
-            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
         }
 
         /// <summary>
@@ -114,11 +126,11 @@ namespace ACTool
                 //******************************添加后缀(序列号)******************************
                 EditorGUILayout.BeginHorizontal();//开始水平布局
                 {
-                    ACProjectReName_SuffixNumber = EditorGUILayout.TextField("输入后缀", ACProjectReName_SuffixNumber);
+                    SuffixNumber = EditorGUILayout.TextField("输入后缀", SuffixNumber);
                     if (GUILayout.Button("添加后缀(序列号)", EditorStyles.miniButtonMid))
                     {
                         int number = 0;
-                        bool result = int.TryParse(ACProjectReName_SuffixNumber, out number); //i now = 108 是否是数字
+                        bool result = int.TryParse(SuffixNumber, out number); //i now = 108 是否是数字
                         if (!result) { Debug.Log("默认序列号添加"); }
                         Array.ForEach(ACCoreExpansion_Find.ACGetObjs(), (obj) =>
                         {
@@ -163,7 +175,7 @@ namespace ACTool
                 GUILayout.Space(5f); EditorGUILayout.LabelField("重命名", EditorStyles.largeLabel);
                 EditorGUILayout.BeginHorizontal();//开始水平布局
                 {
-                    ACProjectReName_REName = EditorGUILayout.TextField("输入新的名称", ACProjectReName_REName);
+                    REName = EditorGUILayout.TextField("输入新的名称", REName);
                     if (GUILayout.Button("物体重命名", EditorStyles.miniButtonMid))
                     {
                         if (ACCoreExpansion_Find.ACGetObjs().Length == 0) return;
@@ -173,31 +185,31 @@ namespace ACTool
                             UnityEngine.Object obj = ACCoreExpansion_Find.ACGetObjs()[i];//单个物品
                             string name = obj.name.Trim();//去除头尾空白字符串//物品名称
                             string path_g = AssetDatabase.GetAssetPath(obj);//获得选中物的路径
-                            AssetDatabase.RenameAsset(path_g, ACProjectReName_REName + i);//改名API
+                            AssetDatabase.RenameAsset(path_g, REName + i);//改名API
                         }
                     }
                 }
                 EditorGUILayout.EndHorizontal();
                 //******************************替换物体名称******************************
                 GUILayout.Space(5f); EditorGUILayout.LabelField("替换物体名称", EditorStyles.largeLabel);
-                ACProjectReName_OldChangeName = EditorGUILayout.TextField("老的名称", ACProjectReName_OldChangeName);
+                OldChangeName = EditorGUILayout.TextField("老的名称", OldChangeName);
                 if (GUILayout.Button("获取老的关键词(请手动删除不需要的)", EditorStyles.miniButtonMid))
                 {
-                    ACProjectReName_OldChangeName = ACCoreExpansion_Find.ACGetObj().name;
+                    OldChangeName = ACCoreExpansion_Find.ACGetObj().name;
                 }
-                ACProjectReName_NewChangeName = EditorGUILayout.TextField("输入新的名称", ACProjectReName_NewChangeName);
+                NewChangeName = EditorGUILayout.TextField("输入新的名称", NewChangeName);
                 if (GUILayout.Button("物体重命名", EditorStyles.miniButtonMid))
                 {
                     if (ACCoreExpansion_Find.ACGetObjs().Length == 0) return;
                     Array.ForEach(ACCoreExpansion_Find.ACGetObjs(), (obj) =>
                     {
-                        if (obj.name.Contains(ACProjectReName_OldChangeName))
+                        if (obj.name.Contains(OldChangeName))
                         {
-                            (obj as GameObject).name = obj.name.Replace(ACProjectReName_OldChangeName, ACProjectReName_NewChangeName);
+                            (obj as GameObject).name = obj.name.Replace(OldChangeName, NewChangeName);
 
                             string name = obj.name.Trim();//去除头尾空白字符串//物品名称
                             string path_g = AssetDatabase.GetAssetPath(obj);//获得选中物的路径
-                            string nam11e = name.Replace(ACProjectReName_OldChangeName, "");//清除
+                            string nam11e = name.Replace(OldChangeName, "");//清除
                             AssetDatabase.RenameAsset(path_g, nam11e);//改名API
                         }
                     });
@@ -206,7 +218,7 @@ namespace ACTool
                 GUILayout.Space(5f); EditorGUILayout.LabelField("上一级文件夹名称变成物体名称", EditorStyles.largeLabel);
                 EditorGUILayout.BeginHorizontal();//开始水平布局
                 {
-                    ACProjectReName_Suffix = EditorGUILayout.TextField("输入点后缀", ACProjectReName_Suffix);
+                    Suffix = EditorGUILayout.TextField("输入点后缀", Suffix);
                     if (GUILayout.Button("上一级文件夹名称变成物体名称", EditorStyles.miniButtonMid))
                     {
                         if (ACCoreExpansion_Find.ACGetObjs().Length == 0) return;
@@ -221,7 +233,7 @@ namespace ACTool
                             for (int i = 0; i < files.Length; i++)
                             {
                                 //忽略关联文件
-                                if (files[i].Name.EndsWith(ACProjectReName_Suffix))
+                                if (files[i].Name.EndsWith(Suffix))
                                 {
                                     //Debug.Log("文件名:" + files[i].Name);
                                     //Debug.Log("文件绝对路径:" + files[i].FullName);

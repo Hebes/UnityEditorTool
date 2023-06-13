@@ -1,19 +1,11 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public class GUIStyleViewer2 : EditorWindow
+public class ACGUIStyle4 : EditorWindow
 {
-
     Vector2 scrollPosition = new Vector2(0, 0);
     string search = "";
     GUIStyle textStyle;
-
-    private static GUIStyleViewer2 window;
-    [MenuItem("Tools/EditorGUILayout模板/参考样例4", false, 100)]
-    private static void OpenStyleViewer()
-    {
-        window = GetWindow<GUIStyleViewer2>(false, "内置GUIStyle");
-    }
 
     void OnGUI()
     {

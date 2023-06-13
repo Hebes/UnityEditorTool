@@ -3,14 +3,13 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEditor.IMGUI.Controls;
 
-public class GUIStyleViewer : EditorWindow
+public class ACGUIStyle5 : EditorWindow
 {
     [MenuItem("Tools/EditorGUILayout模板/参考样例5", false, 100)]
     public static void ShowWindow()
     {
-        GUIStyleViewer w = (GUIStyleViewer)EditorWindow.GetWindow<GUIStyleViewer>();
+        ACGUIStyle5 w = (ACGUIStyle5)EditorWindow.GetWindow<ACGUIStyle5>();
         w.Show();
     }
 
