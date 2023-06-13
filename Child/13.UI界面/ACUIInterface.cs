@@ -148,6 +148,9 @@ namespace ACTool
                                             GetWindow<ACEditorComponent2>().Close();
                                         EditorGUILayout.EndHorizontal();
                                         break;
+                                    case "模型预览":
+                                        ACPrefabPreview.OnShow();
+                                        break;
                                 }
                             }
                             EditorGUILayout.EndVertical();
@@ -177,6 +180,7 @@ namespace ACTool
             "创建目录",
             "ET工具集合",
             "编辑器样式",
+            "模型预览",
         };
         public Vector2 LetfV2ScrollView { get; private set; }
 
