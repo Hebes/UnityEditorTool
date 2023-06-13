@@ -19,4 +19,11 @@ public static class ACCoreExpansion_AssetDatabase
     {
         AssetDatabase.Refresh();
     }
+    /// <summary>
+    /// 刷新数据
+    /// </summary>
+    public static void ACRefresh(this UnityEngine.Object @object)
+    {
+        AssetDatabase.Refresh();
+    }
 }

@@ -15,20 +15,13 @@ namespace ACTool
     public class ACProjectPanelCommonEditorTool : EditorWindow
     {
 
-        private Vector2 scrollRoot { get; set; }
+        private static Vector2 scrollRoot { get; set; }
 
-        public string InputGameObjectTransform { get; private set; }//输入物体的Transform，就是前缀
-        public string InputGameObjectTransformSuffix { get; private set; }//输入物体的Transform，就是后缀
-        public string InputGameObjectTransformReName { get; private set; }//输入物体的Transform，就是重命名
-        public string InputGameObjectTransformSuffixNumber { get; private set; }//序列号
-        public string InputGameObjectTransformClear { get; private set; }//清除
-
-
-        [MenuItem("Assets/暗沉EditorTool/Project面板/Project面板通用功能")]//#E
-        public static void GeneratorFindComponentTool()
-        {
-            GetWindow(typeof(ACProjectPanelCommonEditorTool), false, "ACProject面板通用功能").Show();
-        }
+        public static string InputGameObjectTransform { get; private set; }//输入物体的Transform，就是前缀
+        public static string InputGameObjectTransformSuffix { get; private set; }//输入物体的Transform，就是后缀
+        public static string InputGameObjectTransformReName { get; private set; }//输入物体的Transform，就是重命名
+        public static string InputGameObjectTransformSuffixNumber { get; private set; }//序列号
+        public static string InputGameObjectTransformClear { get; private set; }//清除
 
 
         //bool showPosition = true;
@@ -39,7 +32,7 @@ namespace ACTool
         /// <summary>
         /// 绘制面板
         /// </summary>
-        private void OnGUI()
+        public static void OnShow()
         {
             scrollRoot = EditorGUILayout.BeginScrollView(scrollRoot); //开启滚动视图
             {

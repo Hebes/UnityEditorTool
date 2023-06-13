@@ -27,7 +27,9 @@ namespace ACTool
         public static void ACFileCreat(this string filePath)
         {
             if (File.Exists(filePath)) return;
+            Debug.Log("文件不存在,开始创建!");
             File.Create(filePath);
+            ACCoreExpansion_AssetDatabase.ACRefresh();
         }
 
         /// <summary>
@@ -120,7 +122,9 @@ namespace ACTool
         public static void  ACFolderCreat(this string folderPath)
         {
             if (Directory.Exists(folderPath)) return;
+            Debug.Log("文件不存在,开始创建!");
             Directory.CreateDirectory(folderPath);//创建
+            ACCoreExpansion_AssetDatabase.ACRefresh();
         }
 
 

@@ -16,28 +16,6 @@ namespace ACTool
         public static string ACProjectReName_OldChangeName { get; private set; }
         public static string ACProjectReName_NewChangeName { get; private set; }
 
-        [MenuItem("Assets/暗沉EditorTool/Project面板/重命名")]//#E
-        public static void GeneratorFindComponentTool()
-        {
-            GetWindow(typeof(ACProjectToolReName), false, "Project面板重命名").Show();
-        }
-
-        private void OnGUI()
-        {
-            ACProjectPrefix();
-            ACProjectSuffix();
-            ACProjectReName();
-        }
-
-        /// <summary>
-        /// 刷新界面
-        /// </summary>
-        private void OnInspectorUpdate()
-        {
-            // Call Repaint on OnInspectorUpdate as it repaints the windows
-            // less times as if it was OnGUI/Update
-            //this.ACReAssets();
-        }
 
         //*******************************前缀*******************************
 
