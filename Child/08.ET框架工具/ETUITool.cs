@@ -1,4 +1,4 @@
-﻿#define TEST
+﻿// 定义宏#define TEST
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-#if !TEST
+#if ACTool
 namespace ACTool
 {
     public class ETUITool : EditorWindow
