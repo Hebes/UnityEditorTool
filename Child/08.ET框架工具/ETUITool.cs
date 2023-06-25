@@ -1,8 +1,10 @@
 ﻿// 定义宏#define ACTool
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using Unity.CodeEditor;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,6 +33,14 @@ namespace ACTool
                 {
                     //******************************文件夹******************************
                     EditorGUILayout.LabelField("文件夹", EditorStyles.boldLabel);
+                    if (GUILayout.Button("打开sln文件", EditorStyles.miniButtonMid))
+                    {
+                        CodeEditor.OSOpenFile(CodeEditor.CurrentEditorInstallation, Path.Combine(Application.dataPath, "../Unity.sln"));
+                    }
+                    if (GUILayout.Button("打开Matesln文件", EditorStyles.miniButtonMid))
+                    {
+                        CodeEditor.OSOpenFile(CodeEditor.CurrentEditorInstallation, Path.Combine(Application.dataPath, "../../MateClient-Server.sln"));
+                    }
                     if (GUILayout.Button("打开Mate目录", EditorStyles.miniButtonMid))
                     {
                         ("/").ACOpenPath();
