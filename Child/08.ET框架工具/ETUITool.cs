@@ -21,7 +21,7 @@ namespace ACTool
 
         public static void OnShow()
         {
-            ACHierarchyToolReNameReName.ACHierarchyPrefix();
+            //ACHierarchyToolReNameReName.ACHierarchyPrefix();
             OnETUITool();
         }
 
@@ -31,29 +31,23 @@ namespace ACTool
             {
                 EditorGUILayout.BeginVertical("box");
                 {
+                    //******************************打开sln文件******************************
+                    EditorGUILayout.LabelField("打开sln文件", EditorStyles.boldLabel);
+                    if (GUILayout.Button("打开UnitySln文件", EditorStyles.miniButtonMid))
+                        ("../Unity.sln").ACOSOpenFile();
+                    if (GUILayout.Button("打开MateSln文件", EditorStyles.miniButtonMid))
+                        ("../../MateClient-Server.sln").ACOSOpenFile();
+
                     //******************************文件夹******************************
-                    EditorGUILayout.LabelField("文件夹", EditorStyles.boldLabel);
-                    if (GUILayout.Button("打开sln文件", EditorStyles.miniButtonMid))
-                    {
-                        CodeEditor.OSOpenFile(CodeEditor.CurrentEditorInstallation, Path.Combine(Application.dataPath, "../Unity.sln"));
-                    }
-                    if (GUILayout.Button("打开Matesln文件", EditorStyles.miniButtonMid))
-                    {
-                        CodeEditor.OSOpenFile(CodeEditor.CurrentEditorInstallation, Path.Combine(Application.dataPath, "../../MateClient-Server.sln"));
-                    }
+                    EditorGUILayout.LabelField("打开文件夹", EditorStyles.boldLabel);
                     if (GUILayout.Button("打开Mate目录", EditorStyles.miniButtonMid))
-                    {
                         ("/").ACOpenPath();
-                    }
                     if (GUILayout.Button("打开StreamingAssets目录", EditorStyles.miniButtonMid))
-                    {
                         ("F:\\Yet\\Project\\Mate\\Release\\PC\\StreamingAssets\\StreamingAssets").ACOpenPath();
-                    }
                     //******************************AB包******************************
                     EditorGUILayout.LabelField("ET工具", EditorStyles.boldLabel);
                     if (GUILayout.Button("设置AB包标签", EditorStyles.miniButtonMid))
                     {
-                        Debug.Log("设置AB包标签");
                         Array.ForEach(ACCoreExpansion_Find.ACGetObjs(), obj => obj.ACGetAssetDataPath().ACSetABName($"{obj.name}.unity3d"));
                         ACCoreExpansion_DateSave.ACReAssets();
                     }
@@ -92,9 +86,9 @@ namespace ACTool
                     {
                         //if (GUILayout.Button("RC获取代码", EditorStyles.miniButtonMid)) { GetUIALlGoName(new ACToolConfig() { KeyValue = ETUITool_Prefix, isGetSet = false, }); }
                         if (GUILayout.Button("RC获取代码Get.Set", EditorStyles.miniButtonMid))
-                        {
                             GetUIALlGoName(new ACToolConfig() { KeyValue = ETUITool_Prefix, isGetSet = true, });
-                        }
+                        if (GUILayout.Button("获取组件Get.Set(Loop版本)", EditorStyles.miniButtonMid))
+                            GetUIALlGoName1(new ACToolConfig() { KeyValue = ETUITool_Prefix, isGetSet = true, });
                     }
                     EditorGUILayout.EndHorizontal();
                     //******************************获取组件专用******************************
@@ -265,6 +259,26 @@ namespace ACTool
             ReferenceCollector referenceCollector = ACCoreExpansion_Find.ACGetGo.GetComponent<ReferenceCollector>();
             sb.AppendLine("#region 请自行填写注释");
             referenceCollector.data?.ForEach((date) =>
+            {
+                sb.AppendLine($"\tpublic GameObject {date.gameObject.name}{isGetSet}");
+            });
+            sb.AppendLine("#endregion");
+            GUIUtility.systemCopyBuffer = sb.ToString();//复制
+            Debug.Log(sb.ToString());
+        }
+
+        /// <summary>
+        /// 生成GameObject专用
+        /// </summary>
+        public static void GetUIALlGoName1(ACToolConfig findtConfig)
+        {
+            StringBuilder sb = new StringBuilder();
+            string isGetSet = findtConfig.isGetSet ? "{ get; set; }" : ";";
+
+            List<GameObject> gos =  ACCoreExpansion_Find.ACGetGo.ACLoopGetKeywordGO(findtConfig.KeyValue);
+
+            sb.AppendLine("#region 请自行填写注释");
+            gos?.ForEach((date) =>
             {
                 sb.AppendLine($"\tpublic GameObject {date.gameObject.name}{isGetSet}");
             });
