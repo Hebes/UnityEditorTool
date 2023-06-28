@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Unity.CodeEditor;
 using UnityEditor;
 using UnityEngine;
 
@@ -137,6 +138,27 @@ namespace ACTool
             return Directory.Exists(folderPath);//是否存在这个文件
         }
 
+        //***************************其他***************************
+
+        /// <summary>
+        /// 开打.sln路径,
+        /// </summary>
+        public static void ACOSOpenFile(this string path)
+        {
+            CodeEditor.OSOpenFile(CodeEditor.CurrentEditorInstallation, Path.Combine(Application.dataPath, "../../MateClient-Server.sln"));
+        }
+
+        /// <summary>
+        /// 打开路径
+        /// </summary>
+        /// <param name="folderPath">路径</param>
+        public static void ACOpenPath(this string folderPath)
+        {
+            if (!Directory.Exists(folderPath)) return;
+            EditorUtility.RevealInFinder(folderPath);
+        }
+
+
         /// <summary>
         /// 删除文件夹
         /// </summary>
@@ -156,6 +178,5 @@ namespace ACTool
         public static string[] ACFolderGetFiles(this string folderPath)
         {
             return Directory.GetFiles(folderPath);
-        }
-    }
+        }    }
 }

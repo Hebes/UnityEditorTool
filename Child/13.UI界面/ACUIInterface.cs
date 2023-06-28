@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 namespace ACTool
 {
     public class ACUIInterface : EditorWindow
     {
-
         private string number { get; set; }
         private string PlayerPrefsKey { get; set; } = "key";
         private Vector2 scrollPosition { get; set; }
@@ -101,7 +99,7 @@ namespace ACTool
                                         ACCreatBaseDirectory.OnShow();
                                         break;
                                     case "ET工具集合":
-#if ACtool
+#if ACTool
                                         ETUITool.OnShow();
 #endif
                                         break;
