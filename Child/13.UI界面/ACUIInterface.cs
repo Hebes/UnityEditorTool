@@ -144,6 +144,8 @@ namespace ACTool
                                     case "模型预览":
                                         ACPrefabPreview.OnShow();
                                         break;
+                                    case "解析Excel":
+                                        break;
                                 }
                             }
                             EditorGUILayout.EndVertical();
@@ -171,6 +173,7 @@ namespace ACTool
             "ET工具集合",
             "编辑器样式",
             "模型预览",
+            "解析Excel",
         };
         public Vector2 LetfV2ScrollView { get; private set; }
 
