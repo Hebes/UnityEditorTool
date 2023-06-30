@@ -77,6 +77,9 @@ namespace ACTool
                                     case "Hierarchy替换物体":
                                         ACHierarchyPrefabChange.OnShow();
                                         break;
+                                    case "显示文件大小":
+                                        ACFileAndFoledSize.OnShow();
+                                        break;
                                     case "Hierarchy获取代码":
                                         ACHierarchyGetCode.OnShow();
                                         break;
@@ -169,6 +172,7 @@ namespace ACTool
             "ET工具集合",
             "编辑器样式",
             "模型预览",
+            "显示文件大小",
         };
         public Vector2 LetfV2ScrollView { get; private set; }
 

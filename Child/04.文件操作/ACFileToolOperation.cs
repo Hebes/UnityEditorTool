@@ -15,7 +15,7 @@ namespace ACTool
         private static bool isResolution { get; set; } = true;//是否解析
 
 
-        [MenuItem("Assets/暗沉EditorTool/文件操作面板")]//#E
+        //[MenuItem("Assets/暗沉EditorTool/文件操作面板")]//#E
         public static void GeneratorFindComponentTool()
         {
             GetWindow(typeof(ACFileToolOperation), false, "文件操作面板").Show();
