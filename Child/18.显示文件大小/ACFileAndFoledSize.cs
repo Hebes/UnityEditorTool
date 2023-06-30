@@ -97,6 +97,7 @@ namespace ACTool
             }
             EditorUtility.ClearProgressBar();
         }
+
         private static void Init()
         {
             isShowSize = EditorPrefs.GetBool(FILESIZE);
