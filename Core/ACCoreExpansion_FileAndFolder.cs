@@ -120,7 +120,7 @@ namespace ACTool
         /// </summary>
         /// <param name="folderPath"></param>
         /// <returns></returns>
-        public static void  ACFolderCreat(this string folderPath)
+        public static void ACFolderCreat(this string folderPath)
         {
             if (Directory.Exists(folderPath)) return;
             Debug.Log("文件不存在,开始创建!");
@@ -157,5 +157,26 @@ namespace ACTool
             if (!Directory.Exists(folderPath)) return;
             EditorUtility.RevealInFinder(folderPath);
         }
-    }
+
+
+        /// <summary>
+        /// 删除文件夹
+        /// </summary>
+        public static void ACFolderDelete(this string folderPath)
+        {
+            Directory.Delete(folderPath);
+        }
+
+        /// <summary>
+        /// 删除文件夹
+        /// </summary>
+        public static void ACFolderDelete(this string folderPath, bool recursive)
+        {
+            Directory.Delete(folderPath, recursive);
+        }
+
+        public static string[] ACFolderGetFiles(this string folderPath)
+        {
+            return Directory.GetFiles(folderPath);
+        }    }
 }
