@@ -145,7 +145,7 @@ namespace ACTool
         /// </summary>
         public static void ACOSOpenFile(this string path)
         {
-            CodeEditor.OSOpenFile(CodeEditor.CurrentEditorInstallation, Path.Combine(Application.dataPath, "../../MateClient-Server.sln"));
+            CodeEditor.OSOpenFile(CodeEditor.CurrentEditorInstallation, Path.Combine(Application.dataPath, path));
         }
 
         /// <summary>
