@@ -76,15 +76,11 @@ namespace ACTool
                                 {
                                     case "Hierarchy替换物体":
                                         ACHierarchyPrefabChange.OnShow();
+                                        ACHierarchyGetCode.OnShow();
+                                        ACHierarchyToolComponent.OnShow();
                                         break;
                                     case "显示文件大小":
                                         ACFileAndFoledSize.OnShow();
-                                        break;
-                                    case "Hierarchy获取代码":
-                                        ACHierarchyGetCode.OnShow();
-                                        break;
-                                    case "Hierarchy组件设置":
-                                        ACHierarchyToolComponent.OnShow();
                                         break;
                                     case "移除脚本":
                                         ACHierarchyToolCSharpCSharp.OnShow();
@@ -164,8 +160,6 @@ namespace ACTool
         private List<string> btnNameList { get; set; } = new List<string>()
         {
             "Hierarchy替换物体",
-            "Hierarchy获取代码",
-            "Hierarchy组件设置",
             "移除脚本",
             "Hierarchy重命名",
             "场景获取工具",
